@@ -1,0 +1,46 @@
+\chapter{Referencial Teórico}\label{cap-referencial-teorico}
+
+
+\section{O E-Museu}
+
+O E-Museu é uma iniciativa digital dedicada à preservação da história da computação, oferecendo ao público uma plataforma aberta para consulta, e exploração tecnológica. Seu principal propósito é registrar e disponibilizar informações sobre a evolução da informática, abrangendo desde equipamentos clássicos até marcos relevantes do desenvolvimento de hardware. Dessa forma, busca-se garantir que o conhecimento histórico permaneça acessível às futuras gerações, mesmo diante da deterioração física dos materiais originais.
+
+O projeto proporciona uma experiência virtual imersiva que simula a visita a um museu físico, permitindo que os usuários explorem ambientes digitais, observem máquinas antigas, acessem painéis informativos e naveguem por conteúdos históricos de maneira interativa. 
+
+Entre os conteúdos disponibilizados, o E-Museu reúne informações técnicas detalhadas sobre componentes eletrônicos que marcaram a evolução da computação, como processadores, placas-mãe, memórias, unidades de armazenamento e periféricos, acompanhados de descrições, imagens e histórico de uso, além de peças e conjuntos que integram a narrativa do acervo.
+
+O projeto adota um modelo colaborativo, permitindo que a comunidade contribua com peças, documentos, fotografias e relatos históricos. Todas as contribuições passam por verificação e catalogação antes de integrarem a coleção, garantindo autenticidade e organização. Essa participação coletiva fortalece o engajamento do público e amplia a diversidade das narrativas preservadas.
+
+Voltado para fins educacionais e culturais, o E-Museu opera como um projeto independente e sem fins lucrativos, comprometido com a divulgação histórica e o fortalecimento da memória tecnológica. Por meio de seu conteúdo acessível e colaborativo, busca promover uma compreensão crítica sobre a evolução da informática e evidenciar a importância de preservar o passado para compreender as inovações do presente.
+
+
+\section{Refatoração de software}
+
+A refatoração é um processo fundamental no ciclo de desenvolvimento de sistemas, pois busca melhorar a estrutura interna do código sem alterar seu comportamento externo. No E-Museu, essa prática se torna importante para garantir qualidade, legibilidade, extensibilidade e facilidade de manutenção, especialmente diante da evolução constante de requisitos técnicos e funcionais.
+
+De acordo com \citeonline{refatoracao:2004}, refatorar significa modificar a organização do software de forma sistemática, visando eliminar complexidades desnecessárias, reduzir duplicações, aprimorar o design e facilitar a compreensão do código. Refatoração não é uma etapa isolada, mas um processo contínuo que acompanha o desenvolvimento, permitindo que melhorias incrementais sejam aplicadas conforme o sistema cresce e amadurece.
+
+Além disso, práticas de refatoração auxiliam na prevenção da chamada ``dívida técnica'', evitando que o código se torne difícil de compreender, testar ou modificar. Essa preocupação é especialmente relevante em sistemas acadêmicos e colaborativos, nos quais novas funcionalidades podem surgir a partir de pesquisas, contribuições externas ou mudanças institucionais.
+
+No contexto deste trabalho, a refatoração contemplou a reorganização e melhoria estrutural dos controladores do sistema E-Museu, visando padronizar responsabilidades, reduzir acoplamentos indevidos e tornar a lógica de controle mais clara, testável e alinhada às boas práticas de desenvolvimento de software.
+
+\citeonline{refatoracao:2004} também enfatiza o papel dos testes automatizados no processo de refatoração, garantindo que o comportamento do software permaneça correto após cada melhoria estrutural. Dessa forma, refatorar não apenas aprimora o design do código, mas fortalece a confiabilidade do sistema.
+
+\section{Boa práticas de desenvolvimento}
+
+O objetivo dessa seção é apresentar as principais boas práticas consideradas para o desenvolvimento do E-Museu, evidenciando como cada abordagem pode contribuir para a organização, qualidade e manutenção do sistema.
+
+
+\subsection{\acrfull{mvc}}
+
+O padrão \acrfull{mvc} estabelece a separação do software em três camadas principais: \textit{Model}, \textit{View} e \textit{Controller} \cite{mvc}. Essa divisão organiza a aplicação de forma que a lógica de negócios, a interface e o controle de requisições não se misturem, reduzindo acoplamento e facilitando a manutenção. No contexto do E-Museu, o \acrshort{mvc} pode ser aplicado para estruturar o fluxo de exibição do acervo digital, manipulação de dados históricos e controle das interações do usuário, tornando o sistema mais claro, previsível e modular. Além disso, o padrão favorece o trabalho colaborativo entre equipes de desenvolvimento, design e curadoria técnica.
+
+
+\subsection{\textit{Clean Code}}
+
+O princípio de \textit{Clean Code} orienta a escrita de códigos simples, legíveis, coesos e de fácil entendimento, priorizando qualidade sobre complexidade desnecessária \cite{cleancode:2009}. Sua aplicação incentiva boas práticas como nomes descritivos, funções curtas, ausência de códigos duplicados, clareza semântica e utilização consistente de padrões arquiteturais. Para o E-Museu, adotar \textit{Clean Code} contribui diretamente para a evolução contínua do sistema, reduzindo custos de manutenção, facilitando correções, incorporando novas funcionalidades com segurança e possibilitando que futuros desenvolvedores compreendam o projeto rapidamente, mesmo sem conhecimento prévio.
+
+\subsection{\acrfull{ddd}}
+
+O \acrfull{ddd} propõe que o desenvolvimento de software seja guiado pelo domínio do negócio, priorizando o entendimento profundo do problema antes da solução tecnológica \cite{ddd2004}. Sua abordagem envolve criação de modelos conceituais, definição de linguagens compartilhadas entre equipe e especialistas, além de estruturas arquiteturais orientadas ao domínio. No caso do E-Museu, o \acrshort{ddd} pode auxiliar na representação fiel de entidades como itens do acervo, categorias, sugestões da comunidade e processos de curadoria, garantindo consistência lógica e operacional.
+

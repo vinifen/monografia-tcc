@@ -1,0 +1,250 @@
+%%%% REFERÊNCIAS
+%%
+%% Conjunto padronizado de elementos descritivos retirados de um documento, que permite sua identificação individual.
+%%
+%% Cada entrada no arquivo BibTeX segue um formato padrão. Este formato muda ligeiramente baseado no tipo de entrada, mas a sintaxe
+%% continua a mesma.
+%%
+%% O rótulo de cada entrada não pode conter caracteres especiais, acentuados ou cedilha.
+%%
+%% A formatação do texto no campo "AUTHOR" deve obedecer algumas regras:
+%%   - Acento agudo:        "á = {\'a}".
+%%   - Acento crase:        "à = {\`a}".
+%%   - Acento til:          "ã = {\~a}".
+%%   - Acento circunflexo:  "ê = {\^e}".
+%%   - Acento trema:        "ü = {\"u}".
+%%   - Acento na letra i:   "í = {\'\i}".
+%%   - Cedilha:             "ç = {\c{c}}".
+%%   - Sobrenome composto:  "Santos, Filho, Jos{\'e} C. S.; da Silva, Erivanildo Lopes".
+%%   - Nome de organização: "{\mbox IONA Technologies PLC}".
+%%
+%% A formatação do texto no campo "TITLE" deve obedecer algumas regras (também válidas para o texto no campo "AUTHOR"):
+%%   - MAIÚSCULAS: "REAL = {REAL}".
+%%   - Minúsculas: "real = {real}".
+%%   - CamelCase:  "Real = {R}eal".
+
+%% TIPOS DE ENTRADA
+%%
+%% Ao inserir uma referência no banco de dados, a primeira coisa a decidir é o tipo de entrada. Existem vários tipos de entrada, mas
+%% não são completas, porém são suficientes para o BibTeX fornecer entradas para lidar com praticamente qualquer tipo de referência
+%% razoavelmente bem.
+
+%% ARTICLE - Um artigo de um jornal ou revista.
+%%   - Campos requeridos: AUTHOR, TITLE, JOURNAL e YEAR.
+%%   - Campos opcionais: VOLUME, NUMBER, PAGES, MONTH e NOTE.
+
+@book{tec:civ,
+    author = {Lewis Mumford},
+    title = {Technics and Civilization},
+    publisher = {University of Chicago Press},
+    year = {1934},
+    url = {https://books.google.com.br/books?hl=pt-BR&lr=&id=PU7PktesGUoC&oi=fnd&pg=PR5&dq=Technics+and+Civilization&ots=Xt_osSrLs3&sig=-hDmlr5q4bwr8GmEyPXNIKE_GV0&redir_esc=y#v=onepage&q=Technics%20and%20Civilization&f=false}
+}
+
+@book{eniac,
+    author = {Scott McCartney},
+    title = {ENIAC: The Triumphs and Tragedies of the World's First Computer},
+    publisher = {Walker & Company},
+    year = {1999},
+    url = {https://dl.acm.org/doi/abs/10.5555/520152}
+}
+
+@monography{gonzaga2024,
+  author    = {Alexandre Takeshi Ogassahara Gonzaga},
+  title     = {E-Museu: explorando a história da informática em um ambiente virtual},
+  type      = {Gradua{\c c}\~ao},
+  school    = {Universidade Tecnol\'ogica Federal do Paran\'a, Guarapuava},
+  year      = {2024},
+  note      = {Acesso em 17 de mar{\c c}o de 2025},
+  url       = {https://e-museu.gp.utfpr.edu.br/}
+}
+
+
+@book{refatoracao:2004,
+    author    = {Fowler, Martin},
+    title     = {Refatoração},
+    publisher = {Bookman},
+    year      = {2004},
+    isbn      = {9788577804153},
+    url       = {https://books.google.com.br/books?hl=pt-BR&lr=&id=p97eDwAAQBAJ&oi=fnd&pg=PT4&dq=refatora%C3%A7%C3%A3o&ots=l4ruH06Xda&sig=BlsHSJsKhhMPPhvTbGs91JnUeRM&redir_esc=y#v=onepage&q=refatora%C3%A7%C3%A3o&f=false}
+}
+
+@book{clean:arch,
+    author = {Robert C. Martin},
+    title = {Clean Architecture: A Craftsman's Guide to Software Structure and Design},
+    publisher = {Prentice Hall Press, United States},
+    year = {2017},
+    url = {https://dl.acm.org/doi/abs/10.5555/3175742}
+}
+
+@misc{importance:testing,
+  author       = {{IEEE Computer Society}},
+  title        = {The Importance of Software Testing},
+  year         = {2025},
+  url          = {https://www.computer.org/resources/importance-of-software-testing},
+  note         = {Acesso em: 31 ago. 2025}
+}
+
+@misc{github,
+    author       = {GitHub},
+    title        = {GitHub},
+    year         = {2025},
+    url          = {https://github.com},
+    note         = {Acesso em: 3 set. 2025}
+}
+
+@inproceedings{ribeiro2024tecno,
+  author       = {Ribeiro, J. V. and Hernandes, Sediane C. L. and Rosa, S. N. and Rosa, J. G. A. and Silva, J. M. and Machado, J. V. and Almeida, J. and Lupp, N. R.},
+  title        = {Tecno-lixo: Oficina do aprender - Relatos de experiência de um projeto de extensão},
+  booktitle    = {Anais do XIV Seminário de Extensão e Inovação \& XXIX Seminário de Iniciação Científica e Tecnológica da UTFPR - SEI/SICITE 2024},
+  year         = {2024},
+  address      = {Francisco Beltrão},
+  pages        = {1--6}
+}
+
+@misc{re2021cartilha,
+  author       = {Ré, A. M. D. and Thomen, M. A. F.},
+  title        = {Cartilha de sugestões para atividades em oficinas pedagógicas utilizando de informática LIXOELETRÔ},
+  year         = {2021},
+  howpublished = {\url{https://www3.unicentro.br/decomp/wp-content/uploads/sites/77/2021/09/CartilhaLixoEletronico.pdf}},
+  note         = {Acesso em: 25 set. 2022}
+}
+
+@misc{php,
+  author       = {{The PHP Group}},
+  title        = {PHP: Hypertext Preprocessor},
+  year         = {2025},
+  url          = {https://www.php.net},
+  note         = {Acesso em: 14 out. 2025}
+}
+
+@misc{laravel,
+  author       = {{Laravel Team}},
+  title        = {Laravel: The PHP Framework for Web Artisans},
+  year         = {2025},
+  url          = {https://laravel.com},
+  note         = {Acesso em: 14 out. 2025}
+}
+
+@misc{mysql,
+  author       = {{Oracle Corporation}},
+  title        = {MySQL: The World's Most Popular Open Source Database},
+  year         = {2025},
+  url          = {https://www.mysql.com},
+  note         = {Acesso em: 14 out. 2025}
+}
+
+@misc{docker,
+  author       = {{Docker, Inc.}},
+  title        = {Docker: Empowering App Development for Developers},
+  year         = {2025},
+  url          = {https://www.docker.com},
+  note         = {Acesso em: 14 out. 2025}
+}
+
+@misc{dockercompose,
+  author       = {{Docker, Inc.}},
+  title        = {Docker Compose: Define and Run Multi-Container Applications},
+  year         = {2025},
+  url          = {https://docs.docker.com/compose/},
+  note         = {Acesso em: 14 out. 2025}
+}
+
+@misc{git,
+  author       = {{Git SCM}},
+  title        = {Git: Distributed Version Control System},
+  year         = {2025},
+  url          = {https://git-scm.com},
+  note         = {Acesso em: 14 out. 2025}
+}
+
+@misc{caprover,
+  author       = {{CapRover Team}},
+  title        = {CapRover: Build your own PaaS in a few minutes!},
+  year         = {2025},
+  url          = {https://caprover.com},
+  note         = {Acesso em: 14 out. 2025}
+}
+
+@misc{gitdocs,
+  author       = {{Git Documentation Team}},
+  title        = {Git - Documentation},
+  year         = {2025},
+  url          = {https://git-scm.com/doc},
+  note         = {Acesso em: 14 out. 2025}
+}
+
+@misc{githubdocs,
+  author       = {{GitHub, Inc.}},
+  title        = {About Pull Requests - GitHub Docs},
+  year         = {2025},
+  url          = {https://docs.github.com/en/pull-requests},
+  note         = {Acesso em: 14 out. 2025}
+}
+
+@misc{moscow,
+  author       = {{Agile Business Consortium}},
+  title        = {MoSCoW Prioritisation},
+  year         = {2025},
+  url          = {https://www.agilebusiness.org/dsdm-project-framework/moscow-prioririsation.html},
+  note         = {Acesso em: 28 out. 2025}
+}
+
+@misc{coolify,
+  author       = {{CoolLabs}},
+  title        = {Coolify: An Open-Source & Self-Hostable Heroku Alternative},
+  year         = {2025},
+  url          = {https://coolify.io},
+  note         = {Acesso em: 14 out. 2025}
+}
+
+@misc{nixpacks,
+  author       = {{Railway}},
+  title        = {Nixpacks: Build Applications Without Dockerfiles},
+  year         = {2025},
+  url          = {https://nixpacks.com},
+  note         = {Acesso em: 14 out. 2025}
+}
+
+@misc{gitflowdoc,
+  author       = {{Novacoski, Vinicius Ferreira}},
+  title        = {Gitflow Documentation for Project Development},
+  year         = {2025},
+  url          = {https://github.com/vinifen/gitflow-documentation},
+  note         = {Acesso em: 22 nov. 2025}
+}
+
+@misc{emuseurepo,
+  author       = {{Novaocoski, Vinicius Ferreira}},
+  title        = {E-Museu Repository},
+  year         = {2025},
+  url          = {https://github.com/vinifen/e-museu},
+  note         = {Acesso em: 22 nov. 2025}
+}
+
+@book{ddd2004,  
+  title={Domain-Driven Design: Tackling Complexity in the Heart of Software},  
+  author={Evans, Eric},  
+  year={2004},  
+  publisher={Addison-Wesley Professional},  
+  url={https://books.google.com.br/books?hl=pt-BR&lr=&id=xColAAPGubgC&oi=fnd&pg=PR9&dq=domain-driven+design+book&ots=qdYD8gPK3q&sig=besaDRaOWUTqRwniCWgyUGXM1jg&redir_esc=y#v=onepage&q=domain-driven%20design%20book&f=false}  
+}
+
+@misc{mvc,
+    author       = {John Deacon},
+    title        = {Model View Controller (MVC) Architecture},
+    year         = {2009},
+    howpublished = {PDF},
+    note         = {Acesso em 26 de novembro de 2025},
+    url          = {https://d1wqtxts1xzle7.cloudfront.net/50526307/MVC-libre.pdf},
+}
+
+@book{cleancode:2009,
+    author    = {Robert C. Martin},
+    title     = {Código Limpo: Habilidades Práticas do Agile Software},
+    publisher = {Alta Books},
+    year      = {2009},
+    isbn      = {9788576082675},
+    url       = {https://books.google.com.br/books?id=bmpeDwAAQBAJ},
+    note      = {Tradução da obra \textit{Clean Code}}
+}

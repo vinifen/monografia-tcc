@@ -1,0 +1,66 @@
+\chapter{Resultados}\label{cap:resultados}
+
+Este capítulo apresenta os principais resultados obtidos com a refatoração e a evolução do sistema web do E-Museu \cite{gonzaga2024}, organizados em eixos que correspondem aos objetivos definidos na introdução e aos procedimentos descritos em materiais e métodos. A descrição privilegia o que foi efetivamente implementado, documentado e colocado em operação, de modo que o leitor possa relacionar decisões técnicas, artefatos de software e critérios de qualidade sem depender de material externo ao texto.
+
+
+\section{Requisitos, priorização e alinhamento institucional}
+
+O levantamento de requisitos constituiu a primeira etapa do trabalho. Os requisitos foram identificados principalmente a partir das observações da orientadora Dra.\ Sediane Carmem Lunardi Hernandes, que apontou, no sistema E-Museu, a necessidade de aprimoramentos na estrutura do código e a ausência de testes automatizados, evidenciando a demanda por refatoração e por novas funcionalidades.
+
+Após discussões e alinhamentos, os requisitos receberam ajustes a partir das contribuições do coorientador Dr.\ Diego Marczal e dos professores Me.\ Dênis Lucas Silva e Dr.\ Emerson André Fedechen, especialmente durante a primeira banca, o que permitiu um refinamento mais preciso e alinhado aos objetivos centrais do trabalho.
+
+Com os requisitos definidos, foi aplicada a técnica de priorização MoSCoW, com o objetivo de direcionar o desenvolvimento para as funcionalidades de maior impacto no sistema, otimizando o uso do tempo, esforço e recursos disponíveis. O resultado dessa priorização é apresentado na \autoref{fig:moscow}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figuras/moscow.png}
+    \caption{Priorização \acrshort{moscow}.}
+    \label{fig:moscow}
+    \caption*{\textbf{Fonte:} Autoria própria.}
+\end{figure}
+
+
+\section{Versionamento, repositório e documentação de fluxo}
+
+Para garantir um fluxo de desenvolvimento consistente e documentado, foi elaborada documentação sobre Gitflow, convenções de \textit{commits}, gestão de \textit{issues} e práticas de revisão, disponível para consulta pública \cite{gitflowdoc}.
+
+O código do E-Museu foi organizado em repositório no GitHub, a partir de um \textit{fork} que permitiu evoluir de forma independente a primeira versão desenvolvida por \cite{gonzaga2024}. O repositório concentra histórico de alterações, \textit{pull requests} e \textit{issues}, oferecendo rastreabilidade das decisões e das entregas \cite{emuseurepo}.
+
+Complementarmente, foram adotadas convenções de ramificação e integração compatíveis com o modelo Gitflow descrito no referencial metodológico, favorecendo separação entre código em evolução e ramos estáveis associados a ambientes de validação e produção.
+
+
+\section{Ambientes, conteinerização e implantação}
+
+A aplicação passou a contar com definições de ambiente baseadas em Docker e Docker Compose, com ficheiros distintos para desenvolvimento local, \textit{staging} e produção, permitindo subir serviços de forma reprodutível e reduzir divergências entre máquinas de desenvolvimento e servidores \cite{docker,dockercompose}.
+
+A implantação automatizada no servidor da \acrshort{utfpr} foi conduzida com o Coolify, após comparação com alternativas como o CapRover, conforme justificativa técnica já apresentada em materiais e métodos \cite{coolify,caprover,nixpacks}. Os ambientes públicos de teste e de produção foram associados, respectivamente, ao domínio de homologação em \texttt{staging.e-museu.gp.utfpr.edu.br} e ao domínio de produção em \texttt{e-museu.gp.utfpr.edu.br}, de modo a separar validação de entregas finais à comunidade.
+
+
+\section{Atualização da base tecnológica e da aplicação}
+
+O \textit{stack} principal foi atualizado para versões contemporâneas do ecossistema PHP/Laravel, com PHP na série 8.5 e framework Laravel compatível com essa base, mantendo o MySQL como sistema gerenciador de dados relacionais \cite{php,laravel,mysql}. Essa modernização favorece suporte a linguagem e bibliotecas recentes, políticas de segurança atualizadas do \textit{framework} e coerência com as dependências declaradas no projeto.
+
+A refatoração estrutural contemplou reorganização da camada HTTP e dos serviços de domínio do catálogo, com ênfase em responsabilidades mais claras entre requisições, regras de aplicação e acesso a dados, alinhando-se às práticas discutidas no referencial teórico sobre \acrshort{mvc}, código legível e organização modular \cite{mvc,cleancode:2009}.
+
+
+\section{Qualidade, testes automatizados e verificações estáticas}
+
+Foi incorporada suíte de testes automatizados com PHPUnit, incluindo testes de unidade e testes de funcionalidade (\textit{feature tests}) sobre rotas, serviços, validadores e \textit{middlewares}. Esses testes cobrem fluxos críticos do catálogo público, da área administrativa e de políticas de segurança, contribuindo para a confiabilidade durante refatorações, em linha com a literatura sobre importância de testes em evolução de software \cite{importance:testing,refatoracao:2004}.
+
+Em paralelo, o projeto adotou ferramentas de análise estática e de estilo (por exemplo PHPStan via Larastan, Pint e outras dependências de desenvolvimento presentes no repositório), apoiando deteção precoce de inconsistências tipadas e padronização de formatação. Essa combinação de testes executáveis e verificações estáticas materializa, no repositório, a preocupação declarada com manutenibilidade e prevenção de regressões.
+
+
+\section{Segurança, internacionalização e experiência no catálogo}
+
+Para reduzir abuso automatizado em fluxos sensíveis, foi implementado subsistema de verificação antibot baseado em \textit{token} de desafio, com suporte a Cloudflare Turnstile como provedor configurável em produção, protegindo, entre outros, pedidos de verificação por correio eletrónico e autenticação na área administrativa.
+
+Quanto à internacionalização, o catálogo e formulários passaram a considerar línguas e resolução de traduções de forma explícita (códigos de \textit{locale}, tabelas de línguas e \textit{fallback}), permitindo exibir e editar conteúdos do acervo em mais do que um idioma quando há traduções cadastradas.
+
+No que diz respeito a mídias do item, além da imagem de capa, o sistema passou a suportar galeria com múltiplas imagens associadas ao mesmo registro, com validação de tipo e tamanho e possibilidade de remoção ou promoção de imagem a capa na manutenção pelo administrador.
+
+Por fim, foi integrada geração de código QR associada à identificação do item, com serviços e testes dedicados, apoiando uso em etiquetas ou cartazes de apoio à catalogação física do acervo, em consonância com o objetivo de aproximar o registro digital da rotina do museu.
+
+
+\section{Síntese}
+
+Em síntese, os resultados materializam-se numa versão do E-Museu mais aderente a práticas contemporâneas de engenharia de software: \textit{stack} atualizado, ambientes definidos por conteinerização, \textit{deploy} automatizado com Coolify, testes e análises que sustentam refatorações contínuas, além de melhorias funcionais no catálogo (galeria, multilingue, antibot e QR). Esses entregáveis respondem, em conjunto, ao objetivo geral de refatorar e expandir o sistema com foco em manutenibilidade, segurança e continuidade do projeto.

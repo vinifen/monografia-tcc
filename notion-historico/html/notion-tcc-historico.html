@@ -1,0 +1,754 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>TCC</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2daa6676-0cd1-80ef-b954-ccfa9ae9d1d7" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📑</span></div><h1 class="page-title" dir="auto">TCC</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Diário</summary><div class="indented"><div style="display:contents" dir="auto"><h3 id="2dca6676-0cd1-8100-8b1b-ed745d86807a" class="">TOTAL: 240h</h3></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Mês 05/26</summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">12/05/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="35fa6676-0cd1-8086-8f55-fffa5b53a671" class="bulleted-list"><li style="list-style-type:disc">Total: 5h</li></ul></div><div style="display:contents" dir="auto"><ul id="35fa6676-0cd1-80be-8378-dee1dd07d135" class="bulleted-list"><li style="list-style-type:disc">Atividades: Terminei o Emuseu, arrumei na casa os ultimos passos, revisei tudo e fui para utfpr implementar e colocar no <a href="https://coolify.e-museu.gp.utfpr.edu.br/">https://coolify.e-museu.gp.utfpr.edu.br/</a> usando deploy automatico pelo github webhook por sugestao do professor Diego</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">10/05/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="35ca6676-0cd1-80c3-a099-f92145e31a41" class="bulleted-list"><li style="list-style-type:disc">Total: 1h</li></ul></div><div style="display:contents" dir="auto"><ul id="35ca6676-0cd1-802a-a3c8-e3f1df3143e8" class="bulleted-list"><li style="list-style-type:disc">Atividades:</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">09/05/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="35ba6676-0cd1-80c4-95ff-eaa46ce27a8f" class="bulleted-list"><li style="list-style-type:disc">Total: 2h</li></ul></div><div style="display:contents" dir="auto"><ul id="35ba6676-0cd1-80b5-bc24-e860313b683e" class="bulleted-list"><li style="list-style-type:disc">Atividades: Removi tudo que eu tinha feito de novo melhorei o qrcode do emauseu e coloquei creditos no about e falei pro deigo configurar o subdomain para ter coolify, ativei tambem a autenticacao de 2 etapas no coolify para melhorar a segunranca ja que vai ficar exposto. antes eu achava que realmente nao era para expor o coolify por um questao de seguranca mas pelo jeito era pra expor por praticidade, tirando assim a necessidade de metodos mais complexos</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">08/05/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="35ba6676-0cd1-80cb-b5a8-de6e09eb2afb" class="bulleted-list"><li style="list-style-type:disc">Total: 1h</li></ul></div><div style="display:contents" dir="auto"><ul id="35ba6676-0cd1-80a5-99d7-ffe75a4aacbb" class="bulleted-list"><li style="list-style-type:disc">Atividades: Professor coorientador Diego Marczal veio falar comigo que era melhor expor o coolify em um subdominio</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">07/05/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="35ba6676-0cd1-80fd-8bcb-e22f468a2686" class="bulleted-list"><li style="list-style-type:disc">Total: 1h</li></ul></div><div style="display:contents" dir="auto"><ul id="35ba6676-0cd1-80d7-a9f6-e2ee6afb2f8b" class="bulleted-list"><li style="list-style-type:disc">Atividades: Fiz melhorias no sistema de auto deploy buscando o problema no github actions e pareceu ser o token de autoticacao que criei sendo em um formato ruim, vale contar que no curl ele funcionava mas no github action nao. com isso pedi para a sediane ir na utfpr trocar o token. ela nao fez</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">06/05/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="359a6676-0cd1-807a-94fd-df719834ff85" class="bulleted-list"><li style="list-style-type:disc">Total: 9h </li></ul></div><div style="display:contents" dir="auto"><ul id="359a6676-0cd1-80f3-b0da-ed4348350e5d" class="bulleted-list"><li style="list-style-type:disc">Atividades: Fiquei o dia inteiro implementando um sistema de auto deploy baseado em cron no coolify com script no projeto que verifica mudancas no repositorio e envia o gatilho para o coolify atualizar e fui para utfpr implementar porém conversando com os professores roni depois hermano emerson e marcelo vichar foi orientado eu mudar de abordagem com eu tendo a ideia de criar um endpoint no projeto para receber triggers do github a cada mudancas, utilizando github action, entao apesar de estr tudo funcionando já na utfpr, resolvi implementar isso pois seria menos custoso em relacao de processamento, mais alinhado, dai fiquei até das 18:00 até 23:00 na utfpr criando esse novo deploy com eu nao conseguindo completar totalmente porem já conseguindo fazer o deplyo por meio do novo endpoint, ainda ficou dando problema no github action com eu buscando melhorar isso outro dia. </li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">05/05/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="354a6676-0cd1-81db-a4d1-c936d68a32e3" class="bulleted-list"><li style="list-style-type:disc">Total: 5h</li></ul></div><div style="display:contents" dir="auto"><ul id="354a6676-0cd1-81dc-9397-f8241bafb0b7" class="bulleted-list"><li style="list-style-type:disc">Atividades: Fui na UTFPR, fiquei la 5 horas, implementei o production e staging, deu tudo certo menos o deploy automatico, por algum motivo o coolify nao esta vendo a mudanca no git e atualizando automaticamente, amanha vou ir na utf de novo e espero pela ultima vez</li></ul></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Mês 04/26</summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">29/04/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="352a6676-0cd1-803b-b37c-ef8e96020a1f" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div><div style="display:contents" dir="auto"><ul id="352a6676-0cd1-80b5-8745-caee9d4aa7c6" class="bulleted-list"><li style="list-style-type:disc">mexi no emuseu na presencialmente utfpr</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">25/04/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="34da6676-0cd1-807b-a27e-ec8b2ae03811" class="bulleted-list"><li style="list-style-type:disc">Total:  6h</li></ul></div><div style="display:contents" dir="auto"><ul id="34da6676-0cd1-8023-98ce-dbce190f1d26" class="bulleted-list"><li style="list-style-type:disc">Terminei primeira parte do emuseu</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">24/04/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="34ca6676-0cd1-8037-8b33-e63dc7fe5f06" class="bulleted-list"><li style="list-style-type:disc">Total:  8hr</li></ul></div><div style="display:contents" dir="auto"><ul id="34ca6676-0cd1-805c-9257-c12665631901" class="bulleted-list"><li style="list-style-type:disc">informei que comprei um pendrive para guardar coisas do emuseu, guardei senhas do emuseu, criei github. groq e openroute para o emuseu, refatorei o sistema de traducao com ia</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">22/04/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="34aa6676-0cd1-80e5-9a02-f27e809e0617" class="bulleted-list"><li style="list-style-type:disc">Total:  </li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">21/04/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="34aa6676-0cd1-80e9-b568-e1ebdb25c434" class="bulleted-list"><li style="list-style-type:disc">Total:  10h</li></ul></div><div style="display:contents" dir="auto"><ul id="34aa6676-0cd1-80e8-b7dd-f67c5f36ca4b" class="bulleted-list"><li style="list-style-type:disc">terminei refatoracao e coloquei traducao com ia no admin usando varios servicos para aumentar o numero de usos</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">19/04/25</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="348a6676-0cd1-80dd-b23e-ffab28f418c3" class="bulleted-list"><li style="list-style-type:disc">Total:  8h</li></ul></div><div style="display:contents" dir="auto"><ul id="348a6676-0cd1-808f-9105-c778548559c2" class="bulleted-list"><li style="list-style-type:disc">Todos os testes e refatoracao</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">12/04/25</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="341a6676-0cd1-80a0-9b62-e6be60112748" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="341a6676-0cd1-805c-b2b9-e90501eead41" class="bulleted-list"><li style="list-style-type:disc">fiz antibot com cloudflare</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">08/04/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="33ca6676-0cd1-80fe-9a31-fda0ce37609a" class="bulleted-list"><li style="list-style-type:disc">Total:  10h</li></ul></div><div style="display:contents" dir="auto"><ul id="33ca6676-0cd1-800e-924e-c86b42cab4a6" class="bulleted-list"><li style="list-style-type:disc">Ir pra utf arrumar infra e envs</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">07/04/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="33ba6676-0cd1-8068-a5b7-eebdddc6ac33" class="bulleted-list"><li style="list-style-type:disc">Total:  10h</li></ul></div><div style="display:contents" dir="auto"><ul id="33ba6676-0cd1-804a-b74c-eac0486e5856" class="bulleted-list"><li style="list-style-type:disc">Fui na utfpr terminei primeira parte do emuseu</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">06/04/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="33ba6676-0cd1-80f2-83aa-d699ae2b78aa" class="bulleted-list"><li style="list-style-type:disc">Total:  4h</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">05/04/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-8076-ba37-d3f214191d0a" class="bulleted-list"><li style="list-style-type:disc">Total:  10h</li></ul></div><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-80ca-89bc-d9814a762754" class="bulleted-list"><li style="list-style-type:disc">Fluxo público: código de 6 dígitos por e-mail + confirmação na sessão antes de contribuir com itens/extras.</li></ul></div><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-8036-a93b-f9e85de0d4d7" class="bulleted-list"><li style="list-style-type:disc">E-mails transacionais: confirmação de receção de contribuição (item/extra) quando o mailer está configurado.</li></ul></div><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-8001-9415-e6c8a60e77d5" class="bulleted-list"><li style="list-style-type:disc">Segurança UX: rate limits nos endpoints; mensagens genéricas em produção se o mail falhar ou não estiver configurado.</li></ul></div><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-8051-890a-c77352e468bb" class="bulleted-list"><li style="list-style-type:disc">Dados: last_email_verification_at no colaborador; admin pode marcar confirmação manualmente.</li></ul></div><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-8065-a5ea-fd9756ccf6a3" class="bulleted-list"><li style="list-style-type:disc">Infra: Redis para sessão e cache (throttles + estado de verificação); Docker local com serviço Redis; Coolify com Redis externo.</li></ul></div><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-80fc-96d8-e24445079b5c" class="bulleted-list"><li style="list-style-type:disc">Testes: feature + unitários para verificação, erros de mail e regras de contribuição; PHPUnit com array para mail/sessão.</li></ul></div><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-8020-a172-df45e928f88c" class="bulleted-list"><li style="list-style-type:disc">Repositório: .env ignorado; cuidado com APP_KEY no .env.example e não commitar emuseu_dump.sql (tem hashes de utilizadores).</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">04/04/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-80ab-892f-e17629b491c2" class="bulleted-list"><li style="list-style-type:disc">Total:  10h</li></ul></div><div style="display:contents" dir="ltr"><figure id="339a6676-0cd1-80c0-8a38-ead4c38dcadb" class="image"><a href="TCC/image.png"><img style="width:672px" src="TCC/image.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="339a6676-0cd1-807f-8ee8-ceeac064d8a6" class="">Fiz envio de email com resend  e fiz funcionar autenticacao pelo email ao enviar um item ou extra</p></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">03/04/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="338a6676-0cd1-8134-813f-d4a73ecb91c4" class="bulleted-list"><li style="list-style-type:disc">Total:  7h</li></ul></div><div style="display:contents" dir="auto"><ul id="338a6676-0cd1-80f3-bf4a-f865cb6774b0" class="bulleted-list"><li style="list-style-type:disc">Terminei parte de suporte a varias linguas, fiz todo o layuout, melhorei otimizacao das querys sql, fiz mais algumas refatoracoes pelo o codigo, principalmente depois da implementacao de varias linguas foi necessario refatorar coisas </li></ul></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Mês 03/26</summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">29/03/26 - Domingo</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-80a5-809e-e73296b88acf" class="bulleted-list"><li style="list-style-type:disc">Total:  9h</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-804d-adac-e0915350ceda" class="bulleted-list"><li style="list-style-type:disc">Já terminei pr do js e fazer, fiz coisa pra cassete, um monte de tabela nova para aceitar multiplos idiomas, fiz pr</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">28/03/26 - Sabado</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-804e-8a76-d698f248992d" class="bulleted-list"><li style="list-style-type:disc">Total:  4h</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-80b6-a044-fa82e8783cd7" class="bulleted-list"><li style="list-style-type:disc">Arrumar js do emuseu</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">26/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="32fa6676-0cd1-80b8-ae70-c6f71dca4485" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div><div style="display:contents" dir="auto"><ul id="32fa6676-0cd1-8090-a9f8-d7ebd175346f" class="bulleted-list"><li style="list-style-type:disc">Terminei componentizacao de views, enviei pr, meet com Sediane as 21hrs</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">25/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="32ea6676-0cd1-80d5-98c1-ec69331474a7" class="bulleted-list"><li style="list-style-type:disc">Total:  1h</li></ul></div><div style="display:contents" dir="auto"><ul id="32ea6676-0cd1-80cc-8dc9-d0d27f558c10" class="bulleted-list"><li style="list-style-type:disc">mais componentizacao em views</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">24/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="32ea6676-0cd1-80a4-b073-e18298a80521" class="bulleted-list"><li style="list-style-type:disc">Total:  1h</li></ul></div><div style="display:contents" dir="auto"><ul id="32ea6676-0cd1-80ec-a4f5-e042a6d968ec" class="bulleted-list"><li style="list-style-type:disc">inputs e melhorar componentizacao</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">23/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="32ca6676-0cd1-8002-bbe6-c1264494b715" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div><div style="display:contents" dir="auto"><ul id="32ca6676-0cd1-804e-856b-e9f3aea8f602" class="bulleted-list"><li style="list-style-type:disc">Comecei a componentizar elementos mais individuais das views</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">22/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="32ca6676-0cd1-808b-b00c-ed2bd6bd086c" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="32ca6676-0cd1-80a8-b9f7-e5148116bc41" class="bulleted-list"><li style="list-style-type:disc">Reestruturacao enorme das vies e tambem mexi nos controlers e componentizei coisas gerais das views</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">21/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="32ba6676-0cd1-8063-b17d-e8223b5a3c78" class="bulleted-list"><li style="list-style-type:disc">Total:  1h</li></ul></div><div style="display:contents" dir="auto"><ul id="32ba6676-0cd1-804b-b90b-e58670b0ba06" class="bulleted-list"><li style="list-style-type:disc">Reestruturar views, fazer issue 40 e PR 41</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">20/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="329a6676-0cd1-8095-b56c-ee48475c2222" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div><div style="display:contents" dir="auto"><ul id="329a6676-0cd1-805f-95ec-eaae69a72b03" class="bulleted-list"><li style="list-style-type:disc">Mais alguma correcoes e envio de hotfix</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">19/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="328a6676-0cd1-80b5-8baa-fa07513294d3" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="329a6676-0cd1-80c4-950b-dd99ac1f7b7f" class="bulleted-list"><li style="list-style-type:disc">Com o dump do banco e storage de imagens do emuseu, eu pedi pra ia organizar as coisas relacionadas com migrate atual, organizando o tambem e a organizacao do arquivo de storage</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">16/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="325a6676-0cd1-8019-b447-ce71853e164b" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="325a6676-0cd1-80bc-8077-f9a208e571b2" class="bulleted-list"><li style="list-style-type:disc">terminei refatoracao de controllers fiz merges prs e falei com o prof diego</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">15/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="325a6676-0cd1-8036-99f0-e1acf19c41fd" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div><div style="display:contents" dir="auto"><ul id="325a6676-0cd1-803c-b19f-d2c096c87b30" class="bulleted-list"><li style="list-style-type:disc">Fiz mais refatoracao em controllers seguindo o padrao</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">14/03/26 - Sabado</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="323a6676-0cd1-80e1-9cab-fe89a922c92b" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="323a6676-0cd1-80f2-bb91-fb752dfdd3af" class="bulleted-list"><li style="list-style-type:disc">Fiz mais refatoracao, parte 2 de controllers, mexi baswtante no query de items e admin, centralizei tudo em support. Removi o query controller porque nao era semantico</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">13/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="322a6676-0cd1-8070-9135-dc6dcf189e80" class="bulleted-list"><li style="list-style-type:disc">Total:  4h</li></ul></div><div style="display:contents" dir="auto"><ul id="322a6676-0cd1-808b-8da4-c910f3117dec" class="bulleted-list"><li style="list-style-type:disc">Terminei a primeira parte da refatoracao dos controlers onde refatorei boa parte da parte de item e admin de item tambem mexi no blade e js</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">12/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="322a6676-0cd1-8066-b21c-c0d79d83955f" class="bulleted-list"><li style="list-style-type:disc">Total:  4h</li></ul></div><div style="display:contents" dir="auto"><ul id="322a6676-0cd1-80bd-98b3-fc96d16fea3d" class="bulleted-list"><li style="list-style-type:disc">refactor em item controller, js, nomenclatura de section para item categories</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">08/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="31ea6676-0cd1-8028-af01-ffc89b5b0036" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="31ea6676-0cd1-8044-a2c8-c66523eb4afe" class="bulleted-list"><li style="list-style-type:disc">Refatorei controller de Admin items</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">07/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="31ca6676-0cd1-8068-8ff4-f48cbe75af18" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div><div style="display:contents" dir="auto"><ul id="31ca6676-0cd1-80fc-a8f7-fabaf561c01f" class="bulleted-list"><li style="list-style-type:disc">Comecei refatoracao de controllers, o core do projeto</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">05/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="31aa6676-0cd1-8030-9045-d828ffd6647f" class="bulleted-list"><li style="list-style-type:disc">Início: 08:40</li></ul></div><div style="display:contents" dir="auto"><ul id="31aa6676-0cd1-8020-b5e6-ce08e2bccdd3" class="bulleted-list"><li style="list-style-type:disc">Pausa: 9:29 - 10:00</li></ul></div><div style="display:contents" dir="auto"><ul id="31aa6676-0cd1-8039-8128-e2f01de20516" class="bulleted-list"><li style="list-style-type:disc">Pausa 2: 2 horas de pausa </li></ul></div><div style="display:contents" dir="auto"><ul id="31aa6676-0cd1-805e-8e12-d19310b38cac" class="bulleted-list"><li style="list-style-type:disc">Fim: 14:50</li></ul></div><div style="display:contents" dir="auto"><ul id="31aa6676-0cd1-803e-b1a6-d37f8c833f2b" class="bulleted-list"><li style="list-style-type:disc">Total:  3h39</li></ul></div><div style="display:contents" dir="auto"><ul id="31aa6676-0cd1-80d5-8504-e677d99622a9" class="bulleted-list"><li style="list-style-type:disc">Comecar refatoracao dos controllers e cleaning de coisa noa usadas como parte de atuh</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">01/03/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="316a6676-0cd1-807e-a2bc-c51367eb1a02" class="bulleted-list"><li style="list-style-type:disc">Total:  8h</li></ul></div><div style="display:contents" dir="auto"><ul id="316a6676-0cd1-807f-9ad9-eed4a3ad6e0f" class="bulleted-list"><li style="list-style-type:disc">Nome de tabelas arrumados, sections → item_categories, categories → tag_categories, users → admin, proprietaries →collaborators, tag_items → item_tag, arrumei session para aceitar admin_id, arrumei collaborators para usar enum external e internal, removi is_admin de admins. Coloquei session do admin pra salvar no banco</li></ul></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Mês 02/26</summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">24/02/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="311a6676-0cd1-8059-9ebf-ccc915e03171" class="bulleted-list"><li style="list-style-type:disc">Total:  5h</li></ul></div><div style="display:contents" dir="auto"><ul id="311a6676-0cd1-80dd-a2ae-f95754438a59" class="bulleted-list"><li style="list-style-type:disc">Fiz toda a parte de traducao alem de adicionar o domain admin e refactorar parte de resources. conversei com a professora</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">23/02/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="311a6676-0cd1-8069-8037-e199c21d42c0" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div><div style="display:contents" dir="auto"><ul id="311a6676-0cd1-80a2-aea5-ca529628e285" class="bulleted-list"><li style="list-style-type:disc">Comecei mexer na parte de i18n</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">20/02/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="30da6676-0cd1-809c-b6c2-f28a47948002" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="30da6676-0cd1-80eb-8fd8-f04da0cfd7bb" class="bulleted-list"><li style="list-style-type:disc">Terminei a pr base refactor</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">18/02/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="30ca6676-0cd1-8042-aeb4-ce5e648eb64c" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="30ca6676-0cd1-809c-9936-eabd51436113" class="bulleted-list"><li style="list-style-type:disc">Arrumei pint, estudei projeto e como refatorar, removi coisas nao usadas</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">17/02/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="30aa6676-0cd1-809d-bfc7-d129619784d8" class="bulleted-list"><li style="list-style-type:disc">Total:  4h</li></ul></div><div style="display:contents" dir="auto"><ul id="30aa6676-0cd1-8076-a864-df33ab9fb9a5" class="bulleted-list"><li style="list-style-type:disc">Consegui fazer funcionar  s3 no coolify e linkar com laravel</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">16/02/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="30aa6676-0cd1-80e1-bd3a-f79479b5dffc" class="bulleted-list"><li style="list-style-type:disc">Total:  8h</li></ul></div><div style="display:contents" dir="auto"><ul id="30aa6676-0cd1-80d4-912e-fcd97ad27495" class="bulleted-list"><li style="list-style-type:disc">Arrumei o storage do emuseu</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">15/02/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="308a6676-0cd1-8066-9761-d33c8f20cd2e" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="309a6676-0cd1-80dc-a1cb-eff4fe726fff" class="bulleted-list"><li style="list-style-type:disc">Atualizei o projeto para usar padrão de dominios</li></ul></div><div style="display:contents" dir="auto"><ul id="309a6676-0cd1-8010-be3d-da1531e16396" class="bulleted-list"><li style="list-style-type:disc">Estudei como fazer persistencia de files. basicamente mudar o storage do laravel para um servico coolify. Achei esse servico que parece ser bom: MinIO</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">11/02/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="304a6676-0cd1-804b-ac2a-e3b9e5722759" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="304a6676-0cd1-80e1-9e72-dbfecfdab32f" class="bulleted-list"><li style="list-style-type:disc">Fiz funcionar o banco pelo coolify, era problema ao ativar configuracao <code>Connect To Predefined Network</code> em advanced. tentei configurar healthcheck para  parar de aparecer aviso de check no coolify, porem quando adicionei, comecou dar erro 404, to estuando ainda, por enquanto vou deixar sem</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">10/02/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="304a6676-0cd1-809c-b2f3-d0b23f60f24e" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="304a6676-0cd1-809e-af2e-cf3269fe97fb" class="bulleted-list"><li style="list-style-type:disc">Criei banco com coolify e mudei no projeto para acessar pela url</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">07/02/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="300a6676-0cd1-8053-9e23-f1811b5d0641" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div><div style="display:contents" dir="auto"><ul id="300a6676-0cd1-804f-9108-d56d658a6e74" class="bulleted-list"><li style="list-style-type:disc">configurei coolify com organizacao, removi networks e adicionei configuracao para buscar evitar problema depois do deploy que estava acontecendo</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">04/02/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2fea6676-0cd1-804c-b387-d6fdb5e751e8" class="bulleted-list"><li style="list-style-type:disc">Total:  1h</li></ul></div><div style="display:contents" dir="auto"><ul id="2fea6676-0cd1-8079-a2d1-c410e9534c69" class="bulleted-list"><li style="list-style-type:disc">conversei com prof Sediane, mostrei tudo que fiz e criamos github organization</li></ul></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Mês 01/26</summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">27/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2f6a6676-0cd1-80bf-885c-e9640c8956a4" class="bulleted-list"><li style="list-style-type:disc">Total:  3h</li></ul></div><div style="display:contents" dir="auto"><ul id="2f6a6676-0cd1-8046-900d-f633ad1b703a" class="bulleted-list"><li style="list-style-type:disc">ci github</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">26/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2f4a6676-0cd1-80e9-884b-d3a27f1a5632" class="bulleted-list"><li style="list-style-type:disc">Ferramentas de qualidade de código</li></ul></div><div style="display:contents" dir="auto"><ul id="2f4a6676-0cd1-80dd-ac6e-cbb868e411d7" class="bulleted-list"><li style="list-style-type:disc">Total:  4h</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">25/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2f4a6676-0cd1-804d-9540-d7ad5cba461c" class="bulleted-list"><li style="list-style-type:disc">Total:  4h</li></ul></div><div style="display:contents" dir="auto"><ul id="2f4a6676-0cd1-807f-a163-ef0d32a45a65" class="bulleted-list"><li style="list-style-type:disc">Ferramentas de qualidade de código</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">24/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2f4a6676-0cd1-8010-90ac-e540f1c26362" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">23/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2f1a6676-0cd1-80f6-a684-f3f586335521" class="bulleted-list"><li style="list-style-type:disc">Total: 3h</li></ul></div><div style="display:contents" dir="auto"><ul id="2f1a6676-0cd1-808e-bfee-dd7360c88dc4" class="bulleted-list"><li style="list-style-type:disc">Atualizar laravel e php para novas versoes (php 8.5, laravel 12)</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">20/01/25</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2eea6676-0cd1-8069-aa85-ce9a7df51b34" class="bulleted-list"><li style="list-style-type:disc">Total:  5h</li></ul></div><div style="display:contents" dir="auto"><ul id="2eea6676-0cd1-80a4-8b16-f4737f253ff7" class="bulleted-list"><li style="list-style-type:disc">Mudar para poder incluir dados do banco como volumes do docker compose</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">19/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2eea6676-0cd1-8084-ae2d-ec6409a80af7" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">15/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2eaa6676-0cd1-8020-937c-f167fb3a6a33" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div><div style="display:contents" dir="auto"><ul id="2eaa6676-0cd1-80d0-9209-ee79edc21559" class="bulleted-list"><li style="list-style-type:disc">Arrumei problema de nginx adicionado mais 2 arquivos para configuracao de staging e production por causa dos nomes de service do docker-compose diferentes, rodei tudo funcionou, porém agora crashou, testar no proximo dia.</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">14/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2e9a6676-0cd1-80e5-942e-d5a59b60cbd4" class="bulleted-list"><li style="list-style-type:disc">Total:  4h</li></ul></div><div style="display:contents" dir="auto"><ul id="2e9a6676-0cd1-80d0-ab45-ecc899872d14" class="bulleted-list"><li style="list-style-type:disc">fiz ambiente de staging, documentacao no github, refiz o coofily e tentei fazer funcionar, sem sucesso </li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">11/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2e6a6676-0cd1-8051-8d24-c7e98bdf133b" class="bulleted-list"><li style="list-style-type:disc">Total:  1h</li></ul></div><div style="display:contents" dir="auto"><ul id="2e6a6676-0cd1-80fa-a7ec-e7940036d321" class="bulleted-list"><li style="list-style-type:disc">tentei rodar de novo e deu erro</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">08/01/25</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2e2a6676-0cd1-80ff-afaa-f98eb393dfc8" class="bulleted-list"><li style="list-style-type:disc">Total:  2h</li></ul></div><div style="display:contents" dir="auto"><ul id="2e3a6676-0cd1-8070-bac8-dfe1c2dfa85b" class="bulleted-list"><li style="list-style-type:disc">Fiz parte da documentacao coolify, fiz merge para a main e comecei a fazer a parte da main no coolify, pena que crashou quando fui subir, talvez problema de ter duas ao mesmo tempo? pf nÃO</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">07/01/25</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2e1a6676-0cd1-80d3-abac-d0d79e4407fd" class="bulleted-list"><li style="list-style-type:disc">Total:  3 horas</li></ul></div><div style="display:contents" dir="auto"><ul id="2e1a6676-0cd1-80fd-b7e5-f452e25f8892" class="bulleted-list"><li style="list-style-type:disc">Fiz funcionar deploy automatico  e subi coolify na minha VPS da digital ocean</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">06/01/25</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2e1a6676-0cd1-80ed-90d2-e468acb89ce1" class="bulleted-list"><li style="list-style-type:disc">Total:  30min</li></ul></div><div style="display:contents" dir="auto"><ul id="2e1a6676-0cd1-809d-b309-f17289d9a818" class="bulleted-list"><li style="list-style-type:disc">Testei deploy automatico com commit que não funcionou, amanhã vou tentar adicionar um webhook no github para o colify</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">05/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2dfa6676-0cd1-803c-90f2-c7b30e2153fc" class="bulleted-list"><li style="list-style-type:disc">Início: 18:30</li></ul></div><div style="display:contents" dir="auto"><ul id="2dfa6676-0cd1-809d-ab58-f7a6235bb92d" class="bulleted-list"><li style="list-style-type:disc">Fim: 21:00</li></ul></div><div style="display:contents" dir="auto"><ul id="2dfa6676-0cd1-80bd-a15d-cd653e85263b" class="bulleted-list"><li style="list-style-type:disc">Total:  2h30</li></ul></div><div style="display:contents" dir="auto"><ul id="2dfa6676-0cd1-8052-a9ad-c22a20cd75b6" class="bulleted-list"><li style="list-style-type:disc">Hoje consegui fazer o E-Museu rodar no navegador.</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">04/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2dfa6676-0cd1-8095-95b3-cd03bb71b379" class="bulleted-list"><li style="list-style-type:disc">Total:  5 horas</li></ul></div><div style="display:contents" dir="auto"><ul id="2dfa6676-0cd1-80bb-802c-e0e1c4b1b64c" class="bulleted-list"><li style="list-style-type:disc">Fiz primeira configuracão do colify e código do e-museu.</li></ul></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">01/01/26</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2dca6676-0cd1-8182-8ee9-fab9c497383b" class="bulleted-list"><li style="list-style-type:disc">Total:  30min</li></ul></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Mês 12/25</summary><div class="indented"><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">31/12/25</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="2dca6676-0cd1-81e3-bd69-e1ee744bfccf" class="bulleted-list"><li style="list-style-type:disc">Total:  2h00</li></ul></div></div></details></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Configurão inicial</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="304a6676-0cd1-80c1-9e93-e35ee55ab02e" class="bulleted-list"><li style="list-style-type:disc">25 h</li></ul></div><div style="display:contents" dir="auto"><ul id="35ca6676-0cd1-8064-8e0c-e408e4e6246f" class="bulleted-list"><li style="list-style-type:disc">Tempo para fazer a configuração inicial e atualizacões de tecnologias. foi feito toda a parte de docker e separacão de ambientes</li></ul></div></div></details></div><div style="display:contents" dir="auto"><p id="304a6676-0cd1-8035-9ed7-cf73401ddf26" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2e1a6676-0cd1-8076-947e-de001b7a2e3c" class="">
+</p></div></div></details></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">Algumas das coisas feitas</summary><div class="indented"><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-803d-9733-e1f19a456bf1" class="bulleted-list"><li style="list-style-type:disc">nao ta mostrando senha no input de senha quando clica no </li></ul></div><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-80be-ad4b-e2daec5549b1" class="bulleted-list"><li style="list-style-type:disc">rate limit em enviar email, rate limit bem baixo</li></ul></div><div style="display:contents" dir="auto"><ul id="30ba6676-0cd1-809e-aabe-c86396d91c7e" class="bulleted-list"><li style="list-style-type:disc">A feature de <code>users</code> não é coerente com o nome pois todos os users são sempre admins (mudar nome para admin remover coluna is_admin)</li></ul></div><div style="display:contents" dir="auto"><ul id="30ba6676-0cd1-808f-ae23-def8bedeb815" class="bulleted-list"><li style="list-style-type:disc">Conversar sobre colaboradores (tira is_admin, pesquisar sobre validacao do email)</li></ul></div><div style="display:contents" dir="auto"><ul id="30fa6676-0cd1-8006-84d4-cc02f9120d54" class="bulleted-list"><li style="list-style-type:disc">Parece que nao é usado o recuperar a senha, e onde isso seria usado sendo que o unico tipo de usuario é o admin? (nao sera utilizado)</li></ul></div><div style="display:contents" dir="auto"><ul id="30ba6676-0cd1-80bb-9a14-e84492b8659d" class="bulleted-list"><li style="list-style-type:disc">Sections aparecem como Categorias no frontend, incoerência de nomes. (sections → categories)</li></ul></div><div style="display:contents" dir="auto"><ul id="30fa6676-0cd1-8068-b16c-f0d69b6e5489" class="bulleted-list"><li style="list-style-type:disc">COnversar sobre como funciona colaboradores, sobre eles serem por emails com qualquer outra pessoa podendo se passar pois nao tem nenhuma verificacao, talvez adicionar um login por exmail ou  as vezes nem é necessario essa verificaao de email, só salvar na coluna ebeleza</li></ul></div><div style="display:contents" dir="auto"><ul id="30da6676-0cd1-80e3-bdf5-c7ea31c24c7b" class="bulleted-list"><li style="list-style-type:disc">Arrumar bloqueio de dois admin editando o mesmo item</li></ul></div><div style="display:contents" dir="auto"><p id="32ba6676-0cd1-803d-a10b-d8373265efc1" class="">
+</p></div><div style="display:contents" dir="auto"><p id="312a6676-0cd1-80ea-826d-cf5acef0af60" class="">
+</p></div><div style="display:contents" dir="auto"><details open=""><summary style="font-weight:600;font-size:1.5em;line-height:1.3;margin:0">O que foi feito</summary><div class="indented"><div style="display:contents" dir="auto"><p id="312a6676-0cd1-803e-b6ac-e7ef8d998738" class="">comentario de block admin traduzido (Não é possível fazer alterações enquanto outro administrador estiver editando o mesmo.)</p></div><div style="display:contents" dir="auto"><ul id="30ba6676-0cd1-803b-8c27-f2de585f8ba9" class="bulleted-list"><li style="list-style-type:disc">Category no banco e backend está relacionada com Categoria de etiquetas. É necessário analisar a necessidade dessa tabela <code>categories</code> pois poderia ser somente uma nova coluna do tipo enum em <code>tags</code> (categories→ tag_categories)</li></ul></div><div style="display:contents" dir="auto"><ul id="30ba6676-0cd1-801c-b2c8-e4d6c3317a6b" class="bulleted-list"><li style="list-style-type:disc">Conversar sobre como <code>item_component</code> funciona (nao mudar)</li></ul></div><div style="display:contents" dir="ltr"><figure id="312a6676-0cd1-8098-8290-f456adde2aac" class="image"><a href="TCC/image%201.png"><img style="width:2076.9375px" src="TCC/image%201.png"/></a></figure></div><div style="display:contents" dir="auto"><ul id="30ba6676-0cd1-805b-b6c1-ef8d1fba261a" class="bulleted-list"><li style="list-style-type:disc">Refatorar o web routes, foi melhorado names, routas, e removido middlewares usados direto no controller e padronizado uso no routes</li></ul></div><div style="display:contents" dir="auto"><ul id="30ba6676-0cd1-8097-a93e-eef29a26b46e" class="bulleted-list"><li style="list-style-type:disc">mudado pro padrão de arquivos do Laravel 12, comor remover arquivos kernel porque Laravel 12 indexas automaticamente</li></ul></div><div style="display:contents" dir="auto"><ul id="30da6676-0cd1-8031-adc7-efbfd5167923" class="bulleted-list"><li style="list-style-type:disc">Removido mais middlewares</li></ul></div><div style="display:contents" dir="auto"><ul id="30da6676-0cd1-8092-9c32-ff6fe0405177" class="bulleted-list"><li style="list-style-type:disc">Removido providers</li></ul></div><div style="display:contents" dir="auto"><ul id="30da6676-0cd1-80cb-99f3-e845f5286da8" class="bulleted-list"><li style="list-style-type:disc">separacao de responsabilidades em concerns</li></ul></div><div style="display:contents" dir="auto"><ul id="31aa6676-0cd1-8031-af3f-fc00f0c6e0b6" class="bulleted-list"><li style="list-style-type:disc">Adicionar request id em cada rota/cotnrollers</li></ul></div><div style="display:contents" dir="auto"><p id="325a6676-0cd1-8075-b296-e215b742893b" class="">
+</p></div><div style="display:contents" dir="auto"><p id="325a6676-0cd1-80f8-b379-ea5384babf9d" class="">
+</p></div><div style="display:contents" dir="auto"><p id="325a6676-0cd1-80b6-a04d-cd70e42b2f37" class="">
+</p></div></div></details></div><div style="display:contents" dir="auto"><ul id="32fa6676-0cd1-80ed-bc9c-dc822f54be62" class="bulleted-list"><li style="list-style-type:disc">ta torto aqui embaixo no staging prod em public e admin:</li></ul></div><div style="display:contents" dir="auto"><ul id="32ea6676-0cd1-80bb-824d-c5e067a4ff7e" class="bulleted-list"><li style="list-style-type:disc">Tcc Nicolas</li></ul></div><div style="display:contents" dir="auto"><ul id="32ea6676-0cd1-806c-ae56-d5cd36f91bdb" class="bulleted-list"><li style="list-style-type:disc">arrumar js refatorar JS</li></ul></div><div style="display:contents" dir="auto"><ul id="325a6676-0cd1-8030-8f28-e16d1a744a72" class="bulleted-list"><li style="list-style-type:disc">conversar sediane necssidade de lock em admin</li></ul></div><div style="display:contents" dir="auto"><ul id="325a6676-0cd1-8058-a28b-e155eceac3be" class="bulleted-list"><li style="list-style-type:disc">Perguntar para sediane sobre como vai ser o codigo de identificacao</li></ul></div><div style="display:contents" dir="auto"><ul id="325a6676-0cd1-8058-a25a-daf95e6f0014" class="bulleted-list"><li style="list-style-type:disc">Develop nao funciona no firefox</li></ul></div><div style="display:contents" dir="auto"><ul id="325a6676-0cd1-80b7-a4a8-d9916b4bad3c" class="bulleted-list"><li style="list-style-type:disc">Icones de botoes nao apraecem em develop mas aparecem em prod</li></ul></div><div style="display:contents" dir="auto"><ul id="330a6676-0cd1-8020-a3d3-d8052ff3e824" class="bulleted-list"><li style="list-style-type:disc">parece que só funciona o coisa de editar com 2 admin no prod, testar isso</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-8041-ac26-db9c62424d5f" class="bulleted-list"><li style="list-style-type:disc">arrumar imagens</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-8059-b2b2-e30f41d64ca1" class="bulleted-list"><li style="list-style-type:disc">Tem tabelas que nao precisao de traducao tipo marcas, acho que só essa</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-8086-82a0-e1459eaf865e" class="bulleted-list"><li style="list-style-type:disc">item controller show parte ir para service</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-8042-92e4-c2dc686413d4" class="bulleted-list"><li style="list-style-type:disc">adicionar coisa que ve em que idioma o navegador esta e muda a linguagem</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-80f5-aef9-e5417a36b538" class="bulleted-list"><li style="list-style-type:disc">dar uma olhada nas querys, se nao esta ruim</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-807f-bfca-d6dc3cd0c447" class="bulleted-list"><li style="list-style-type:disc">varios erros em buscas nas tabelas, tipo por name, tem que testar mais, em admin que vi.</li></ul></div><div style="display:contents" dir="auto"><ul id="329a6676-0cd1-80a5-8e06-f6dba13b1ca0" class="bulleted-list"><li style="list-style-type:disc">Arrumar frontend que esta com scroll e tamanho proporcoes estranhas</li></ul></div><div style="display:contents" dir="auto"><ul id="32ea6676-0cd1-8027-a2fc-fc4eeb778db6" class="bulleted-list"><li style="list-style-type:disc">Adicionar .ico no emuseu</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-803d-8772-c2d71d6b98f8" class="bulleted-list"><li style="list-style-type:disc">arrumar para os selects nao exibirem tudo e terem  pesquisa neles</li></ul></div><div style="display:contents" dir="auto"><ul id="338a6676-0cd1-8027-9bb4-e326a6fdf628" class="bulleted-list"><li style="list-style-type:disc">salvar dados de enviar colaboracao no localstorage e fazer logica e salvar e excluir quando enviar</li></ul></div><div style="display:contents" dir="auto"><ul id="338a6676-0cd1-80d6-aaf4-f8ee4634ee94" class="bulleted-list"><li style="list-style-type:disc">Ter botao de reset em pesquisas, tanto em tables de admin, quanto em filtros do frontend em items index</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-80b1-8666-dcaeb1e7e31f" class="bulleted-list"><li style="list-style-type:disc">arrumar requests e entradas e update e create e views relacionado a traducoes, fazer de forma didatica e facil para o usuario</li></ul></div><div style="display:contents" dir="auto"><ul id="338a6676-0cd1-804b-b94a-cd2532cf0058" class="bulleted-list"><li style="list-style-type:disc">Arrumar filtragem no frontend em items publicos</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-805d-9952-f1d1b0acfd5c" class="bulleted-list"><li style="list-style-type:disc">parece que quando roda teste, ele exclui o banco do local, testar isso no local e prod-local e arrumar</li></ul></div><div style="display:contents" dir="auto"><ul id="337a6676-0cd1-8020-a512-e8a8a0f0907c" class="bulleted-list"><li style="list-style-type:disc">colocar ratelimit</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-8037-b8eb-e6b1e02145de" class="bulleted-list"><li style="list-style-type:disc">em staging, debug mode do laravel nao funciona direito</li></ul></div><div style="display:contents" dir="auto"><ul id="337a6676-0cd1-8071-9142-cfa1c5e22804" class="bulleted-list"><li style="list-style-type:disc">colocar todos os imports no padrao de por domains, assim reduzindo linhas</li></ul></div><div style="display:contents" dir="auto"><ul id="332a6676-0cd1-806b-95f3-fbe325e9a264" class="bulleted-list"><li style="list-style-type:disc">adicionar na tabela de collaborators, uma coluna de verificado.</li></ul></div><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-80f9-b127-c38c1ba6101d" class="bulleted-list"><li style="list-style-type:disc">mudar de neutral para universal</li></ul></div><div style="display:contents" dir="auto"><ul id="337a6676-0cd1-80c2-8cf0-f0fa4bf5a2cd" class="bulleted-list"><li style="list-style-type:disc">adicionar tabela de localicao de itens, para ter tipo utfpr, unicentro, dai é novo crud</li></ul></div><div style="display:contents" dir="auto"><ul id="338a6676-0cd1-8023-bc05-c702d3ff7470" class="bulleted-list"><li style="list-style-type:disc">arrumar criacao automatica de identication code e sua busca em /codes que faz redirect para o item</li></ul></div><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-8070-aa15-c0cbc8ebc6ea" class="bulleted-list"><li style="list-style-type:disc">recaptcha em catalog/items extra e create e adming login</li></ul></div><div style="display:contents" dir="auto"><ul id="339a6676-0cd1-801e-8fff-cabcb3f1030d" class="bulleted-list"><li style="list-style-type:disc">fazer todos os testes</li></ul></div><div style="display:contents" dir="auto"><ul id="33ba6676-0cd1-80d9-bbee-db6fe51d85cf" class="bulleted-list"><li style="list-style-type:disc">categoria select public create nao exibe item salvo no localstorage</li></ul></div></div></details></div><div style="display:contents" dir="auto"><p id="302a6676-0cd1-8003-96e5-d7a04a312969" class="">
+</p></div><div style="display:contents" dir="auto"><p id="309a6676-0cd1-80a3-9a97-c7fc6b522747" class="">
+</p></div><div style="display:contents" dir="auto"><p id="309a6676-0cd1-80ee-9a36-dd937bda904c" class="">
+</p></div><div style="display:contents" dir="auto"><p id="309a6676-0cd1-8008-bf82-d331cb7f28fd" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

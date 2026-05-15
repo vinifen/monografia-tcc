@@ -1,0 +1,73 @@
+%%%% CAPÍTULO 1 - INTRODUÇÃO
+%%
+%% Deve apresentar uma visão global da pesquisa, incluindo: breve histórico, importância e justificativa da escolha do tema,
+%% delimitações do assunto, formulação de hipóteses e objetivos da pesquisa e estrutura do trabalho.
+
+%% Título e rótulo de capítulo (rótulos não devem conter caracteres especiais, acentuados ou cedilha)
+\chapter{Introdução}\label{cap:introducao}
+
+%Neste capítulo, será apresentada uma perspectiva geral do trabalho a ser desenvolvido, demonstrando o contexto de aplicação e a relevância do desenvolvimento.
+
+%\section{Considerações iniciais}\label{sec:consideracoesIniciais}
+
+%Desde os primórdios, quando a humanidade iniciou o desenvolvimento de técnicas e o aprimoramento de suas criações, o impulso de superar limitações e aflições da realidade tem se configurado como a principal motivação para a evolução tecnológica. Observa-se que, desde a descoberta do fogo e o domínio da agricultura até as transformações proporcionadas pela Revolução Industrial e, mais recentemente, pela era digital, cada avanço histórico esteve intimamente relacionado ao desejo humano de transcender as restrições impostas pela natureza. Tal movimento evidencia que o desenvolvimento tecnológico não se origina exclusivamente da necessidade prática, mas também de uma inquietação existencial, caracterizada pela busca incessante por conforto, segurança e eficiência. O aprimoramento contínuo do que já foi concebido revela-se, portanto, como um fator essencial para o progresso constante da humanidade e para a construção de novos horizontes sociais, culturais e científicos \cite{tec:civ}.
+
+%A necessidade intrínseca do ser humano de criar e aperfeiçoar aquilo que já foi desenvolvido propiciou, ao longo da história, mudanças radicais em diferentes esferas da realidade. Um exemplo paradigmático é o conhecimento matemático: inicialmente empregado para contagem e controle de recursos, tornou-se gradualmente fundamental para o planejamento e a construção de edificações, para a navegação e o mapeamento de territórios e, mais recentemente, para o desenvolvimento de computadores e sistemas digitais. O constante aprimoramento desse conhecimento evidencia como a evolução das técnicas e das ciências expande progressivamente os limites do que a humanidade é capaz de realizar.
+
+No campo da computação, a inclinação humana para aperfeiçoar continuamente as tecnologias manifesta-se de forma particularmente significativa. Tecnologias primitivas, baseadas em válvulas a vácuo que controlavam a passagem de energia conforme princípios matematicamente determinados, evoluíram para estruturas quase atômicas, capazes de sustentar computadores modernos e viabilizar o avanço de diversas áreas do conhecimento e da sociedade \cite{eniac}. Essa trajetória tecnológica possibilitou o surgimento da Internet e de múltiplos campos de estudo e inovação, todos orientados pelo mesmo princípio: a constante busca por maior eficiência, desempenho, coerência, confiabilidade e inovação, garantindo que os sistemas sejam cada vez mais robustos, adaptáveis e capazes de atender às demandas de um mundo em constante transformação.
+
+No desenvolvimento de software, a lógica do aprimoramento contínuo mantém-se vigente como um princípio essencial. Em um contexto marcado por transformações rápidas e constantes, parte significativa dos sistemas vigentes precisam ser continuamente atualizados, envolvendo refatorações, que visam otimizar e tornar o código mais claro, eficiente e sustentável, assim como a implementação de novas funcionalidades, responsáveis por ampliar a utilidade e a relevância das aplicações frente às novas demandas sociais e tecnológicas, sob pena de obsolescência. Dessa forma, o desenvolvimento de software ocupa posição estratégica, situando-se na vanguarda das transformações tecnológicas, sociais e econômicas, impulsionando a criação de novas formas de interação, produção e conhecimento, além de contribuir para a consolidação de práticas inovadoras e para a manutenção da competitividade no cenário digital contemporâneo.
+
+Nesse contexto de constante evolução tecnológica e de aprimoramento de sistemas, iniciativas educacionais e culturais que envolvem tecnologia digital demandam soluções adaptáveis e capazes de integrar novas funcionalidades de forma contínua. Reconhecendo essa necessidade de adaptação e aprimoramento, as universidades passaram a buscar maneiras de organizar e preservar informações de forma mais estruturada. A \acrfull{utfpr} e a \acrfull{unicentro}, a partir dos projetos de extensão "Tecno-Lixo: Oficina do Aprender" \cite{ribeiro2024tecno} e "E-Lixo" \cite{re2021cartilha}, respectivamente, que trabalham com o reaproveitamento de peças de computadores descartadas, acabaram armazenando diversos itens de informática em suas dependências para criação de um museu, preservando assim um pouco da história da computação. \citeonline{gonzaga2024} implementou um museu virtual de informática para cadastro e gerência desses itens, chamado E-Museu.
+
+O E-museu trata-se de um sistema web desenvolvido como espaço de catalogação, gerenciamento e exposição de itens tecnológicos no formato de museu digital. Esse sistema encontra-se em uso e disponível na Web em \texttt{e-museu.gp.utfpr.edu.br}. A evolução contínua do acervo e das práticas de desenvolvimento web motivou um ciclo de refatoração e de ampliação funcional, tema central deste trabalho. 
+%Além da implementação de novas funcionalidades, tornou-se fundamental promover refatorações no código já implementado.% 
+Dessa forma, o E-Museu não apenas reflete a aplicação prática da lógica do desenvolvimento contínuo de software, mas também exemplifica como a inovação e o aperfeiçoamento constante podem potencializar a experiência do usuário e a disseminação do conhecimento cultural e acadêmico.
+
+
+Esse aperfeiçoamento de software pode apresentar diversos obstáculos ao longo do desenvolvimento. Um dos desafios refere-se à atualização das tecnologias utilizadas no sistema, processo que exige atenção e cautela para preservar sua estabilidade. No âmbito da refatoração, é igualmente essencial garantir que as melhorias estruturais não comprometam o funcionamento atual do software. Por fim, um dos principais desafios consiste em tornar o sistema simples de implementar em ambientes de produção, assegurando confiabilidade e robustez.
+
+%Esse aperfeiçoamento de software pode apresentar diversos obstáculos ao longo do desenvolvimento. Um dos primeiros desafios está na restilização da interface, que deve conciliar a busca por um formato mais moderno e agradável com a subjetividade inerente ao conceito de estética, ao mesmo tempo em que precisa oferecer um ambiente intuitivo e ágil para o usuário. Outro ponto crítico refere-se à atualização das tecnologias utilizadas no sistema, processo que exige atenção e cautela para preservar sua estabilidade. No âmbito da refatoração, é igualmente essencial garantir que as melhorias estruturais não comprometam o funcionamento atual do software. Por fim, um dos principais desafios consiste em tornar o sistema simples de implementar em ambientes de produção, assegurando confiabilidade e robustez.
+
+Com isso, o presente trabalho objetivou propor, implementar e consolidar soluções e melhorias para tornar o E-Museu um software mais robusto, resiliente a falhas, seguro e de fácil manutenção. Para tanto, foram aplicados padrões de desenvolvimento de software, práticas de teste sistemáticas e padronização de ambientes, visando garantir a qualidade, a confiabilidade e a manutenção eficiente do sistema.
+
+
+
+\section{Objetivos}\label{sec:objetivos}
+
+\subsection{Objetivo geral}\label{subsec:objetivoGeral}
+
+% Não coloque o padrão de código que vai ser usado por não ter essa noção ainda, acredito que da pra ver isso no futuro
+Refatorar e expandir o sistema web do E-Museu por meio da implementação de novas funcionalidades, aplicando boas práticas de programação, padrões de projeto de software e testes automatizados, com o intuito de melhorar a manutenibilidade e a qualidade do código.
+%Implementar novas funcionalidades e refatorar o sistema Web do E-museu aplicando boas práticas de programação, padrões de projeto de software e testes.
+
+%Refatorar e implementar novas funcionalidades no sistema web E-Museu pela UTFPR e UNICENTRO, visando aprimorar sua estrutura de código, aumentar a eficiência e a manutenibilidade, além de ampliar os recursos disponíveis para proporcionar uma experiência mais intuitiva, robusta e alinhada às demandas tecnológicas contemporâneas. <-- aqui já está quase justificando
+
+\subsection{Objetivos Específicos}\label{subsec:objetivoEspecificos}
+
+\begin{itemize}
+    \item Estabelecer uma estrutura de versionamento e desenvolvimento de código com padrões bem definidos, utilizando GitHub, de modo a garantir organização, rastreabilidade e colaboração eficiente.
+    \item Configurar ambientes estáveis de desenvolvimento, teste e produção, assegurando consistência, reprodutibilidade e confiabilidade do sistema.
+    \item Refatorar o código existente, aprimorando legibilidade, modularidade, manutenibilidade e desempenho. %, além de reestilizar a interface para proporcionar uma experiência mais clara, intuitiva e acessível aos usuários.
+    \item Implementar testes automatizados a fim de assegurar a qualidade, confiabilidade e robustez do código, contemplando testes de fluxo, integração e usabilidade.
+    %\item Desenvolver e aprimorar funcionalidades do E-Museu, como cadastro e gerenciamento de itens, upload de fotos e vídeos, geração de QR Code, relatórios de acesso e itens cadastrados, internacionalização do sistema e criação de newsletter, incorporando ainda mecanismos de segurança como reCAPTCHA e proteção de dados.
+    \item Desenvolver e aprimorar funcionalidades do E-Museu, em particular cadastro com imagem de capa e galeria de fotos, internacionalização do catálogo, incorporação de mecanismo antibot baseado em desafio com \textit{token} (Cloudflare Turnstile) e geração de código QR para apoio à identificação e etiquetagem das peças físicas.
+    \item Aplicar padrões de projeto e boas práticas de desenvolvimento, orientando tanto a refatoração quanto a implementação de novas funcionalidades de forma estruturada e eficiente.
+\end{itemize}
+
+\section{Justificativa}\label{sec:justificativa}
+
+%O E-Museu, em seu estado inicial, apresentava uma infraestrutura bastante simplificada, sem a separação entre os ambientes de desenvolvimento e produção — etapa fundamental no ciclo de vida de um software, quando o sistema atinge sua versão final e passa a operar no mundo real. Cada execução da aplicação demandava configurações manuais complexas, como a instalação de tecnologias necessárias ou a preparação do banco de dados. Além disso, o código não seguia práticas consolidadas de desenvolvimento, como a adequada divisão de responsabilidades entre \textit{services}, \textit{actions} e \textit{controllers} — elementos essenciais para a organização e manutenção de sistemas robustos. \cite{clean:arch}
+
+A versão anterior do E-Museu, tomada como ponto de partida deste trabalho, adotava uma infraestrutura simplificada, na qual não havia distinção clara entre os ambientes de desenvolvimento e produção. Cada execução da aplicação demandava configurações manuais complexas, como a instalação de tecnologias necessárias ou a preparação do banco de dados. O código seguia uma versão simplificada do padrão de software \acrfull{mvc}, com necessidade de reorganizar a divisão de responsabilidades entre \textit{services}, \textit{actions} e os \textit{controllers} do projeto, elementos essenciais para a organização e manutenção de sistemas.
+
+% Além disso, o código não utiliza padrões de projeto e segue práticas consolidadas de desenvolvimento, como a adequada divisão de responsabilidades entre \textit{services}, \textit{actions} e \textit{controllers} — elementos essenciais para a organização e manutenção de sistemas robustos. 
+Outro ponto crítico é a ausência de mecanismos automatizados que garantam a qualidade e o funcionamento do sistema, como \textit{linters} para análise estática e testes automatizados para validação do comportamento da aplicação. Somado a isso, as funcionalidades existentes podem ser melhoradas, reforçando a necessidade de refatorações e da elaboração de novos recursos, de modo a tornar a plataforma mais completa \cite{importance:testing}. %, escalável e alinhada às demandas atuais 
+
+%Outro ponto crítico é a ausência de testes automatizados, tanto de qualidade quanto de funcionamento, os quais atualmente são indispensáveis para garantir a confiabilidade e a evolução de qualquer aplicação. Somado a isso, as funcionalidades existentes podem ser melhoradas, as quais reforçam a necessidade de refatorações e da elaboração de novos recursos, de modo a tornar a plataforma mais consistente, escalável e alinhada às demandas atuais. \cite{importance:testing}
+
+Nesse contexto, a refatoração assume papel central, pois permite aprimorar a estrutura interna do código sem alterar seu comportamento externo, garantindo maior clareza, modularidade e facilidade de manutenção. Ao reduzir a complexidade e eliminar duplicações ou práticas inadequadas, a refatoração contribui para a evolução sustentável do software, assegurando que futuras adaptações, correções e expansões sejam implementadas de forma mais ágil, confiável e com menor risco de introdução de falhas \cite{refatoracao:2004}. %Paralelamente, a restilização da interface, ajustando cores, tipografia e detalhes visuais, assume relevância estratégica, uma vez que influência diretamente a usabilidade e a percepção dos usuários, favorecendo uma experiência mais intuitiva, eficiente e satisfatória no uso do sistema.
+
+\section{Estrutura do trabalho}\label{sec:estruturaTrabalho}
+
+O texto organiza-se da seguinte forma: o Capítulo~\ref{cap:introducao} contextualiza o problema e fixa objetivos e justificativa; o Capítulo~\ref{cap-referencial-teorico} apresenta o referencial teórico; o Capítulo~\ref{cap:materiais-e-metodos} descreve materiais e métodos; o Capítulo~\ref{cap:resultados} sintetiza os resultados alcançados; por fim, o Capítulo~\ref{cap:consideracoesfinais} reúne as considerações finais.
