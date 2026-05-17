@@ -1,6 +1,6 @@
 \chapter{Materiais e Métodos}\label{cap:materiais-e-metodos}
 
-Neste capítulo são descritos os materiais e os métodos utilizados no planejamento e no desenvolvimento do trabalho. O conteúdo está estruturado em duas partes: a primeira aborda os materiais empregados, e a segunda apresenta os procedimentos adotados nas etapas de elaboração e execução.
+Neste capítulo são descritos os materiais e os métodos que serão utilizados no planejamento e no desenvolvimento do projeto. O conteúdo está estruturado em duas partes: a primeira aborda os materiais empregados, e a segunda apresenta os procedimentos adotados nas etapas de elaboração e execução do trabalho.
 
 
 \section{Materiais}\label{sec:materiais}
@@ -10,21 +10,21 @@ Na presente seção são apresentadas as tecnologias utilizadas na refatoração
 
 \subsection{\acrshort{php}}
 
-\acrfull{php} é uma linguagem de programação desenvolvida e mantida por uma ampla comunidade de desenvolvedores \textit{open source}, amplamente utilizada no desenvolvimento de aplicações, especialmente no lado do servidor, sendo capaz de gerar conteúdo dinâmico para a \textit{World Wide Web}. Neste trabalho, o \acrshort{php} permaneceu como linguagem principal do \textit{back-end}, adotando-se a série 8.5 compatível com as dependências do repositório \cite{php}.
+\acrfull{php} é uma linguagem de programação desenvolvida e mantida por uma ampla comunidade de desenvolvedores \textit{open source}, amplamente utilizada no desenvolvimento de aplicações, especialmente no lado do servidor, sendo capaz de gerar conteúdo dinâmico para a \textit{World Wide Web}. Neste projeto, o \acrshort{php} é a linguagem presente e será mantida, será utilizada a versão 8.4 ou 8.5, estando essa questão em analise devido a versão 8.5 ter sido lançada recentemente e necessitando estudo de caso para a implementação no projeto\cite{php}.
 
     
 \subsection{\textit{Laravel}}
 
-O \textit{Laravel} é um conjunto de ferramentas desenvolvidas em \acrshort{php} que tem como objetivo facilitar o desenvolvimento de aplicações web, tornando tarefas complexas mais simples de realizar, manter e atualizar, além de oferecer mais segurança. No projeto, a linha anterior utilizava versão mais antiga do \textit{framework}; ao longo do trabalho, o código foi migrado para a linha major compatível com PHP~8.5 declarada no repositório (Laravel na série~13), visando segurança atualizada e estrutura de projeto alinhada às convenções atuais do \textit{framework} \cite{laravel}.
+O \textit{Laravel} é um conjunto de ferramentas desenvolvidas em \acrshort{php} que tem como objetivo facilitar o desenvolvimento de aplicações web, tornando tarefas complexas mais simples de realizar, manter e atualizar, além de oferecer mais segurança. No projeto, anteriormente era utilizada a versão 10, que será atualizada para a versão mais recente disponível, o Laravel 12, para garantir segurança atualizada, além de mudanças na estrutura de arquivos, tornando mais consistente \cite{laravel}.
 
 \subsection{\textit{MySQL}}
 
-O \textit{MySQL} é um sistema de gerenciamento de banco de dados relacional, amplamente utilizado no desenvolvimento de aplicações web, que permite o armazenamento, consulta e manipulação de dados de forma eficiente e segura \cite{mysql}. No projeto, o \textit{MySQL} foi mantido para gerenciar as informações do E-Museu, garantindo integridade e desempenho nas operações do catálogo.
+O \textit{MySQL} é um sistema de gerenciamento de banco de dados relacional, amplamente utilizado no desenvolvimento de aplicações web, que permite o armazenamento, consulta e manipulação de dados de forma eficiente e segura \cite{mysql}. No projeto, o \textit{MySQL} foi utilizado na primeira versão do site e será mantido para gerenciar as informações do E-Museu, garantindo integridade e performance.
 
 
 \subsection{\textit{Docker e Docker Compose}}
 
-O \textit{Docker} é uma plataforma que permite criar e executar aplicações em ambientes independentes, garantindo isolamento, portabilidade e consistência entre diferentes ambientes de desenvolvimento e produção \cite{docker}. O \textit{Docker Compose} complementa o \textit{Docker}, permitindo coordenar múltiplos desses ambientes de forma simples, utilizando arquivos de configuração. No projeto, essas ferramentas foram utilizadas para organizar e gerenciar os serviços de aplicação e de dados (incluindo \textit{PHP}, \textit{Laravel} e \textit{MySQL}), com ficheiros distintos para desenvolvimento local, homologação e produção \cite{docker,dockercompose}.
+O \textit{Docker} é uma plataforma que permite criar e executar aplicações em ambientes independentes, garantindo isolamento, portabilidade e consistência entre diferentes ambientes de desenvolvimento e produção \cite{docker}. O \textit{Docker Compose} complementa o \textit{Docker}, permitindo coordenar múltiplos desses ambientes de forma simples, utilizando arquivos de configuração. No projeto, essas ferramentas são utilizadas para organizar e gerenciar os ambientes do \textit{PHP}, \textit{Laravel} e \textit{MySQL}, garantindo que todas as dependências sejam inicializadas corretamente \cite{docker,dockercompose}.
 
 
 \subsection{\textit{Git}}
@@ -39,7 +39,7 @@ O \textit{GitHub} é uma plataforma online integrada ao \textit{Git}, que permit
 
 \subsection{\textit{Coolify} e \textit{CapRover}} 
 
-O \textit{Coolify} é uma plataforma de \textit{deploy} e gerenciamento de aplicações que simplifica a hospedagem de sistemas em servidores próprios ou em nuvem \cite{coolify, caprover, nixpacks}. Ela oferece uma interface intuitiva e suporte nativo a containers Docker, possibilitando configurar e monitorar aplicações, bancos de dados e variáveis de ambiente de forma automatizada e segura. No projeto, o \textit{Coolify} foi utilizado para implantar e gerenciar o sistema do E-Museu no servidor da \acrshort{utfpr}, tornando o processo de atualização e manutenção mais ágil e confiável.
+O \textit{Coolify} é uma plataforma de \textit{deploy} e gerenciamento de aplicações que simplifica a hospedagem de sistemas em servidores próprios ou em nuvem \cite{coolify, caprover, nixpacks}. Ela oferece uma interface intuitiva e suporte nativo a containers Docker, possibilitando configurar e monitorar aplicações, bancos de dados e variáveis de ambiente de forma automatizada e segura. No projeto, o \textit{Coolify} será utilizado para implantar e gerenciar o sistema do E-Museu no servidor da \acrshort{utfpr}, tornando o processo de atualização e manutenção mais ágil e confiável.
 
 Como alternativa, o \textit{CapRover} também foi avaliado por oferecer funcionalidades semelhantes de automação de \textit{deploy} e administração de serviços web. No entanto, optou-se pelo uso do \textit{Coolify} por apresentar vantagens importantes, como suporte nativo ao Docker Compose, uso de Nixpacks - uma ferramenta que identifica automaticamente o tipo de projeto e prepara o ambiente necessário para sua execução, além de contar com gestão integrada de projetos, usuários e permissões, uma comunidade mais ativa, documentação mais completa e melhor integração com o GitHub, que permite automatizar \textit{deploys} de forma mais simples e direta. Já o \textit{CapRover} depende de Dockerfiles manuais e de webhooks configurados para automação.
 
@@ -47,7 +47,7 @@ Como alternativa, o \textit{CapRover} também foi avaliado por oferecer funciona
 
 \section{Métodos}\label{sec:metodos}
 
-Nesta seção são apresentados, em ordem cronológica, os procedimentos adotados nas etapas de elaboração e execução deste Trabalho de Conclusão de Curso.
+Nesta seção serão apresentados, em ordem cronológica, os procedimentos que serão adotados nas etapas de elaboração e execução deste Trabalho de Conclusão de Curso.
 
 
 \subsection{Levantamento de requisitos}
@@ -104,19 +104,19 @@ No contexto do projeto, a padronização inclui a definição de convenções pa
 
 \subsection{Preparação de ambiente na máquina física na UTFPR para \textit{deploy} automatizado}
 
-Antes e durante a refatoração e o desenvolvimento de novas funcionalidades do sistema E-Museu, automatizou-se o processo de \textit{deploy}, relacionando \textit{branches} do repositório a domínios específicos. A \textit{branch} de integração contínua foi associada ao ambiente de homologação, acessível em \texttt{staging.e-museu.gp.utfpr.edu.br}, enquanto a \textit{branch} estável corresponde ao ambiente de produção, em \texttt{e-museu.gp.utfpr.edu.br}. A automatização foi implementada com o \textit{Coolify}, por adequação ao uso de Docker Compose e integração com o GitHub, conforme comparado com o CapRover na seção de materiais.
+Antes do início da refatoração e do desenvolvimento de novas funcionalidades do sistema E-Museu, identificou-se a necessidade de automatizar o processo de \textit{deploy}, relacionando diferentes \textit{branches} do repositório com domínios específicos. Assim, a \textit{branch develop} estará associada ao ambiente de testes, acessível em staging.e-museu.gp.utfpr.edu.br, enquanto a \textit{branch main} corresponderá ao ambiente de produção, disponível em e-museu.gp.utfpr.edu.br. Para implementar essa automatização será utilizada a ferramenta \textit{CapRover}, já definida anteriormente neste trabalho. Essa solução permitirá maior controle sobre as versões do sistema e facilitará o processo de atualização contínua das aplicações.
 
-A configuração do \textit{Coolify} foi realizada na máquina física localizada na \acrshort{utfpr}, onde o servidor do E-Museu está hospedado. Por questões de segurança institucional, o acesso remoto a esse ambiente é restrito, o que exigiu preparação e manutenção dessa etapa presencialmente ou por procedimentos internos da instituição.
+Além disso, a configuração do \textit{Coolify} será realizada diretamente na máquina física localizada na UTFPR, onde o servidor do E-Museu está hospedado. Por questões de segurança institucional, não há acesso remoto a esse ambiente, o que torna necessário que toda a preparação e manutenção dessa etapa sejam feitas localmente.
 
 
 \subsection{Refatoração e desenvolvimento de novas funcionalidades}
 
-Com as etapas de preparação, infraestrutura e planejamento avançadas, executou-se a fase principal do trabalho, voltada ao desenvolvimento efetivo do sistema. Essa etapa seguiu o fluxo do \textit{GitFlow} definido anteriormente, com documentação e controle por meio das ferramentas do \textit{GitHub}, como \textit{Pull Requests} e \textit{Issues}. Em paralelo ao desenvolvimento, foram mantidos testes automatizados e verificações estáticas para preservar qualidade, estabilidade e comportamento esperado das funcionalidades novas e legadas.
+Com todas as etapas de preparação, infraestrutura e planejamento concluídas, inicia-se a fase principal do projeto, a qual é voltada ao desenvolvimento efetivo do sistema. Essa etapa seguirá o fluxo do \textit{GitFlow} definido anteriormente, com documentação e controle realizados por meio das ferramentas do \textit{GitHub}, como \textit{Pull Requests} e \textit{Issues}. Junto ao desenvolvimento serão realizados testes contínuos para garantir a qualidade, a estabilidade e o correto funcionamento tanto das novas funcionalidades implementadas quanto das já existentes no sistema.
 
 
 \subsection{Experimentações e testes}
 
-Após ciclos de desenvolvimento, realizaram-se experimentações e testes para validar o funcionamento do sistema. Inicialmente, as verificações ocorreram no ambiente de \textit{staging}, permitindo inspecionar implementações em contexto controlado e próximo ao de produção.
+Por fim, após o desenvolvimento, serão realizadas etapas de experimentação e testes para validar o funcionamento do sistema. Inicialmente, os testes ocorrerão no ambiente de \textit{staging}, permitindo a verificação das novas implementações em um ambiente controlado e semelhante ao de produção.
 
-Após validação, o sistema foi promovido a produção no domínio principal. Verificações adicionais asseguraram o funcionamento das funcionalidades críticas; quando necessário, correções retornaram ao fluxo de desenvolvimento antes de nova implantação. 
+Somente após a validação completa, o sistema será implantado em produção no domínio principal. Em seguida, serão realizadas verificações adicionais para assegurar o funcionamento correto de todas as funcionalidades. Caso sejam identificados erros ou inconsistências, o sistema retornará à etapa de desenvolvimento, na qual as correções necessárias serão aplicadas antes de uma nova implantação. 
 
