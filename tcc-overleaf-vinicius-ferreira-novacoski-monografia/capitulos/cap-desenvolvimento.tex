@@ -9,6 +9,15 @@
 Este capítulo apresenta o desenvolvimento realizado na refatoração e na expansão do sistema web do E-Museu, desde o planejamento até a entrega operacional na \acrshort{utfpr}.
 
 
+\section{Dimensão do esforço e dos recursos}\label{sec:dev-esforco}
+
+O desenvolvimento descrito neste capítulo demandou investimento continuado de tempo e de recursos financeiros do autor, acompanhados de forma sistemática para estimar a magnitude do trabalho.
+
+Quanto ao tempo, o desenvolvimento teve início em dezembro de 2025 e conclusão em maio de 2026. Nesse intervalo, dedicou-se cerca de 250~horas ao conjunto das atividades ligadas ao E-Museu e a este TCC (implementação, infraestrutura, documentação, deslocamentos à \acrshort{utfpr} e redação da monografia). O registro foi feito diariamente na ferramenta descrita na Seção~\ref{sec:materiais-notion}, com a descrição das tarefas realizadas e da duração de cada sessão.
+
+Quanto aos custos, o autor despendeu aproximadamente R\$\,400,00 ao longo do percurso do projeto. Esse montante inclui, entre outros itens: assinatura do \textit{Cursor}; hospedagem da VPS na DigitalOcean para ensaios com \textit{Coolify}; deslocamentos ao campus da \acrshort{utfpr} para implantação e manutenção do servidor; aquisição de pen drive para o pacote de continuidade entregue à orientação; e licença do Overleaf na disciplina de TCC~1, quando o serviço não era disponibilizado gratuitamente pelos professores. Esses recursos complementaram a infraestrutura principal mantida na universidade e viabilizaram as entregas descritas nas seções seguintes.
+
+
 \section{Levantamento de requisitos e priorização}\label{sec:dev-requisitos}
 
 O levantamento de requisitos constituiu a primeira etapa do trabalho. Os requisitos foram identificados principalmente a partir das observações da orientadora Dra. Sediane Carmem Lunardi Hernandes, que apontou, no sistema E-Museu, a necessidade de aprimoramentos na estrutura do código, bem como a ausência de testes automatizados, evidenciando a demanda por refatoração e pelo desenvolvimento de novas funcionalidades.
@@ -32,7 +41,7 @@ Com os requisitos definidos, foi aplicada a técnica de priorização MoSCoW, co
 
 Para garantir um fluxo de desenvolvimento consistente e devidamente documentado, foi realizada, previamente ao início da implementação, uma elaboração completa da documentação referente ao Gitflow, convenções de \textit{commits}, gestão de \textit{issues} e demais práticas relacionadas ao versionamento. Toda essa documentação está disponível no repositório oficial do projeto \cite{gitflowdoc}.
 
-% TODO: descrever perfil *full* (branches @dev/…, templates de PR/issue, labels).
+% TODO: exemplos concretos de PRs/issues no perfil full (branches @vinifen/…, commits com emoji).
 
 \subsection{Criação do repositório e versionamento}
 
@@ -43,9 +52,9 @@ O repositório do E-Museu foi criado a partir de um \textit{fork}, que se trata 
 
 \section{Configuração de ambientes e infraestrutura}\label{sec:dev-infra}
 
-% TODO: Docker Compose local; ambientes staging e produção;
-% Coolify na VM UTFPR; domínios staging.e-museu… e e-museu.gp.utfpr.edu.br;
-% serviços auxiliares (MySQL, Redis, MinIO) quando aplicável.
+A maior parte do desenvolvimento ocorreu no ambiente local containerizado descrito no Capítulo~\ref{cap:materiais-e-metodos} (Docker Compose, script \texttt{run} e integração contínua no \textit{GitHub}). Em paralelo, utilizou-se uma VPS na DigitalOcean com \textit{Coolify} instalado para simular \textit{staging} e produção, validar os arquivos \texttt{docker-compose.staging.yml} e \texttt{docker-compose.production.yml} e ensaiar \textit{webhooks} antes da replicação institucional.
+
+Quanto ao servidor da \acrshort{utfpr}, adotou-se inicialmente a suposição de que a configuração do \textit{Coolify} deveria ser feita apenas no campus, por receio de expor o painel de administração e por inexistência de acesso remoto à máquina. Essa premissa levou a deslocamentos frequentes à universidade sempre que era preciso ajustar serviços, variáveis de ambiente ou implantações. Somente nas fases finais do trabalho, com o banco de dados, a topologia de containers e as funcionalidades centrais já consolidados no repositório, concentraram-se no campus a publicação dos ambientes de \textit{staging} e de produção nos domínios staging.e-museu.gp.utfpr.edu.br e e-museu.gp.utfpr.edu.br, respectivamente, com \textit{MySQL}, \textit{Redis}, \textit{MinIO} e a aplicação Laravel provisionados pelo \textit{Coolify} (Seção~\ref{sec:materiais-coolify}).
 
 
 \section{Refatoração da aplicação}\label{sec:dev-refatoracao}
@@ -72,9 +81,19 @@ O repositório do E-Museu foi criado a partir de um \textit{fork}, que se trata 
 
 \section{Implantação, validação e entrega institucional}\label{sec:dev-deploy}
 
-% TODO: ciclo staging → produção; testes em ambiente controlado;
-% pacote de continuidade (dump, backups, documentação operacional) entregue à UTFPR,
-% sem expor credenciais no texto.
+\subsection{Automação de \textit{deploy} e acesso ao \textit{Coolify}}
+
+A automação de \textit{deploy} na \acrshort{utfpr} exigiu iterações sucessivas. Na primeira implantação presencial de \textit{staging} e produção, os \textit{webhooks} nativos do \textit{Coolify} ligados ao repositório não passaram a disparar atualizações de forma confiável após \textit{commits} no \textit{GitHub}. Para contornar o problema, foram experimentadas duas abordagens alternativas antes da solução definitiva.
+
+Na \textbf{primeira abordagem}, implementou-se um script agendado no próprio \textit{Coolify} (\texttt{coolify-auto-deploy.sh}), executado por tarefa periódica no container da aplicação: o script consultava o repositório remoto, comparava o \textit{hash} do último \textit{commit} com um arquivo de estado e, havendo mudança, acionava a API de \textit{deploy} do \textit{Coolify} com token de autorização. A solução funcionou, porém consumia processamento de forma contínua e acrescentava complexidade operacional.
+
+Na \textbf{segunda abordagem}, criou-se um \textit{endpoint} na aplicação Laravel para receber gatilhos do \textit{GitHub Actions} a cada alteração no repositório, com pipeline dedicada de implantação. O fluxo passou a operar parcialmente, mas persistiram falhas na autenticação entre o \textit{GitHub Actions} e o ambiente institucional (incluindo incompatibilidade de formato de token que respondia em testes manuais, mas não na \textit{action}), o que mantinha a dependência de idas ao campus para corrigir configurações.
+
+Próximo ao encerramento do projeto, o coorientador Dr. Diego Marczal orientou a \textbf{exposição do painel do \textit{Coolify} em subdomínio dedicado}, em \url{https://coolify.e-museu.gp.utfpr.edu.br/}, em lugar de tratar o painel apenas como serviço acessível somente na rede interna do servidor. A decisão equilibrou praticidade e segurança: o painel passou a ser administrado remotamente quando necessário (configuração de projetos, variáveis de ambiente e disparo de \textit{deploys}), com autenticação em dois fatores habilitada no \textit{Coolify}, sem abandonar o controle institucional sobre a máquina. Com o subdomínio configurado, removeram-se do repositório o \textit{endpoint} de \textit{deploy} na aplicação e a \textit{action} associada, adotando-se de forma estável os \textit{webhooks} do \textit{GitHub} para o \textit{Coolify}, conforme sugerido na orientação. Esse desfecho reduziu a necessidade de deslocamentos repetidos à \acrshort{utfpr} apenas para operações rotineiras de infraestrutura, concentrando as visitas presenciais em momentos de carga de dados, validação ou ajustes que ainda exigem acesso local ao servidor.
+
+\subsection{Validação em \textit{staging} e entrega}
+
+Após cada integração relevante na ramificação \texttt{develop}, o sistema era validado em \textit{staging} antes da promoção à produção (\texttt{main}). Quando surgiam falhas, o ciclo retornava ao desenvolvimento local, à correção via \textit{pull requests} e aos testes automatizados descritos na Seção~\ref{sec:dev-testes}, até nova implantação. Ao final, consolidou-se a entrega operacional nos domínios institucionais, com documentação e artefatos de continuidade preparados para apoiar manutenção futura do ambiente, sem expor credenciais neste documento.
 
 
 \section{Síntese dos resultados alcançados}\label{sec:dev-sintese-resultados}

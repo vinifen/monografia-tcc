@@ -1,53 +1,109 @@
 \chapter{Materiais e Métodos}\label{cap:materiais-e-metodos}
 
-Neste capítulo são descritos os materiais e os métodos que serão utilizados no planejamento e no desenvolvimento do projeto. O conteúdo está estruturado em duas partes: a primeira aborda os materiais empregados, e a segunda apresenta os procedimentos adotados nas etapas de elaboração e execução do trabalho.
+Neste capítulo são descritos os materiais e os métodos empregados no planejamento e no desenvolvimento do E-Museu. O conteúdo está estruturado em duas partes: a primeira apresenta as tecnologias e ferramentas utilizadas; a segunda descreve os procedimentos metodológicos. A execução detalhada dessas etapas é documentada no Capítulo~\ref{cap:desenvolvimento}.
 
 
 \section{Materiais}\label{sec:materiais}
 
-Na presente seção são apresentadas as tecnologias utilizadas na refatoração e na implementação de novas funcionalidades do E-Museu, sendo elas:
+Na presente seção são apresentadas as principais tecnologias empregadas na refatoração e na implementação de novas funcionalidades do E-Museu, organizadas conforme a camada em que atuam no sistema (servidor, dados, infraestrutura, interface, internacionalização, comunicação por \textit{e-mail}, segurança, qualidade de software, ambiente de edição de código, APIs de modelos de linguagem e registro do trabalho).
 
 
 \subsection{\acrshort{php}}
 
-\acrfull{php} é uma linguagem de programação desenvolvida e mantida por uma ampla comunidade de desenvolvedores \textit{open source}, amplamente utilizada no desenvolvimento de aplicações, especialmente no lado do servidor, sendo capaz de gerar conteúdo dinâmico para a \textit{World Wide Web}. Neste projeto, o \acrshort{php} é a linguagem presente e será mantida, será utilizada a versão 8.4 ou 8.5, estando essa questão em analise devido a versão 8.5 ter sido lançada recentemente e necessitando estudo de caso para a implementação no projeto\cite{php}.
+\acrfull{php} é uma linguagem de programação desenvolvida e mantida por uma ampla comunidade de desenvolvedores \textit{open source}, amplamente utilizada no desenvolvimento de aplicações, especialmente no lado do servidor, sendo capaz de gerar conteúdo dinâmico para a \textit{World Wide Web} \cite{php}. No E-Museu, o \acrshort{php} permanece como linguagem base do \textit{back-end}. A implementação anterior do sistema, herdada da primeira versão do projeto, empregava a série 8.1. No início deste trabalho, o interpretador foi atualizado para a série 8.3 nas imagens Docker; posteriormente, em consonância com as atualizações do \textit{framework} descritas na subseção seguinte, adotou-se a série 8.5, que constitui a versão atual do repositório. As bibliotecas do \textit{back-end} são instaladas e versionadas pelo Composer \cite{composer}, gestor de dependências padrão do ecossistema PHP, que declara no repositório o \textit{framework} Laravel e os pacotes usados na refatoração.
 
-    
+
 \subsection{\textit{Laravel}}
 
-O \textit{Laravel} é um conjunto de ferramentas desenvolvidas em \acrshort{php} que tem como objetivo facilitar o desenvolvimento de aplicações web, tornando tarefas complexas mais simples de realizar, manter e atualizar, além de oferecer mais segurança. No projeto, anteriormente era utilizada a versão 10, que será atualizada para a versão mais recente disponível, o Laravel 12, para garantir segurança atualizada, além de mudanças na estrutura de arquivos, tornando mais consistente \cite{laravel}.
+O \textit{Laravel} é um \textit{framework} desenvolvido em \acrshort{php} que facilita a construção de aplicações web, oferecendo recursos para roteamento, autenticação, persistência de dados, filas, testes e organização do código \cite{laravel}. A versão anterior do E-Museu utilizava o Laravel~10. No início deste trabalho, o projeto foi integralmente atualizado para o Laravel~12, o que exigiu revisão de dependências, de estrutura de diretórios e de convenções do \textit{framework}. Posteriormente, no meio do desenvolvimento, foi lançado o Laravel~13; diante da necessidade de manter o sistema alinhado a versões suportadas e seguras, realizou-se uma segunda atualização para essa série, com novo ciclo de ajustes e de validação por testes automatizados. A versão atual do repositório reflete, portanto, o Laravel~13 como linha de base do \textit{back-end}.
+
+Entre os componentes do ecossistema Laravel empregados no projeto destacam-se: o \textit{Eloquent ORM}, para mapeamento objeto-relacional e acesso ao banco de dados; o motor de \textit{templates} \textit{Blade}, para composição das páginas HTML; o pacote \textit{Laravel UI}, para fluxos de autenticação e \textit{scaffolding} inicial; e o \textit{Laravel Sanctum}, para autenticação de API e de sessões em aplicações de página única quando necessário. Para geração de códigos bidimensionais associados à catalogação física das peças, utiliza-se a biblioteca \textit{endroid/qr-code}, integrada à camada de aplicação.
+
+
+\subsection{\textit{Docker e Docker Compose}}\label{sec:materiais-docker}
+
+O \textit{Docker} é uma plataforma que permite criar e executar aplicações em ambientes independentes, garantindo isolamento, portabilidade e consistência entre diferentes ambientes de desenvolvimento e produção \cite{docker}. O \textit{Docker Compose} complementa o \textit{Docker}, permitindo coordenar múltiplos serviços por meio de arquivos declarativos \cite{docker,dockercompose}. No E-Museu, essas ferramentas estruturam o ambiente local (aplicação \acrshort{php}, \textit{Nginx}, \textit{MySQL}, \textit{Redis}, serviço \textit{Node} para o \textit{Vite} e \textit{phpMyAdmin}), as imagens multiestágio de \textit{staging} e produção (\texttt{app} e \texttt{web} com volume compartilhado em \texttt{storage/}) e, quando necessário, o serviço \textit{MinIO} declarado junto à aplicação. O \textit{phpMyAdmin} \cite{phpmyadmin} integra apenas o Compose local como interface web para consulta e manutenção auxiliar do banco de dados durante o desenvolvimento, sem participar de \textit{staging} ou produção. Um script \texttt{run} encapsula comandos frequentes (\texttt{setup}, testes, análise estática), reduzindo erros operacionais na rotina de desenvolvimento.
+
+
+\subsection{\textit{CapRover} e \textit{Coolify}}\label{sec:materiais-coolify}
+
+O \textit{CapRover} é uma plataforma de \textit{deploy} e administração de aplicações em servidores próprios, com automação por meio de containers e de \textit{webhooks} \cite{caprover}. Durante o planejamento da infraestrutura do E-Museu, o \textit{CapRover} foi avaliado como alternativa para hospedar o sistema na \acrshort{utfpr}, por oferecer funcionalidades semelhantes às de outras soluções de \textit{Platform as a Service} (\textit{PaaS}) auto-hospedadas.
+
+Optou-se, contudo, pelo \textit{Coolify}, plataforma de \textit{deploy} e gerenciamento de aplicações com suporte a containers Docker, variáveis de ambiente e \textit{deploy} automatizado por meio de \textit{webhooks} \cite{coolify}. A escolha deveu-se à melhor adequação ao fluxo do projeto, em especial pelo suporte ao Docker Compose para declarar e reproduzir a composição dos serviços e pela automação de implantação disparada por \textit{webhooks} a cada mudança nas ramificações \texttt{main} e \texttt{develop}, enquanto o \textit{CapRover} exigiria maior configuração manual de \textit{Dockerfiles} e de \textit{webhooks}.
+
+No E-Museu, o \textit{Coolify} na versão \texttt{v4.0.0-beta.470} gerencia a composição dos serviços em Docker e o \textit{deploy} por \textit{webhooks}. Durante o desenvolvimento, antes da implantação institucional, o mesmo fluxo foi exercitado em uma máquina virtual privada (VPS) na DigitalOcean, com \textit{Coolify} instalado como ambiente simulado do servidor de produção, permitindo validar \textit{webhooks}, variáveis de ambiente e os arquivos \texttt{docker-compose.staging.yml} e \texttt{docker-compose.production.yml} sem depender de acesso presencial ao campus. Na etapa final, o painel passou a operar no servidor institucional da \acrshort{utfpr}, acessível em \url{https://coolify.e-museu.gp.utfpr.edu.br/}, associando a ramificação \texttt{develop} ao ambiente de \textit{staging} e a \texttt{main} ao de produção. A evolução da implantação e das escolhas de automação de \textit{deploy} é relatada na Seção~\ref{sec:dev-deploy}. Em ambos os contextos, os serviços publicados utilizaram, entre outros: aplicação principal (com \textit{back-end} em \acrshort{php}~8.5 e Laravel~13, conforme as Seções anteriores); \textit{MySQL} (\texttt{mysql:8.0-debian}); \textit{Redis} (\texttt{redis:7.2}); e \textit{MinIO} (\texttt{minio/minio:RELEASE.2025-09-07T16-13-09Z}), este último declarado em projeto Docker Compose vazio no próprio \textit{Coolify} quando o serviço deixou de contar com suporte adequado no catálogo do painel (detalhes na Seção sobre \textit{MinIO}).
+
 
 \subsection{\textit{MySQL}}
 
-O \textit{MySQL} é um sistema de gerenciamento de banco de dados relacional, amplamente utilizado no desenvolvimento de aplicações web, que permite o armazenamento, consulta e manipulação de dados de forma eficiente e segura \cite{mysql}. No projeto, o \textit{MySQL} foi utilizado na primeira versão do site e será mantido para gerenciar as informações do E-Museu, garantindo integridade e performance.
+O \textit{MySQL} é um sistema de gerenciamento de banco de dados relacional, amplamente utilizado no desenvolvimento de aplicações web, que permite o armazenamento, consulta e manipulação de dados de forma eficiente e segura \cite{mysql}. No E-Museu, o \textit{MySQL} foi mantido desde a primeira versão do sistema para persistir entidades como itens do acervo, traduções, categorias, colaboradores e localizações. No ambiente local, o serviço integra o Docker Compose (Seção~\ref{sec:materiais-docker}) com imagem \texttt{mysql:8.0-debian}; em \textit{staging} e produção, a mesma imagem é provisionada e administrada pelo \textit{Coolify} (Seção~\ref{sec:materiais-coolify}).
 
 
-\subsection{\textit{Docker e Docker Compose}}
+\subsection{\textit{Redis}}
 
-O \textit{Docker} é uma plataforma que permite criar e executar aplicações em ambientes independentes, garantindo isolamento, portabilidade e consistência entre diferentes ambientes de desenvolvimento e produção \cite{docker}. O \textit{Docker Compose} complementa o \textit{Docker}, permitindo coordenar múltiplos desses ambientes de forma simples, utilizando arquivos de configuração. No projeto, essas ferramentas são utilizadas para organizar e gerenciar os ambientes do \textit{PHP}, \textit{Laravel} e \textit{MySQL}, garantindo que todas as dependências sejam inicializadas corretamente \cite{docker,dockercompose}.
-
-
-\subsection{\textit{Git}}
-
-O \textit{Git} é a principal ferramenta de controle de versões, utilizada para registrar alterações, organizar, compartilhar e gerenciar o código-fonte de projetos de forma eficiente entre desenvolvedores \cite{git}.
+O \textit{Redis} é um armazenamento de estruturas de dados em memória RAM, utilizado como \textit{cache}, fila ou repositório de sessões em aplicações web de médio e grande porte \cite{redis}. No E-Museu, o \textit{Redis} permite que o Laravel utilize \textit{cache} e sessões sem depender apenas do sistema de arquivos ou do banco relacional para esses fins. Nos ambientes de \textit{staging} e de produção, hospedados na \acrshort{utfpr}, o \textit{Coolify} (Seção~\ref{sec:materiais-coolify}) provisiona a imagem \texttt{redis:7.2}, de modo que a aplicação mantenha o mesmo papel para \textit{cache} e sessões nos domínios publicados do sistema.
 
 
-\subsection{\textit{GitHub}}
-    
-O \textit{GitHub} é uma plataforma online integrada ao \textit{Git}, que permite o armazenamento e o compartilhamento de códigos-fonte. Oferece recursos como \textit{pull requests}, \textit{issues}, \textit{projects} e ferramentas de automação, como \acrfull{ci/cd}, que auxiliam na organização, no controle de versão e na documentação dos projetos \cite{github}.
+\subsection{\textit{Nginx}}
+
+O \textit{Nginx} é um servidor web e \textit{proxy} reverso de alto desempenho, frequentemente empregado para servir arquivos estáticos, encaminhar requisições ao interpretador \acrshort{php} e expor a aplicação na porta HTTP \cite{nginx}. No E-Museu, o tráfego público chega ao container \texttt{web}, no qual o \textit{Nginx} na versão 1.29.3 (imagem Docker \texttt{nginx:mainline-alpine3.22-perl}) encaminha as requisições dinâmicas ao container da aplicação Laravel, em conformidade com a arquitetura de containers distintos para servidor web e aplicação descrita na Seção~\ref{sec:materiais-docker}.
 
 
-\subsection{\textit{Coolify} e \textit{CapRover}} 
+\subsection{\textit{MinIO} e armazenamento compatível com S3}
 
-O \textit{Coolify} é uma plataforma de \textit{deploy} e gerenciamento de aplicações que simplifica a hospedagem de sistemas em servidores próprios ou em nuvem \cite{coolify, caprover, nixpacks}. Ela oferece uma interface intuitiva e suporte nativo a containers Docker, possibilitando configurar e monitorar aplicações, bancos de dados e variáveis de ambiente de forma automatizada e segura. No projeto, o \textit{Coolify} será utilizado para implantar e gerenciar o sistema do E-Museu no servidor da \acrshort{utfpr}, tornando o processo de atualização e manutenção mais ágil e confiável.
+O \textit{MinIO} é um servidor de armazenamento de objetos compatível com a API S3 da Amazon Web Services, adequado a arquivos de mídia e a \textit{uploads} em larga escala \cite{minio}. No E-Museu, o disco \texttt{public} do Laravel foi configurado para utilizar o driver S3 por meio do pacote \textit{league/flysystem-aws-s3-v3}, de modo que fotos e demais arquivos do acervo possam ser persistidos em armazenamento de objetos nos ambientes de \textit{staging} e de produção.
 
-Como alternativa, o \textit{CapRover} também foi avaliado por oferecer funcionalidades semelhantes de automação de \textit{deploy} e administração de serviços web. No entanto, optou-se pelo uso do \textit{Coolify} por apresentar vantagens importantes, como suporte nativo ao Docker Compose, uso de Nixpacks - uma ferramenta que identifica automaticamente o tipo de projeto e prepara o ambiente necessário para sua execução, além de contar com gestão integrada de projetos, usuários e permissões, uma comunidade mais ativa, documentação mais completa e melhor integração com o GitHub, que permite automatizar \textit{deploys} de forma mais simples e direta. Já o \textit{CapRover} depende de Dockerfiles manuais e de webhooks configurados para automação.
+Durante o desenvolvimento, o \textit{MinIO} deixou de contar com suporte adequado entre os serviços oferecidos pelo \textit{Coolify} na configuração então disponível na \acrshort{utfpr} (Seção~\ref{sec:materiais-coolify}), e não foi identificada alternativa integrada à plataforma que reunisse, de forma equivalente, compatibilidade com a API S3, controle institucional sobre os dados e facilidade de operação já prevista para o projeto. Diante desse cenário, foi necessário aprimorar a documentação de implantação e passar a provisionar o \textit{MinIO} em projeto Docker Compose no \textit{Coolify}, com imagem \texttt{minio/minio:RELEASE.2025-09-07T16-13-09Z}, em \textit{staging} e em produção. Em desenvolvimento local, o armazenamento pode permanecer em disco local, preservando simplicidade na máquina do desenvolvedor sem alterar a abstração de arquivos do \textit{framework}.
 
+
+\subsection{\textit{Vite} e tecnologias da interface web}
+
+O \textit{Vite} é uma ferramenta de compilação e servidor de desenvolvimento para \textit{front-end}, que integra-se ao Laravel por meio do plugin oficial \textit{laravel-vite-plugin}, permitindo compilar JavaScript e folhas de estilo com recarregamento rápido durante o desenvolvimento \cite{vite,nodejs}. O \textit{runtime} JavaScript é o \textit{Node.js}, executado no container dedicado do Docker Compose (Seção~\ref{sec:materiais-docker}) com a imagem \texttt{node:25.4.0-alpine3.22}, alinhada à versão empregada na compilação dos \textit{assets} e na pipeline de integração contínua. No E-Museu, o \textit{front-end} combina \textit{Bootstrap}~5 para componentes e \textit{layout} responsivo \cite{bootstrap}, \textit{Sass} para estilos modulares, \textit{jQuery} para interações legadas compatíveis com a base existente, \textit{Axios} para requisições HTTP assíncronas e \textit{Bootstrap Icons} para iconografia. O suporte a múltiplos idiomas na interface do cliente emprega ainda o \textit{i18next}, detalhado na subseção seguinte.
+
+
+\subsection{Internacionalização}
+
+A internacionalização do E-Museu articula servidor e cliente. No Laravel, os textos do acervo (itens, categorias, etiquetas e \textit{extras}) passaram a ser armazenados em tabelas de tradução associadas a cada entidade e a um registro de idioma, em substituição a colunas monolíngues da versão anterior; mensagens de interface, validação e notificações utilizam arquivos de idioma em português do Brasil e em inglês, com apoio do pacote Laravel Lang \cite{laravellang}. Na camada do cliente, o \textit{i18next} traduz textos dinâmicos em JavaScript e permite alternar o idioma exibido sem recarregar toda a página quando o fluxo da interface exige isso. As duas partes atuam em conjunto: o servidor persiste e valida conteúdos por idioma; o cliente exibe rótulos e interações coerentes com a escolha do usuário.
+
+
+\subsection{Envio de \textit{e-mail} (Laravel Mail e SMTP)}
+
+O componente Laravel Mail \cite{laravel} concentra o envio de mensagens transacionais da aplicação. No E-Museu, ele é empregado no fluxo de verificação de \textit{e-mail} de colaboradores do catálogo público. Para \textit{staging} e produção, a \acrshort{utfpr} disponibilizou caixa institucional dedicada ao projeto, \texttt{e-museu-gp@utfpr.edu.br}, utilizada como remetente das mensagens e autenticada no servidor SMTP da universidade (\texttt{smtp.utfpr.edu.br}). No ambiente local e na suíte de testes automatizados utilizam-se transportes que não disparam envio real, de modo a preservar a reprodutibilidade dos testes sem depender de caixas postais externas.
+
+
+\subsection{Cloudflare Turnstile e proteção \textit{antibot}}
+
+O Turnstile é um mecanismo da Cloudflare para verificar interação humana em formulários web, alternativa a \textit{CAPTCHAs} tradicionais \cite{turnstile}. Nos objetivos do trabalho constava a incorporação de proteção no estilo reCAPTCHA; no E-Museu essa função ficou a cargo do Turnstile, com validação no \textit{back-end} Laravel antes de aceitar o envio. O desafio aparece no \textit{login} administrativo, no pedido de código de verificação por e-mail no catálogo de colaboradores e em cadastros de itens em que a proteção é necessária; nos testes automatizados o mecanismo pode permanecer desligado para não depender do serviço externo. Em \textit{staging} e produção o Turnstile está ativo nos fluxos citados.
+
+
+\subsection{\textit{Git}, \textit{GitHub} e \textit{GitHub Actions}}
+
+O \textit{Git} é a ferramenta de controle de versões utilizada para registrar alterações, organizar ramificações e compartilhar o código-fonte \cite{git}. O \textit{GitHub} concentra o repositório do projeto, as \textit{issues}, os \textit{pull requests}, os \textit{templates} de contribuição e a documentação de fluxo de trabalho \cite{github}. Complementarmente, o \textit{GitHub Actions} automatiza a integração contínua: em cada \textit{pull request} direcionada às ramificações \texttt{main} ou \texttt{develop}, são executados trabalhos de testes (\textit{PHPUnit} no ambiente Docker descrito na Seção~\ref{sec:materiais-docker}), de verificação de qualidade de código (\textit{PHP CodeSniffer}, \textit{Laravel Pint}, \textit{PHPMD}, \textit{PHPStan}, \textit{phpcpd}, \textit{ESLint} e \textit{Prettier}) e de validação de implantação em ambiente de produção simulado \cite{githubactions}.
+
+
+\subsection{Ferramentas de análise estática e de testes}
+
+Para assegurar qualidade e manutenibilidade do código refatorado, o projeto adota um conjunto de ferramentas executado localmente e na pipeline de \acrfull{ci/cd}, orquestrado pelo script \texttt{run} e reproduzido no \textit{GitHub Actions} (subseção anterior). No que se refere a testes automatizados, utiliza-se o \textit{PHPUnit} para validar testes unitários e de funcionalidade (\textit{feature}) da aplicação Laravel \cite{phpunit}. No \textit{back-end}, complementam a revisão manual as ferramentas de análise estática e de qualidade: o \textit{PHPStan} com extensão \textit{Larastan} para verificação tipada \cite{phpstan}; o \textit{PHP CodeSniffer} (\textit{PHPCS}), com o corretor \textit{PHPCBF} para ajustes automáticos de estilo quando aplicável, para convenções de codificação; o \textit{Laravel Pint} para padronização alinhada ao ecossistema Laravel \cite{laravelpint}; o \textit{PHP Mess Detector} (\textit{PHPMD}) para complexidade e possíveis problemas de desenho \cite{phpmd}; o \textit{PHP Insights} para métricas agregadas de qualidade; o \textit{PHP Copy/Paste Detector} (\textit{phpcpd}) para detecção de duplicação; e o \textit{Churn PHP} para identificar arquivos candidatos a refatoração com base em frequência de alteração e complexidade. No \textit{front-end}, empregam-se \textit{ESLint} e \textit{Prettier} para \textit{lint} e formatação de JavaScript, SCSS e JSON. Na integração contínua, cada \textit{pull request} dispara o \textit{PHPUnit} e as verificações de \textit{PHPCS}, \textit{Laravel Pint}, \textit{PHPMD}, \textit{PHPStan}, \textit{phpcpd}, \textit{ESLint} e \textit{Prettier}; \textit{PHP Insights}, \textit{Churn PHP} e \textit{PHPCBF} permanecem disponíveis no ambiente local do desenvolvedor. Essas ferramentas documentam, de forma reprodutível, os critérios de aceitação do código no E-Museu.
+
+
+\subsection{\textit{Cursor}}
+
+O \textit{Cursor} é um ambiente de desenvolvimento integrado com \textit{Git}, depuração e assistentes de inteligência artificial baseados em modelos de linguagem \cite{cursor}. No E-Museu, foi a única \textit{IDE} utilizada pelo autor, de forma intensiva e ao longo de quase todo o projeto: a ampla refatoração da base legada, as atualizações de \acrshort{php} e Laravel, as novas funcionalidades priorizadas (Capítulo~\ref{cap:desenvolvimento}) e os ajustes de infraestrutura implicaram alterações em grande parte do repositório e em dezenas de \textit{pull requests}, volume de trabalho difícil de sustentar no mesmo prazo sem esse apoio.
+
+
+\subsection{Groq, OpenRouter e GitHub Models}\label{sec:materiais-ia-provedores}
+
+O painel administrativo do E-Museu consome APIs de \textit{chat completion} compatíveis com o formato OpenAI para tradução assistida de conteúdos multilíngues (itens, categorias, etiquetas e campos associados). Foram integrados três provedores, o Groq \cite{groq}, o OpenRouter \cite{openrouter} e o GitHub Models \cite{githubmodels}, priorizando ofertas gratuitas ou com cotas sem custo para o autor: quando um serviço atinge o limite de uso ou deixa de responder, a aplicação tenta o seguinte na ordem definida (\textit{failover}). Há limite de requisições por administrador e, no modo automático, percorre-se essa cadeia até obter resposta válida; o administrador pode, opcionalmente, escolher um provedor específico na interface.
+
+
+\subsection{\textit{Notion}}\label{sec:materiais-notion}
+
+O \textit{Notion} é uma ferramenta de anotações e de organização em páginas, usada para listas e registro de atividades \cite{notion}. No E-Museu, o autor manteve uma página dedicada ao projeto e, ao longo do desenvolvimento, anotava diariamente o que já tinha feito, o que ainda precisava fazer e o tempo gasto em cada dia; com isso foi possível registrar o tempo total e o período de trabalho indicados na Seção~\ref{sec:dev-esforco}.
 
 
 \section{Métodos}\label{sec:metodos}
 
-Nesta seção serão apresentados, em ordem cronológica, os procedimentos que serão adotados nas etapas de elaboração e execução deste Trabalho de Conclusão de Curso.
+Nesta seção são apresentados, em ordem cronológica, os procedimentos adotados nas etapas de elaboração e de execução deste Trabalho de Conclusão de Curso. A aplicação concreta de cada etapa é relatada no Capítulo~\ref{cap:desenvolvimento}.
 
 
 \subsection{Levantamento de requisitos}
@@ -79,44 +135,43 @@ O \textit{Gitflow} é um modelo de ramificação (\textit{branching model}) que 
     \item E o \texttt{develop}, que concentra o código em desenvolvimento.
 \end{itemize}
 
-\noindent A partir deles, são criados ramos auxiliares para diferentes propósitos:
+\noindent A partir deles, são criados ramos auxiliares para diferentes propósitos, entre os quais ramos de trabalho vinculados a tarefas ou \textit{issues}, ramos \texttt{release/} para preparar versões estáveis antes do lançamento e ramos \texttt{hotfix/} para correções urgentes, em geral a partir de \texttt{main}.
 
-\begin{itemize}
-    \item \texttt{work/}: originalmente chamada de \textit{feature}, é o ambiente onde são criadas \textit{branches} específicas para cada tipo de tarefa no desenvolvimento;
-    \item \texttt{release/}: para preparar versões estáveis antes do lançamento;
-    \item \texttt{hotfix/}: para correções urgentes diretamente na versão em produção.
-\end{itemize}
-
-A Figura \ref{fig:gitflow} ilustra os ramos do \textit{GitFlow} mencionados acima.
+A Figura~\ref{fig:gitflow} ilustra a topologia desses ramos no modelo clássico, em diagrama elaborado pelo autor com base no \textit{Gitflow} tradicional \cite{gitdocs}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{figuras/gitflow-branches.png}
-    \caption{Fluxo de branches no GitFlow.}
+    \caption{Fluxo de \textit{branches} no \textit{Gitflow}.}
     \label{fig:gitflow}
-    \caption*{\textbf{Fonte:} Adaptação do padrão GitFlow, com representação desenvolvida por mim.}
+    \caption*{\textbf{Fonte:} Adaptado de \citeonline{gitdocs}. Elaboração do autor.}
 \end{figure}
 
-Dessa forma, o \textit{Gitflow} estabelece um ciclo de vida bem definido para cada etapa do projeto, reduzindo conflitos de código e aumentando a rastreabilidade das mudanças.
+Dessa forma, o \textit{Gitflow} estabelece um ciclo de vida bem definido para cada etapa do projeto, reduzindo conflitos de código e aumentando a rastreabilidade das mudanças. Durante o desenvolvimento do E-Museu, contudo, verificou-se que a aplicação rigorosa de convenções auxiliares (nomenclatura extensa, mensagens padronizadas, \textit{templates} detalhados de \textit{issues} e de \textit{pull requests}) podia tornar-se excessivamente burocrática para o contexto de um projeto acadêmico com equipe reduzida. Por isso, o autor elaborou e publicou, na versão 2.0.0 do repositório de documentação do fluxo \cite{gitflowdoc}, uma adaptação que mantém a topologia do \textit{Gitflow} (\texttt{main}, \texttt{develop}, \textit{release} e \textit{hotfix}), mas oferece dois perfis de adoção, ambos orientativos e ajustáveis conforme o projeto:
 
-No contexto do projeto, a padronização inclui a definição de convenções para nomes de \textit{branches} (como \texttt{feature/atividade}), mensagens de \textit{commit} claras e descritivas, regras para abertura de \textit{pull requests} e um fluxo de revisão colaborativo. Essa organização contribui para um desenvolvimento mais coeso, rastreável e escalável.
+\begin{itemize}
+    \item \textit{Perfil full:} ramificações no formato \texttt{@autor/tipo/número-da-issue/nome-curto} (por exemplo, \texttt{@vinifen/feat/123/user-dashboard}), mensagens de \textit{commit} com emoji e tipo semântico (\texttt{feat}, \texttt{fix}, \texttt{chore}, entre outros) e \textit{templates} completos de \textit{issues} e \textit{pull requests} no \textit{GitHub};
+    \item \textit{Perfil simple:} nomenclatura enxuta \texttt{tipo/número-da-issue/nome-curto} (por exemplo, \texttt{feat/123/user-dashboard}), mensagens no formato \texttt{tipo: descrição}, sem emoji, e \textit{templates} reduzidos, preservando o mesmo fluxo de integração em \texttt{develop} e de promoção para \texttt{main}.
+\end{itemize}
 
-
-\subsection{Preparação de ambiente na máquina física na UTFPR para \textit{deploy} automatizado}
-
-Antes do início da refatoração e do desenvolvimento de novas funcionalidades do sistema E-Museu, identificou-se a necessidade de automatizar o processo de \textit{deploy}, relacionando diferentes \textit{branches} do repositório com domínios específicos. Assim, a \textit{branch develop} estará associada ao ambiente de testes, acessível em staging.e-museu.gp.utfpr.edu.br, enquanto a \textit{branch main} corresponderá ao ambiente de produção, disponível em e-museu.gp.utfpr.edu.br. Para implementar essa automatização será utilizada a ferramenta \textit{CapRover}, já definida anteriormente neste trabalho. Essa solução permitirá maior controle sobre as versões do sistema e facilitará o processo de atualização contínua das aplicações.
-
-Além disso, a configuração do \textit{Coolify} será realizada diretamente na máquina física localizada na UTFPR, onde o servidor do E-Museu está hospedado. Por questões de segurança institucional, não há acesso remoto a esse ambiente, o que torna necessário que toda a preparação e manutenção dessa etapa sejam feitas localmente.
+No E-Museu adotou-se o perfil \textit{full}, por equilibrar rastreabilidade (vinculação explícita entre ramo, \textit{commit} e \textit{issue}) e disciplina de revisão em \textit{pull requests}, sem abandonar os ramos permanentes nem a associação prevista entre o ramo de desenvolvimento (ambiente de \textit{staging}) e o ramo principal (produção) na implantação institucional (Seção~\ref{sec:metodos-utfpr-deploy}). A estrutura mais rica de \textit{issues} e de \textit{pull requests} do perfil \textit{full} também favorece a documentação contínua do trabalho (descrição das mudanças, tempo dedicado, tipo de alteração e ligação a tarefas), o que se mostrou útil como registro ordenado do desenvolvimento na redação desta monografia. O perfil \textit{simple} permanece documentado como alternativa mais direta para contextos em que a sobrecarga operacional do perfil \textit{full} não se justifica.
 
 
 \subsection{Refatoração e desenvolvimento de novas funcionalidades}
 
-Com todas as etapas de preparação, infraestrutura e planejamento concluídas, inicia-se a fase principal do projeto, a qual é voltada ao desenvolvimento efetivo do sistema. Essa etapa seguirá o fluxo do \textit{GitFlow} definido anteriormente, com documentação e controle realizados por meio das ferramentas do \textit{GitHub}, como \textit{Pull Requests} e \textit{Issues}. Junto ao desenvolvimento serão realizados testes contínuos para garantir a qualidade, a estabilidade e o correto funcionamento tanto das novas funcionalidades implementadas quanto das já existentes no sistema.
+Com o levantamento de requisitos, a priorização \acrshort{moscow} e a definição do fluxo de \textit{Gitflow} estabelecidos, seguiu-se a fase principal do projeto, voltada ao desenvolvimento efetivo do sistema. Essa etapa concentrou-se, em grande medida, no ambiente local containerizado (Seção~\ref{sec:materiais-docker}), onde foram evoluídos o banco de dados, a topologia da aplicação (aplicação, servidor web, \textit{MySQL}, \textit{Redis} e demais componentes) e as funcionalidades previstas no escopo. Em paralelo, utilizou-se um \textit{Coolify} simulado em VPS na DigitalOcean (Seção~\ref{sec:materiais-coolify}) para ensaiar \textit{deploy} automatizado e a composição dos serviços em condições próximas às de \textit{staging} e de produção, antes da replicação no servidor da \acrshort{utfpr}. O trabalho seguiu o fluxo de \textit{Gitflow} definido anteriormente, com documentação e controle por meio do \textit{GitHub} (\textit{pull requests} e \textit{issues}). Junto ao desenvolvimento foram executados testes e verificações automatizadas de qualidade, conforme as ferramentas descritas na seção de materiais, para garantir a estabilidade das funcionalidades novas e das já existentes.
+
+
+\subsection{Implantação do ambiente institucional na \acrshort{utfpr}}\label{sec:metodos-utfpr-deploy}
+
+Embora, no planejamento inicial, a automação de \textit{deploy} na \acrshort{utfpr} figurasse entre as primeiras necessidades do projeto, verificou-se durante a execução que seria mais prático consolidar previamente boa parte do sistema fora do campus, em especial o esquema do banco de dados, a composição dos serviços em Docker e as funcionalidades centrais, e somente então replicar essa arquitetura no servidor institucional. A ida presencial à \acrshort{utfpr} para aplicar o E-Museu concentrou-se, portanto, nas fases finais do trabalho, quando o repositório já oferecia base estável para publicação.
+
+Nessa etapa tardia, replicou-se no campus a configuração já ensaiada na VPS com \textit{Coolify} (Seção~\ref{sec:materiais-coolify}), instalando o painel na máquina física em que o sistema está hospedado e associando o ramo de desenvolvimento ao ambiente de testes (\textit{staging}), em \url{https://staging.e-museu.gp.utfpr.edu.br/}, e o ramo de produção ao ambiente publicado em \url{https://e-museu.gp.utfpr.edu.br/}.
+
+Por política de segurança institucional, não há acesso remoto ao servidor da \acrshort{utfpr} no sentido de administração direta da máquina; em um primeiro momento, isso exigiu presença no campus para configurar o \textit{Coolify} e os serviços associados. Posteriormente, o painel passou a ser exposto no subdomínio institucional \url{https://coolify.e-museu.gp.utfpr.edu.br/}, de modo que a gestão de projetos Docker, das configurações de implantação e dos \textit{deploys} pudesse ser feita pela interface web do \textit{Coolify} sem deslocamento a cada ajuste rotineiro, mantendo \textit{staging} e produção nos domínios citados acima. As tentativas anteriores de automação de \textit{deploy} e a decisão de publicar esse subdomínio são detalhadas na Seção~\ref{sec:dev-deploy}.
 
 
 \subsection{Experimentações e testes}
 
-Por fim, após o desenvolvimento, serão realizadas etapas de experimentação e testes para validar o funcionamento do sistema. Inicialmente, os testes ocorrerão no ambiente de \textit{staging}, permitindo a verificação das novas implementações em um ambiente controlado e semelhante ao de produção.
-
-Somente após a validação completa, o sistema será implantado em produção no domínio principal. Em seguida, serão realizadas verificações adicionais para assegurar o funcionamento correto de todas as funcionalidades. Caso sejam identificados erros ou inconsistências, o sistema retornará à etapa de desenvolvimento, na qual as correções necessárias serão aplicadas antes de uma nova implantação. 
+Por fim, após a implantação institucional (Seção~\ref{sec:metodos-utfpr-deploy}), foram realizadas etapas de validação no ambiente de \textit{staging}, permitindo verificar as implementações em condições próximas às de produção. Somente após essa validação o sistema foi promovido ao domínio principal. Quando identificados erros ou inconsistências, o fluxo retornava à etapa de desenvolvimento local e correção antes de nova implantação no servidor, em conformidade com o ciclo de \textit{pull requests}, testes automatizados e \textit{deploy} descrito no Capítulo~\ref{cap:desenvolvimento}. 
 
