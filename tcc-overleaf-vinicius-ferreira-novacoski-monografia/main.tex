@@ -43,9 +43,12 @@
 %###################################################
 
 
-% Luiz - pdfa: inclusão do pdfa
-\PassOptionsToPackage{
-	pdfa
+%% hyperref: pdfa tem de estar activo *antes* do pdfx carregar (senão o pdfx faz
+%% \hypersetup{pdfa} tarde e estraga os links do sumário). linktoc=none evita o
+%% bug que imprime "linkbordercolor"/"linkcolor" nos títulos de secção do sumário.
+\PassOptionsToPackage{%
+  pdfa,%
+  linktoc=none,%
 }{hyperref}
 
 %% Classe e opções de documento
@@ -186,20 +189,21 @@
 %% Capítulo introdução - obrigatório
 \include{./capitulos/cap-introducao}%% Comente para remover este item
 
-\include{capitulos/cap-referencial-teorico}
+%% Monografia TCC~2 — ordem alinhada a trabalhos GP_COINT (ex.: Pablo 2025/2; Vinicius Domingues 2024/2)
+\include{./capitulos/cap-trabalhos-relacionados}
 
-\include{capitulos/cap-materiais-e-metodos}
+\include{./capitulos/cap-referencial-teorico}
 
-\include{capitulos/cap-resultados-parciais}
+\include{./capitulos/cap-materiais-e-metodos}
+
+\include{./capitulos/cap-desenvolvimento}
+
+%% Capítulos da fase de projeto (não incluir na monografia final)
+%\include{./capitulos/cap-proposta}
+%\include{./capitulos/cap-resultados-parciais}
 
 %% Capítulo
 %\include{./capitulos/cap-conceitos}%% Comente para remover este item
-
-%% Capítulo
-%\include{./capitulos/cap-trabalhos-relacionados}%% Comente para remover este item
-
-%% Capítulo
-% \include{./capitulos/cap-proposta}%% Comente para remover este item
 
 %% Capítulo
 %\include{./capitulos/cap-metodologia}%% Comente para remover este item

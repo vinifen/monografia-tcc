@@ -1,19 +1,56 @@
-%%%% CAPÍTULO 5 - CONCLUSÕES E PERSPECTIVAS
+%%%% CAPÍTULO — CONSIDERAÇÕES FINAIS
 %%
 \chapter{Considerações Finais}\label{cap:consideracoesfinais}
 
-As atividades realizadas neste trabalho concentraram-se na refatoração e modernização do sistema web do E-Museu \cite{gonzaga2024}, com o objetivo de corrigir limitações técnicas da versão anterior e estabelecer uma base mais sólida para sua evolução. A reorganização do código, a padronização do repositório e a configuração de ambientes com Docker Compose contribuem para criar um ecossistema de desenvolvimento mais estável, previsível e aderente às boas práticas da engenharia de software.
+Este capítulo encerra a monografia: retoma os objetivos em face do que foi realizado, explicita limitações do escopo e indica caminhos de continuidade do E-Museu para trabalhos acadêmicos e técnicos posteriores. O detalhamento das entregas permanece no Capítulo~\ref{cap:desenvolvimento}; a Tabela~\ref{tab:objetivos-resultados} oferece uma visão consolidada.
 
-Essas melhorias estruturais resultarão em um sistema mais robusto, seguro e preparado para receber novas funcionalidades. A adoção de padrões arquiteturais e a integração de testes ampliaram a confiabilidade e facilitaram a manutenção, permitindo que o projeto avance com maior controle e qualidade. Além disso, tais ajustes fortalecem a continuidade da proposta original do E-Museu enquanto plataforma de preservação digital.
 
-Com isso, o trabalho estabelece uma base técnica consistente para futuras expansões, contribuindo diretamente para a evolução do E-Museu como ferramenta educacional, cultural e tecnológica. A partir desse novo alicerce, torna-se possível aprimorar a experiência dos usuários, ampliar recursos e assegurar que o sistema esteja alinhado às demandas contemporâneas de desenvolvimento web e preservação histórica.
+\section{Síntese em relação aos objetivos}\label{sec:conclusao-objetivos}
 
-%A seção de Considerações Finais tem como objetivo apresentar um resumo do que foi abordado na proposta de TCC, além de refletir sobre a importância do trabalho e o que se espera alcançar. Os principais pontos que devem ser abordados nesta seção incluem:
+O objetivo geral deste trabalho consistiu em refatorar e expandir o sistema web do E-Museu, aplicando boas práticas de programação, padrões de projeto e testes automatizados, de modo a melhorar a manutenibilidade e a qualidade do código (Seção~\ref{subsec:objetivoGeral}).
 
-%Resumo dos Objetivos: Recapitulação dos objetivos do TCC, destacando o propósito principal do projeto e as metas que se pretende alcançar.
+% TODO: Redigir em tempo passado, com base na Tabela~\ref{tab:objetivos-resultados}:
+% - recapitular cada objetivo específico;
+% - indicar o que foi plenamente entregue;
+% - mencionar entregas parciais sem repetir o Capítulo~\ref{cap:desenvolvimento}.
 
-%Relevância do Trabalho: Reforço da importância da pesquisa ou do projeto proposto, tanto para o campo de estudo quanto para possíveis aplicações práticas ou inovações tecnológicas.
+Em síntese, o trabalho partiu das limitações da versão anterior \cite{gonzaga2024} e concentrou-se em estabelecer uma base técnica mais organizada para o projeto institucional, conforme documentado no Capítulo~\ref{cap:desenvolvimento}.
 
-%Principal resultado ou impacto esperado: Consideração sobre os resultados que se espera obter com a execução do TCC e o impacto que eles podem ter em um contexto acadêmico, profissional ou social.
 
-%Limitações e desafios: Reflexão sobre as limitações do trabalho e possíveis desafios que podem surgir ao longo da pesquisa ou desenvolvimento do projeto.
+\section{Limitações}\label{sec:conclusao-limitacoes}
+
+% TODO: Ajustar à realidade final do TCC. Exemplos de eixos:
+% - escopo e tempo (um único desenvolvedor, priorização MoSCoW);
+% - validação com usuários finais ou métricas formais de usabilidade não realizadas;
+% - dependência de infraestrutura local na UTFPR (Coolify, acesso presencial);
+% - itens do MoSCoW classificados como Could/Won't na Figura~\ref{fig:moscow};
+% - cobertura de testes ou refatoração ainda incompleta em módulos específicos.
+
+Este trabalho não esgotou todas as possibilidades de evolução do E-Museu. Parte das funcionalidades e melhorias identificadas no levantamento de requisitos foi deliberadamente postergada ou permaneceu fora do escopo deste TCC, em função da priorização adotada e dos recursos disponíveis.
+
+
+\section{Trabalhos futuros e continuidade do E-Museu}\label{sec:conclusao-trabalhos-futuros}
+
+O E-Museu é um projeto de longa duração, vinculado à \acrshort{utfpr} e a iniciativas de extensão relacionadas à preservação da história da informática. O presente trabalho buscou deixar o sistema e o repositório em condições mais sustentáveis para quem der continuidade ao desenvolvimento --- seja em novo Trabalho de Conclusão de Curso, seja em atividades de extensão ou manutenção pelo grupo de pesquisa.
+
+As linhas abaixo indicam direções que podem fundamentar trabalhos futuros. Devem ser revisadas e detalhadas pelo autor com base na priorização MoSCoW (Figura~\ref{fig:moscow}), em \textit{issues} abertas no repositório e em alinhamento com a orientação.
+
+\begin{itemize}
+    \item \textbf{Funcionalidades priorizadas e não concluídas:}
+    % TODO: listar itens Could/Won't do MoSCoW ainda relevantes (ex.: newsletter,
+    % relatórios de acesso, QR Code além de etiquetas, restilização ampla da interface).
+    \item \textbf{Qualidade e confiabilidade:}
+    ampliar a cobertura e os tipos de testes automatizados; consolidar \textit{pipelines} de integração contínua; revisar módulos que permaneçam com maior acoplamento após a refatoração.
+    \item \textbf{Experiência do usuário e acessibilidade:}
+    conduzir avaliação de usabilidade com gestores do acervo e visitantes; aplicar diretrizes de acessibilidade web nas telas públicas e administrativas.
+    \item \textbf{Infraestrutura e operação:}
+    evoluir monitoramento, backups e documentação operacional; reduzir dependência de intervenções presenciais na máquina da UTFPR, quando a política institucional permitir.
+    \item \textbf{Pesquisa e divulgação:}
+    integrar o acervo a outras iniciativas do campus; explorar recursos educacionais (visitas guiadas virtuais, conteúdo multimídia adicional) sem comprometer a manutenção do núcleo já entregue.
+\end{itemize}
+
+% TODO: Parágrafo final reforçando que repositório, wiki, pacote de continuidade
+% (quando descrito no Capítulo~\ref{cap:desenvolvimento}) e código documentado
+% servem de ponto de partida para o próximo desenvolvedor — sem citar pastas externas ao PDF.
+
+Recomenda-se que futuros trabalhos formalizem requisitos e cronograma em conjunto com a orientação, reutilizando a documentação de fluxo de desenvolvimento já produzida \cite{gitflowdoc}, de modo a acumular esforço em funcionalidades e em validação, e não em reorganização básica do projeto.
