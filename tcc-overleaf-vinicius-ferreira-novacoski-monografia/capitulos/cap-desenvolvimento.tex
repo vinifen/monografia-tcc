@@ -6,7 +6,7 @@
 
 \chapter{Desenvolvimento do Sistema}\label{cap:desenvolvimento}
 
-Este capítulo apresenta o desenvolvimento realizado na refatoração e na expansão do sistema web do E-Museu, desde o planejamento até a entrega operacional na \acrshort{utfpr}.
+Este capítulo apresenta o desenvolvimento realizado na refatoração e na implementação de novas funcionalidades no E-Museu, desde o planejamento até a entrega operacional na \acrshort{utfpr}.
 
 
 \section{Dimensão do esforço e dos recursos}\label{sec:dev-esforco}
@@ -59,8 +59,86 @@ Quanto ao servidor da \acrshort{utfpr}, adotou-se inicialmente a suposição de 
 
 \section{Refatoração da aplicação}\label{sec:dev-refatoracao}
 
-% TODO: atualização Laravel/PHP; reorganização de controllers, services e actions;
-% padrões MVC e boas práticas citados no referencial; exemplos pontuais (figuras ou trechos em apêndice).
+A refatoração concentrou-se em atualizar a pilha tecnológica (PHP e Laravel, conforme o Capítulo~\ref{cap:materiais-e-metodos}), reduzir acoplamento nos controladores legados e reorganizar o código segundo boas práticas citadas no referencial (\acrshort{mvc}, \textit{Clean Code} e organização por domínio). Uma das mudanças estruturais mais relevantes foi a adoção de contextos delimitados inspirados no \acrshort{ddd} (Seção~\ref{sec:ref-ddd}).
+
+
+\subsection{Organização por domínios (\acrshort{ddd})}\label{sec:dev-ddd}
+
+Antes da reorganização, grande parte das classes de aplicação permanecia em pastas genéricas (\texttt{app/Http/Controllers}, \texttt{app/Services}, \texttt{app/Models}), o que dificultava localizar regras ligadas ao acervo, à taxonomia ou aos colaboradores. A partir da \textit{issue} de refatoração ``organize the project into domains'' e dos \textit{pull requests} associados (por exemplo, \#10 e \#12 no repositório do projeto), o código passou a espelhar a linguagem do museu: cada domínio concentra modelos Eloquent, serviços, ações, requisições de validação e, quando aplicável, controladores HTTP e \textit{seeders}/\textit{factories} de testes.
+
+Adicionalmente, o vocabulário do sistema foi alinhado ao negócio: o antigo termo técnico \textit{proprietary} (proprietário da peça) foi renomeado para colaborador (\textit{collaborator}), refletindo que as contribuições vêm de participantes externos verificados por e-mail, e não de um único dono do item. Categorias de item e etiquetas também receberam nomes estáveis (\texttt{item\_category}, \texttt{tag\_category}) para evitar ambiguidade com ``seções'' ou ``tags'' genéricas.
+
+A Tabela~\ref{tab:dominios-emuseu} resume os domínios adotados no repositório atual. Entidades de apoio usadas por mais de um contexto (\texttt{Language}, \texttt{Location}) permanecem em \texttt{app/Models} na raiz, com serviço dedicado para localização física das peças; a internacionalização de textos aparece em modelos de tradução por domínio e no enum \texttt{ContentLanguage}.
+
+\newcommand{\camadas}[1]{%
+    \par\vspace{0.35em}%
+    \noindent\textit{Organização no código:}%
+    \begin{itemize}[nosep,leftmargin=1.25em,topsep=2pt,partopsep=0pt]#1\end{itemize}%
+}
+
+\begin{table}[H]
+    \centering
+    \caption{Domínios do E-Museu e principais responsabilidades no código.}
+    \label{tab:dominios-emuseu}
+    \footnotesize
+    \setlength{\tabcolsep}{6pt}
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabularx}{\textwidth}{@{}
+        >{\raggedright\arraybackslash}p{0.14\textwidth}
+        >{\raggedright\arraybackslash}X
+    @{}}
+        \toprule
+        Domínio & Responsabilidade e organização em \texttt{app/} \\
+        \midrule
+        Catalog &
+        Núcleo do acervo: itens, traduções, imagens, componentes, vínculos com etiquetas, categorias de item, \textit{extras} e fluxos públicos de contribuição e de consulta.
+        \camadas{%
+            \item \texttt{Models/Catalog}, \texttt{Services/Catalog} e \texttt{Actions/Catalog};
+            \item \texttt{Http/Controllers/Catalog} (catálogo público);
+            \item \texttt{Http/Controllers/Admin/Catalog} (painel administrativo).
+        } \\
+        Taxonomy &
+        Classificação transversal: etiquetas (\textit{tags}) e categorias de etiqueta, com textos por idioma.
+        \camadas{%
+            \item \texttt{Models/Taxonomy} e \texttt{Services/Taxonomy};
+            \item \texttt{Http/Controllers/Admin/Taxonomy};
+            \item \texttt{Http/Requests/Taxonomy}.
+        } \\
+        Collaborator &
+        Pessoas que contribuem com itens ou \textit{extras}: cadastro, papéis, bloqueio, verificação de e-mail e elegibilidade para o catálogo público.
+        \camadas{%
+            \item \texttt{Models/Collaborator} e \texttt{Services/Collaborator};
+            \item \texttt{Http/Controllers/Catalog/CollaboratorController} (contribuição pública);
+            \item \texttt{Http/Controllers/Admin/Collaborator};
+            \item \texttt{Enums/Collaborator} e mensagens em \texttt{Mail/}.
+        } \\
+        Identity &
+        Identidade administrativa: contas de curadoria, autenticação de \textit{login} e travas de edição concorrente (\textit{locks}) em telas sensíveis.
+        \camadas{%
+            \item \texttt{Models/Identity} e \texttt{Services/Identity};
+            \item \texttt{Http/Controllers/Admin/Identity};
+            \item \texttt{Http/Middleware/Auth};
+            \item \texttt{Console/Commands/Identity}.
+        } \\
+        Admin (IA) &
+        Tradução assistida de conteúdos multilíngues no painel (itens, categorias, etiquetas), com provedores externos de \textit{chat completion}.
+        \camadas{%
+            \item \texttt{Actions/Admin/Ai};
+            \item \texttt{Support/Admin/Ai} e \texttt{Client/Ai};
+            \item \texttt{Http/Controllers/Admin/Ai}.
+        } \\
+        \bottomrule
+    \end{tabularx}
+    \caption*{\textbf{Fonte:} Autoria própria, com base na estrutura do repositório \texttt{e-museu} (versão refatorada). \textbf{Nota:} \texttt{Language} e \texttt{Location} permanecem em \texttt{app/Models/} na raiz; \texttt{StorageProxyController} e \texttt{Support/} tratam infraestrutura transversal.}
+\end{table}
+
+Dentro de cada domínio, a refatoração manteve uma divisão de papéis coerente com o \textit{framework}: controladores finos (principalmente orquestração HTTP), \texttt{Actions} para casos de uso compostos (por exemplo, \texttt{StoreItemContributionAction} e \texttt{RegenerateItemQrCodeAction} no catálogo), \texttt{Services} para regras de aplicação e montagem de dados de visão, e modelos Eloquent para persistência. Validações de entrada ficam em \texttt{Http/Requests} espelhando o mesmo agrupamento (\texttt{Catalog}, \texttt{Taxonomy}, \texttt{Collaborator}, \texttt{Admin/...}).
+
+No domínio Catalog, os modelos centrais são: \texttt{Item} e \texttt{ItemTranslation} (peça e textos por idioma), \texttt{ItemImage} (fotos e QR), \texttt{ItemComponent} (subpartes da peça), \texttt{ItemTag} (associação item--etiqueta), \texttt{ItemCategory} e \texttt{ItemCategoryTranslation}, além de \texttt{Extra} e \texttt{ExtraTranslation} (contribuições complementares da comunidade). No domínio Taxonomy: \texttt{Tag}, \texttt{TagTranslation}, \texttt{TagCategory} e \texttt{TagCategoryTranslation}. Em Collaborator: o modelo \texttt{Collaborator} concentra nome, e-mail, papel e estado de verificação. Em Identity: \texttt{Admin} e \texttt{Lock}.
+
+A camada de dados de testes e carga inicial segue a mesma lógica: \textit{factories} e \textit{seeders} em subpastas \texttt{Catalog}, \texttt{Taxonomy}, \texttt{Collaborator} e \texttt{Identity}, com mapeamento explícito em \texttt{config/factory\_model\_map.php} para o Laravel resolver corretamente modelo e \textit{factory} após a mudança de \textit{namespace}.
+
+% TODO: atualização Laravel/PHP (detalhes de migração de versão); exemplos pontuais de refatoração de controladores (figuras ou trechos em apêndice).
 
 
 \section{Testes automatizados e qualidade de código}\label{sec:dev-testes}

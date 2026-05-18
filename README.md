@@ -5,26 +5,88 @@ Repositório de apoio à **monografia de TCC (Trabalho de Conclusão de Curso 2)
 ## Para assistentes de IA (Cursor)
 
 - **Regra activa:** `.cursor/rules/tcc-monografia.mdc` (`alwaysApply: true`) — lê-a **em conjunto** com este `README.md` antes de propor mudanças largas.
-- **Ordem sugerida:** `README.md` (este ficheiro) → regra em `.cursor/rules/` → pastas de consulta indicadas na secção “Pastas de apoio”.
+- **Etapa actual do texto:** ver secção [**Evolução da redação (monografia TCC 2)**](#evolução-da-redação-monografia-tcc-2) — indica em que capítulos estamos a trabalhar e o que já foi feito neste repositório.
+- **Histórico de alterações:** este repo tem **Git**; antes de editar capítulos longos, consultar `git log` e `git diff` (comandos na mesma secção) para não contradizer mudanças recentes.
+- **Ordem sugerida:** `README.md` (este ficheiro) → regra em `.cursor/rules/` → secção “Evolução da redação” → pastas de consulta em “Pastas de apoio”.
 - **Onde escrever o PDF do TCC:** **apenas** `tcc-overleaf-vinicius-ferreira-novacoski-monografia/`; o resto é **contexto e evidências**.
 - **Transcrições de conversas:** índice em [`chats/README.md`](chats/README.md).
 - **Compilar o LaTeX:** Overleaf, `latexmk` ou distribuição TeX local — o assistente deve manter o documento **compilável** quando editar `.tex` / `.bib`.
 - **Autonomia do PDF:** o texto entregue deve bastar a quem só lê a monografia. Material fora de `tcc-overleaf-vinicius-ferreira-novacoski-monografia/` é **insumo** (síntese no LaTeX), **não** substituto de redacção nem referência directa ao “exterior” no corpo; excepções (citações, anexos) entram **copiadas ou incorporadas** na pasta LaTeX. Detalhe: `.cursor/rules/tcc-monografia.mdc` secção 2.1.
 - **Padrão UTFPR + colegas (GP_COINT):** ao propor estrutura, tom ou formalismos, contrastar com o **template já usado** em `tcc-overleaf-vinicius-ferreira-novacoski-monografia/` e com **trabalhos de referência recentes** em `referencias/` (lista na secção **Pastas de apoio → `referencias/`**). O objectivo é **alinhar expectativas da banca** (ABNT, capítulos, prosa académica) ao que é habitual no curso — **sem copiar** conteúdo alheio.
 
-O documento principal descreve a **refatoração do sistema web do E-Museu**: trabalho acadêmico que acompanha e formaliza a evolução do projeto de software **E-Museu** (museu virtual de informática), incluindo decisões técnicas, arquitetura, implementação e resultados, em formato exigido pela instituição (LaTeX, normas UTFPR/ABNT).
+O documento principal tem por título **Refatoração e Implementação de Novas Funcionalidades no E-Museu**: trabalho acadêmico que acompanha e formaliza a evolução do projeto de software **E-Museu** (museu virtual de informática), incluindo decisões técnicas, arquitetura, implementação e resultados, em formato exigido pela instituição (LaTeX, normas UTFPR/ABNT).
 
 - **Autor:** Vinicius Ferreira Novacoski  
-- **Título:** *Refatoração do Sistema Web do E-Museu* (*Refactoring of the E-museu Web System*)  
+- **Título:** *Refatoração e Implementação de Novas Funcionalidades no E-Museu* (*Refactoring and Implementation of New Features in the E-Museu*)  
 - **Orientação:** Dra. Sediane Carmem Lunardi Hernandes  
 - **Coorientação:** Dr. Diego Marczal  
 - **Esforço:** o trabalho no conjunto (implementação do E-Museu, infraestrutura — por exemplo Coolify —, documentação e atividades do TCC) levou **mais de 250 horas**, segundo o registo do autor (inclui o diário em `notion-historico/notion-tcc-historico.md`).
 
 Este repositório **não substitui** o código-fonte publicado no GitHub; serve para **redação**, **referências** e **material de consulta** enquanto se escreve a monografia. A implementação em que o TCC se apoia — o **E-Museu desenvolvido pelo autor** — está refletida na cópia local **`e-museu-v2_0_0-ultima-versao-viniciusfn/`** (projeto principal de software; ver secção abaixo).
 
-**Estado actual (foco do repositório):** o **software do E-Museu já está finalizado** (funcionalidades, deploy, entregas à UTFPR). A parte de **texto do projeto** ligada ao trabalho de curso — proposta, capítulos iniciais e material já produzido no LaTeX — **já foi feita** e vive em **`tcc-overleaf-vinicius-ferreira-novacoski-monografia/`**. O que falta para concluir a disciplina é a **monografia do TCC** (Trabalho de Conclusão de Curso 2): desenvolver, rever e fechar o **texto académico** no mesmo projeto Overleaf/LaTeX, com base nas evidências deste repositório. **A fase actual é a do texto**, não a de novas implementações no código.
+**Estado actual (foco do repositório):** o **software do E-Museu já está finalizado** (funcionalidades, deploy, entregas à UTFPR). A parte de **texto da fase projeto** (proposta, capítulos iniciais) **já existia** no LaTeX e foi **reorganizada para a estrutura da monografia TCC 2** (ver [evolução abaixo](#evolução-da-redação-monografia-tcc-2)). O trabalho corrente neste repositório é **redigir e fechar** os capítulos da monografia — com **ênfase recente em Materiais e Métodos** e **redacção iniciada em Desenvolvimento e Conclusões**. **A fase actual é a do texto**, não a de novas implementações no código.
 
 **Intenção perante a banca / orientação:** o autor pretende que o texto **deixe claro o trabalho realizado** — o que foi feito, com que rigor e que suporte (histórico GitHub, diário, deploy, decisões), para os professores perceberem **a dimensão e a exigência** do projeto, **sem exageros** nem tom publicitário: factos verificáveis, linguagem académica e moderação nos adjetivos.
+
+## Evolução da redação (monografia TCC 2)
+
+Registo do **processo neste repositório** (`e-museu-tcc-escrita`), para o autor e para assistentes de IA saberem **em que etapa do texto estamos**. O histórico do **código** do E-Museu continua no GitHub da aplicação; aqui o Git documenta sobretudo **LaTeX, bibliografia e apoio à redacção**.
+
+### O que já passámos
+
+1. **Arranque do repo de escrita** (`b02c10c`, 2026-05-15): concentração do projeto LaTeX e do material de consulta num único sítio.
+2. **De projeto → monografia** (`23c31d9`, 2026-05-17): actualização do texto da **fase projeto** para a **estrutura da monografia** — `main.tex` com ordem alinhada a trabalhos GP_COINT (introdução, trabalhos relacionados, referencial, materiais e métodos, desenvolvimento, conclusões); criação/expansão de `cap-desenvolvimento.tex` e `cap-conclusoes.tex`; remoção de `cap-resultados-parciais.tex`; capítulos só de projeto (`cap-proposta`, etc.) **comentados** no `main.tex` para não entrarem no PDF final.
+3. **Materiais e Métodos** (`eee4ada` e revisões seguintes, inclusive em sessão com IA): expansão forte de `cap-materiais-e-metodos.tex` (tecnologias, Docker, Coolify, Git/GitFlow, ferramentas de qualidade, etc.), entradas em `main.bib`, ajustes de tom e formatação (ex.: ramos `main`/`develop`, ambientes de *staging* e produção).
+4. **Agora:** **Desenvolvimento** e **Conclusões** em redacção activa; introdução, trabalhos relacionados e referencial com base da fase anterior, sujeitos a revisão quando o núcleo estiver fechado.
+
+### Etapa actual por capítulo
+
+Ordem no PDF (`main.tex`):
+
+| Capítulo | Ficheiro | Estado (Maio/2026) |
+|----------|----------|-------------------|
+| Introdução | `capitulos/cap-introducao.tex` | Base herdada; revisões pontuais |
+| Trabalhos relacionados | `capitulos/cap-trabalhos-relacionados.tex` | Na estrutura monografia; pode alargar |
+| Referencial teórico | `capitulos/cap-referencial-teorico.tex` | Idem |
+| **Materiais e Métodos** | `capitulos/cap-materiais-e-metodos.tex` | **Muito trabalhado recentemente; ainda em polimento** |
+| **Desenvolvimento** | `capitulos/cap-desenvolvimento.tex` | **Em redacção** |
+| **Conclusões** | `capitulos/cap-conclusoes.tex` | **Em redacção** |
+| Só fase projeto | `cap-proposta.tex`, `cap-conceitos.tex`, … | Fora do `main.tex` activo |
+
+**Para a IA:** se o autor não indicar o capítulo, assumir foco em **Materiais e Métodos** (revisão), **Desenvolvimento** e **Conclusões**. Não reestruturar `main.tex` nem reactivar capítulos de projeto sem pedido explícito.
+
+### Consultar a evolução pelo Git
+
+```bash
+# Visão geral dos commits deste repo
+git log --oneline
+
+# Histórico só dos capítulos LaTeX
+git log --oneline -- tcc-overleaf-vinicius-ferreira-novacoski-monografia/capitulos/
+
+# O que mudou desde o último commit
+git diff
+git diff -- tcc-overleaf-vinicius-ferreira-novacoski-monografia/capitulos/cap-materiais-e-metodos.tex
+
+# Detalhe de um commit (substituir HASH)
+git show HASH --stat
+git show HASH -p -- tcc-overleaf-vinicius-ferreira-novacoski-monografia/
+```
+
+**Commits de referência** (até Maio/2026):
+
+| Hash | Mensagem | Conteúdo principal |
+|------|----------|-------------------|
+| `b02c10c` | start | Criação do repositório de escrita |
+| `0b1af28` | Comeback | Retomada do trabalho no repo |
+| `23c31d9` | Estruturacao monografia | Projeto → estrutura monografia; desenvolvimento e conclusões |
+| `eee4ada` | melhora em materis e metodos | Cap. materiais/métodos, bib, desenvolvimento |
+
+**Boas práticas:** o autor deve fazer **commits com mensagens claras** ao fechar blocos de capítulo (ex.: “cap-desenvolvimento: seção deploy”, “cap-materiais: revisão Coolify”); a IA deve **ler `git log` / `git diff`** ao retomar uma conversa longa ou antes de reescrever secções extensas.
+
+*Actualizar esta secção quando mudar a prioridade (ex.: passar a Resultados, revisão global, pré-texto).*
+
+---
 
 ## Repositórios no GitHub (E-Museu e documentação de workflow)
 
