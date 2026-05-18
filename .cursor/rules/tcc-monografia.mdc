@@ -1,0 +1,91 @@
+---
+description: TCC E-Museu — PDF autónomo no LaTeX; fora da pasta = insumos para síntese; evidenciar trabalho com moderação; software concluído.
+alwaysApply: true
+---
+
+# TCC E-Museu — guia para o assistente (Cursor)
+
+Lê primeiro o **`README.md`** na raiz deste repositório: lá estão o mapa de pastas, links GitHub, fase do trabalho, a secção **“Evolução da redação (monografia TCC 2)”** (etapa actual por capítulo) e como consultar o histórico via **Git**; avisos de sensibilidade de dados.
+
+---
+
+## 1. Situação do trabalho (não confundir)
+
+| | |
+|--|--|
+| **Software E-Museu** | **Concluído.** Código de referência: `e-museu-v2_0_0-ultima-versao-viniciusfn/`; histórico online: GitHub (tabela no `README.md`). |
+| **Texto da fase “projeto”** (proposta, primeiros capítulos no LaTeX) | **Já produzido** dentro de `tcc-overleaf-vinicius-ferreira-novacoski-monografia/`. |
+| **O que falta para a disciplina** | **Monografia do TCC 2** — desenvolver, alinhar e fechar o **texto académico** até ao PDF final na UTFPR. **Fase actual = texto**, não feature nova na app. |
+
+---
+
+## 2. Onde podes editar (único destino do PDF oficial)
+
+- **Pasta:** `tcc-overleaf-vinicius-ferreira-novacoski-monografia/` (`main.tex`, `variaveis.tex`, `configuracoes.tex`, `main.bib`, `capitulos/`, `PreTexto/`, `PosTexto/`, outros `.tex` do projeto).
+- **Coerência:** se o texto tiver de ficar alinhado ao que está documentado no repo (PRs, issues, diário, chats, código), podes alterar **vários ficheiros** nessa pasta **na mesma** intervenção.
+- **`utfpr.cls`:** **não** alterar salvo pedido **explícito** do utilizador (template institucional).
+- **Código da aplicação** (`e-museu-v2_…`, etc.): **não** assumas implementação ou refactors **salvo** o utilizador pedir explicitamente; o foco predefinido é o **PDF do TCC**.
+
+### Autonomia do documento (LaTeX “desligado” do exterior)
+
+Trata `tcc-overleaf-vinicius-ferreira-novacoski-monografia/` como o **único projecto de entrega**: para quem lê só o **PDF**, o texto deve bastar — **não** se pressupõe acesso a Notion, Discord, `chats/`, `all-github-docs/`, nem ao resto deste repositório.
+
+- Tudo **fora** dessa pasta é **material de apoio e fonte de facto** para o autor e para a IA **redigirem e sintetizarem** o que vai **para dentro** do LaTeX. O corpo do manuscrito **não** deve depender de referências directas do tipo “num chat foi dito…” ou “ver ficheiro X na pasta Y” como substituto de explicação académica.
+- A redacção correcta é: **integrar** o conteúdo em prosa (e, quando fizer sentido, bibliografia ou anexos oficiais), **não** apontar o leitor para conversas ou exports como se o PDF fosse um índice ao exterior.
+- **Se** o autor quiser **citacão literal, anexo ou prova** que hoje só existe fora da pasta LaTeX, isso deve ser **trazido para dentro** de `tcc-overleaf-vinicius-ferreira-novacoski-monografia/` (por exemplo figura, `PosTexto/`, PDF anexo) — o entregável fica **um conjunto único** “sem acesso ao exterior” do ponto de vista da banca.
+
+---
+
+## 3. Material de consulta (insumos — não vão parar ao PDF como “ponte” ao exterior)
+
+O que está **fora** de `tcc-overleaf-vinicius-ferreira-novacoski-monografia/` serve para a IA **informar-se e sintetizar**; o que vai ao PDF é o que **escreves dentro** do LaTeX, em tom académico, **sem** obrigar o leitor a abrir chats, Notion ou pastas deste repo. (Ver secção **2.1** sobre autonomia.)
+
+| Necessidade | Onde ir |
+|-------------|---------|
+| Mapa geral, URLs, fase do trabalho | `README.md` |
+| O que foi feito no GitHub (descrições, datas, números de PR/issue) | `all-github-docs/pull-requests/`, `issues/`, `wiki/` |
+| Workflow GitFlow (**perfil *full*** do autor) | `all-github-docs/wiki/Gitflow-Documentation.md` + repo [vinifen/gitflow-documentation](https://github.com/vinifen/gitflow-documentation) |
+| Diário de horas / dia a dia | `notion-historico/notion-tcc-historico.md` |
+| Índice de conversas (orientação / Discord) | `chats/README.md` |
+| Orientadora (VM, UTFPR, deploy) | `chats/sediane/*.md` |
+| Orientadora + coorientador (proposta, feedback Diego, livros) | `chats/server-tcc-vinicius/*.md` |
+| Trabalhos de referência (formato, literatura) | `referencias/` (`.md` extraídos com `pdftotext` + `original-pdfs/`) — ver **`README.md`** (secção `referencias/`): exemplos **recentes** de colegas GP_COINT (p.ex. monografias 2025/2 em `.md` + PDF, projeto 2024/2) para **calibrar** capítulos, tom e exigência **junto** do template UTFPR em `tcc-overleaf-vinicius-ferreira-novacoski-monografia/`; **não** copiar conteúdo alheio |
+| Precisão técnica (ficheiros, fluxos) | `e-museu-v2_0_0-ultima-versao-viniciusfn/` |
+| “Antes vs depois” / legado | `e-museu-tankensho-primeira-versao-feita/` |
+| Coolify, dump SQL, backups, pen drive UTFPR | `secret-e-museu-utfpr-gp/` — **não inventar** infra; conteúdos podem ser sensíveis (ver `README.md`). |
+
+**Chats:** índice em `chats/README.md`. Transcrições vêm **sanitizadas**; usam-se para **informar a redacção**, **não** para o corpo do PDF depender delas nem para citar conversas como fonte “externa” visível ao leitor — **sintetiza** no LaTeX (cf. secção **2.1**). **Não** uses chat como substituto dos PDFs oficiais entregues à UTFPR.
+
+---
+
+## 4. Tom e objectivo perante orientação / banca
+
+- O autor quer **mostrar com clareza o que foi feito** e que o leitor perceba a **dimensão e a exigência** do trabalho, **com evidências** (PRs, issues, wiki, diário, infra, tempo quando citável).
+- **Sem exagerar:** nada de marketing, superlativos vazios ou afirmações sem suporte nas fontes acima.
+- Preferir **factos + exemplos** (módulos, integrações, ambientes, iterações) a frases genéricas do tipo “foi muito difícil”.
+
+---
+
+## 5. Rigor e estilo
+
+- Segue o pedido **concreto** da mensagem (capítulo, secção, revisão, etc.).
+- **Não inventes** funcionalidades, datas, métricas ou decisões; se faltar dado, **pergunta** ou indica *a confirmar pelo autor*.
+- **Português** no corpo, salvo secções que o template ou o utilizador exijam noutra língua (ex.: abstract em inglês).
+- **Não uses travessão** no texto da monografia: evita `---` em LaTeX (sinal tipográfico —) e o carácter — no corpo dos capítulos, resumo e considerações finais. Para incisos ou contraste, prefere vírgulas, ponto e vírgula, dois-pontos ou parênteses. (Travessão em comentários LaTeX ou em ficheiros de regra/README do repo não se aplica a esta proibição.)
+- Mantém **convenções do template UTFPR** e dos `.tex` já existentes (comandos, estrutura). Quando o utilizador pedir alinhamento de “padrão de curso”, contrasta com **`referencias/*.md`** (especialmente entradas **recentes** indicadas no `README.md`) **e** com o próprio projeto LaTeX, com coerência institucional e originalidade do texto do autor.
+
+---
+
+## 6. Escopo de alterações neste repositório
+
+- **Fora** de `tcc-overleaf-vinicius-ferreira-novacoski-monografia/`: mudanças **mínimas** e só se o utilizador pedir (ex.: actualizar `README.md`, exportações em `all-github-docs/`); **evita** refactors em `e-museu-v2_…` sem pedido.
+- **Dentro** da pasta LaTeX: podes tocar em **todos** os ficheiros relevantes quando a coerência do documento o exigir; **não** apagues comentários úteis do LaTeX sem necessidade.
+
+---
+
+## 7. GitHub (fonte online)
+
+- Upstream: https://github.com/e-museu-utfpr-gp/e-museu  
+- Fork do autor: https://github.com/vinifen/e-museu-2.1.0-beta  
+
+Mais links: ver tabela no `README.md`.

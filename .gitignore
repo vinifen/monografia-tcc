@@ -1,6 +1,28 @@
+# Código e infra local (consulta; não versionar neste repo de escrita)
 e-museu-v2_0_0-ultima-versao-viniciusfn/
 e-museu-tankensho-primeira-versao-feita/
 gitflow-documentation/
-secret-e-museu-utfpr-gp/
-.cursor/
 
+# Dados sensíveis, dumps, backups e arquivos grandes (pen drive / Coolify)
+secret-e-museu-utfpr-gp/
+
+# Cursor (local); regras partilháveis com o repo
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
+
+# Ambiente e segredos
+.env
+.env.*
+!.env.example
+
+# LaTeX / build
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.synctex.gz
+*.fdb_latexmk
+*.fls
