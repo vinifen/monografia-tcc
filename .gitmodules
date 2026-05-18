@@ -1,0 +1,9 @@
+[submodule "gitflow-documentation"]
+	path = gitflow-documentation
+	url = git@github.com:vinifen/gitflow-documentation.git
+[submodule "e-museu-v2_0_0-ultima-versao-viniciusfn"]
+	path = e-museu-v2_0_0-ultima-versao-viniciusfn
+	url = git@github.com:e-museu-utfpr-gp/e-museu.git
+[submodule "e-museu-tankensho-primeira-versao-feita"]
+	path = e-museu-tankensho-primeira-versao-feita
+	url = git@github.com:tankesho/e-museu.git
