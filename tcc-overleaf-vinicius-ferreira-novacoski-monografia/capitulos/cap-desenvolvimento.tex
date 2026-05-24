@@ -6,23 +6,23 @@
 
 \chapter{Desenvolvimento do Sistema}\label{cap:desenvolvimento}
 
-Este capítulo apresenta o desenvolvimento realizado na refatoração e na implementação de novas funcionalidades no E-Museu. O texto segue, na medida do possível, a ordem cronológica das entregas no repositório: planejamento e versionamento; infraestrutura e atualização da pilha; refatoração e funcionalidades; testes; e, por último, a implantação institucional na \acrshort{utfpr}.
+Este capítulo apresenta o desenvolvimento realizado na refatoração e na implementação de novas funcionalidades no E-Museu. O texto organiza-se por frentes de trabalho (planejamento e versionamento; infraestrutura; refatoração; testes; funcionalidades; atualização tardia da pilha; implantação na \acrshort{utfpr}), o que em alguns trechos afasta-se da ordem estrita do calendário quando duas frentes avançaram em paralelo no repositório.
 
 
 \section{Dimensão do esforço e dos recursos}\label{sec:dev-esforco}
 
 O desenvolvimento descrito neste capítulo demandou investimento continuado de tempo e de recursos financeiros do autor, acompanhados de forma sistemática para estimar a magnitude do trabalho.
 
-Quanto ao tempo, o desenvolvimento teve início em dezembro de 2025 e conclusão em maio de 2026. Nesse intervalo, dedicou-se cerca de 250~horas ao conjunto das atividades ligadas ao E-Museu e a este TCC (implementação, infraestrutura, documentação, deslocamentos à \acrshort{utfpr} e redação da monografia). O registro foi feito diariamente na ferramenta descrita na Seção~\ref{sec:materiais-notion}, com a descrição das tarefas realizadas e da duração de cada sessão.
+Quanto ao tempo, o desenvolvimento começou em dezembro de 2025 e terminou em maio de 2026. O trabalho continuou também nas férias, com sessões regulares de implementação, infraestrutura e redação, sem longas pausas entre uma etapa e outra. Nesse intervalo, dedicou-se cerca de 250~horas ao conjunto das atividades ligadas ao E-Museu e a este TCC (implementação, infraestrutura, documentação, deslocamentos à \acrshort{utfpr} e redação da monografia). O registro foi feito diariamente na ferramenta descrita na Seção~\ref{sec:materiais-notion}, com a descrição das tarefas realizadas e da duração de cada sessão.
 
-Quanto aos custos, o autor despendeu aproximadamente R\$\,400,00 ao longo do percurso do projeto. Esse montante inclui, entre outros itens: assinatura do \textit{Cursor}; hospedagem da VPS na DigitalOcean para ensaios com \textit{Coolify}; deslocamentos ao campus da \acrshort{utfpr} para implantação e manutenção do servidor; aquisição de pen drive para o pacote de continuidade entregue à orientação; e licença do Overleaf na disciplina de TCC~1, quando o serviço não era disponibilizado gratuitamente pelos professores. Esses recursos complementaram a infraestrutura principal mantida na universidade e viabilizaram as entregas descritas nas seções seguintes.
+Quanto aos custos, o autor despendeu aproximadamente R\$\,400,00 ao longo do percurso do projeto. Esse montante inclui, entre outros itens: assinatura do \textit{Cursor}; hospedagem da VPS na DigitalOcean para ensaios com \textit{Coolify}; deslocamentos ao campus da \acrshort{utfpr} para implantação e manutenção do servidor; aquisição de pen drive para o pacote de continuidade entregue à orientação; e licença do Overleaf na disciplina de TCC~1, quando o serviço não era disponibilizado gratuitamente pelos professores.
 
 
 \section{Levantamento de requisitos e priorização}\label{sec:dev-requisitos}
 
 O levantamento de requisitos constituiu a primeira etapa do trabalho. Os requisitos foram identificados principalmente a partir das observações da orientadora Dra. Sediane Carmem Lunardi Hernandes, que apontou, no sistema E-Museu, a necessidade de aprimoramentos na estrutura do código, bem como a ausência de testes automatizados, evidenciando a demanda por refatoração e pelo desenvolvimento de novas funcionalidades.
 
-Após discussões e alinhamentos, os requisitos receberam ajustes a partir das contribuições do coorientador Dr. Diego Marczal e dos professores Me. Dênis Lucas Silva e Dr. Emerson André Fedechen, especialmente durante a primeira banca, o que permitiu um refinamento mais preciso e alinhado aos objetivos centrais do trabalho.
+Após discussões e alinhamentos, os requisitos receberam ajustes a partir das contribuições do coorientador Dr. Diego Marczal e dos professores Me. Dênis Lucas Silva e Dr. Emerson André Fedechen, especialmente durante a primeira banca do TCC~1, o que permitiu um refinamento mais preciso e alinhado aos objetivos centrais do trabalho.
 
 Com os requisitos definidos, foi aplicada a técnica de priorização MoSCoW, com o objetivo de direcionar o desenvolvimento para as funcionalidades de maior impacto no sistema, otimizando o uso do tempo, esforço e recursos disponíveis. O resultado dessa priorização é apresentado na Figura~\ref{fig:moscow}.
 
@@ -37,54 +37,105 @@ Com os requisitos definidos, foi aplicada a técnica de priorização MoSCoW, co
 
 \section{Organização do repositório e fluxo de desenvolvimento}\label{sec:dev-gitflow}
 
-\subsection{Documentação do Gitflow e convenções}
+Esta seção descreve como o código do E-Museu foi versionado no \textit{GitHub} durante a atualização do sistema. O núcleo do trabalho foi o repositório da aplicação (refatoração, infraestrutura, funcionalidades e implantação). Perto do encerramento dessa atualização, o autor consolidou, em repositório à parte, a documentação reutilizável do \textit{Gitflow} \cite{gitflowdoc}: um produto extra, distinto do software do museu, que pretende empregar e aperfeiçoar em outros projetos. As seções seguintes deste capítulo tratam das modificações no projeto em si; aqui o foco é exclusivamente repositórios, convenções aplicadas e essa documentação paralela.
 
-Para garantir um fluxo de desenvolvimento consistente e devidamente documentado, foi realizada, previamente ao início da implementação, uma elaboração completa da documentação referente ao Gitflow, convenções de \textit{commits}, gestão de \textit{issues} e demais práticas relacionadas ao versionamento. Toda essa documentação está disponível no repositório oficial do projeto \cite{gitflowdoc}.
+\subsection{Repositórios no \textit{GitHub} e histórico de entregas}\label{sec:dev-repos-github}
 
-No E-Museu utilizou-se desde o início o perfil \textit{full}, o modelo original da documentação: ramificações auxiliares no formato \texttt{@vinifen/<tipo>/<número-da-issue>/<descricao-curta>} (por exemplo, \texttt{@vinifen/feat/28/items-multiple-imagens} e \texttt{@vinifen/test/57/all-tests}), \textit{commits} com tipo e emoji no título (como \texttt{✨ feat: multiple images on items}), \textit{issues} e \textit{pull requests} vinculados por referência cruzada e \textit{templates} completos de contribuição. As ramificações de longa duração \texttt{main} (produção) e \texttt{develop} (\textit{staging}) concentram integrações estáveis; correções urgentes seguem o fluxo de \textit{hotfix} descrito na documentação.
+O desenvolvimento no \textit{GitHub} começou com um \textit{fork} do projeto original descrito por \citeonline{gonzaga2024} para um repositório próprio do autor \cite{emuseurepo}. Um \textit{fork} é uma cópia ligada ao original, mas com histórico e alterações independentes; assim foi possível refatorar o sistema e implementar novas funcionalidades sem alterar o repositório legado.
 
-Mais adiante, o repositório \cite{gitflowdoc} passou a oferecer também o perfil \textit{simple}, com a mesma topologia de ramos, porém com nomenclatura, mensagens de \textit{commit} e \textit{templates} mais enxutos. A inclusão respondeu à percepção, ao longo do próprio desenvolvimento do E-Museu, de que o perfil \textit{full} favorece a rastreabilidade, mas pode não fazer sentido em todos os projetos; o \textit{simple} preserva o \textit{Gitflow} com menos cerimônia, para reutilização futura da documentação. O E-Museu não migrou para esse perfil e manteve o \textit{full} até o encerramento do trabalho.
+Quase todo o trabalho descrito neste capítulo ocorreu nesse repositório pessoal, com ramificações auxiliares integradas em \texttt{develop} (\textit{staging}) e, quando estável, em \texttt{main} (produção). Desde o primeiro \textit{pull request} após o \textit{fork}, adotou-se o perfil \textit{full} de convenções (detalhadas na subseção seguinte): ramos no formato \texttt{@vinifen/}\allowbreak\texttt{tipo/}\allowbreak\texttt{número-da-issue/}\allowbreak\texttt{nome-curto}, \textit{commits} com tipo e emoji, \textit{issues} e \textit{pull requests} com \textit{templates} completos e referência cruzada entre tarefa, ramo e histórico. Essas regras foram aplicadas no dia a dia da atualização do E-Museu, e não apenas descritas por escrito depois do fato.
 
-\subsection{Criação do repositório e versionamento}
+O histórico de \textit{pull requests} reflete a ordem das frentes de trabalho: em janeiro de 2026, concentrou-se a infraestrutura (Docker, \texttt{run}, \textit{Coolify} na VPS e versões \textit{beta} até a \texttt{2.0.0-beta}); em seguida vieram ferramentas de qualidade, integração contínua e, mais tarde, novos saltos de \textit{framework}; depois a reorganização por domínios, as funcionalidades de catálogo e a ampliação dos testes; por fim, a implantação na \acrshort{utfpr}. Cada entrega foi revisada antes da promoção para \texttt{develop} e, quando aplicável, para \texttt{main}, com os trabalhos de testes e de análise estática no \textit{GitHub Actions} descritos no Capítulo~\ref{cap:materiais-e-metodos} como critério mínimo de aceitação.
 
-O repositório do E-Museu foi criado a partir de um \textit{fork}, cópia independente do projeto existente, permitindo evoluir separadamente da primeira versão descrita por \cite{gonzaga2024} \cite{emuseurepo}. A implementação no \textit{fork} iniciou pela infraestrutura em containers (Seção~\ref{sec:dev-infra}), e não pela publicação no servidor da universidade.
+Perto do fim da atualização do E-Museu, por iniciativa do autor, foram criados a organização do projeto no \textit{GitHub} e o repositório institucional \cite{emuseuorgrepo}, também por \textit{fork}, desta vez do repositório de desenvolvimento do autor e não do legado de \citeonline{gonzaga2024}. A passagem consistiu em concentrar o histórico já produzido na conta da organização \texttt{e-museu-utfpr-gp}, onde o sistema passou a ficar antes e durante a implantação na \acrshort{utfpr}. Ou seja: primeiro o \textit{fork} do legado para o repositório do autor; depois meses de desenvolvimento com o fluxo acima; por último o \textit{fork} desse repositório para o da organização.
 
-O histórico de integrações no \textit{GitHub} acompanha essa sequência: os primeiros \textit{pull requests} no \textit{fork}, ainda em janeiro de 2026, trataram de Docker Compose, script \texttt{run} e preparação para o \textit{Coolify}; em seguida vieram a atualização da pilha (\acrshort{php}/Laravel), ferramentas de qualidade e integração contínua; depois a reorganização por domínios, as funcionalidades de catálogo e a ampliação dos testes; por fim, \textit{releases} e a implantação na \acrshort{utfpr}. Cada entrega foi revisada antes da promoção para \texttt{develop} e, quando aplicável, para \texttt{main}, com a pipeline descrita no Capítulo~\ref{cap:materiais-e-metodos} como critério mínimo de aceitação.
+\subsection{Documentação do \textit{Gitflow} como produto paralelo}\label{sec:dev-gitflow-doc}
+
+O repositório dedicado ao fluxo \cite{gitflowdoc} não antecedeu a implementação no E-Museu. Durante a maior parte da atualização, as convenções do perfil \textit{full} foram seguidas diretamente no repositório da aplicação (wiki do projeto, \textit{templates} no \textit{GitHub} e prática diária de ramos e \textit{commits}). Só depois dessa experiência, já com dezenas de \textit{pull requests} integrados e com percepção do que funcionava ou pesava na rotina, o autor reuniu e publicou a documentação formal no repositório \textit{gitflow-documentation}, incluindo a versão 2.0.0 com dois perfis orientativos:
+
+\begin{itemize}
+    \item \textit{Perfil full} (o usado no E-Museu): prefixo de autor no ramo (\texttt{@vinifen/}), tipo da tarefa (\texttt{feat}, \texttt{test}, entre outros), número da \textit{issue} e descrição curta; \textit{commits} com tipo e emoji (por exemplo, \textit{feat: multiple images on items}); \textit{issues} e \textit{pull requests} com \textit{templates} completos; ramos permanentes \texttt{main} e \texttt{develop}, com \textit{release} e \textit{hotfix} quando necessário. Exemplos no repositório do museu: \texttt{@vinifen/feat/28/}\allowbreak\texttt{items-multiple-imagens} e \texttt{@vinifen/test/57/}\allowbreak\texttt{all-tests}.
+    \item \textit{Perfil simple}: mesma topologia de ramos, com nomenclatura \texttt{tipo/}\allowbreak\texttt{número/}\allowbreak\texttt{nome}, mensagens \texttt{tipo: descrição} sem emoji e \textit{templates} mais enxutos, para projetos em que o perfil \textit{full} seria excessivamente burocrático.
+\end{itemize}
+
+Trata-se de um trabalho extra em relação ao objetivo central do TCC (o E-Museu em si), mas útil como registro reutilizável: o autor pretende adotar e refinar esse material em outros projetos, sem obrigar o perfil \textit{full} quando o contexto for mais enxuto. No museu virtual o perfil \textit{full} foi mantido até o encerramento, pela rastreabilidade entre ramo, \textit{issue} e histórico de integração e pelo apoio à redação desta monografia. A documentação externa pode evoluir (novos exemplos, ajustes nos \textit{templates}, revisão do perfil \textit{simple}) independentemente das \textit{releases} do E-Museu.
 
 
 \section{Infraestrutura inicial e ambientes de desenvolvimento}\label{sec:dev-infra}
 
-Após o levantamento de requisitos e a definição do fluxo no repositório, a primeira frente de implementação no \textit{fork} concentrou-se em infraestrutura e em modernização da base herdada de \cite{gonzaga2024}, ainda antes das refatorações amplas por domínio e das funcionalidades de catálogo descritas adiante.
+As subseções desta seção (\ref{sec:dev-pr2-setup} e~\ref{sec:dev-infra-ci}) descrevem o trabalho feito no repositório pessoal do autor, \texttt{vinifen/e-museu-2.1.0-beta}, até a \textit{release} \texttt{2.1.0-beta} em \texttt{main}. O histórico desse \textit{fork} foi depois replicado na organização \texttt{e-museu-utfpr-gp} (Seção~\ref{sec:dev-repos-github}); a refatoração e as entregas seguintes do capítulo continuam a partir desse ponto.
 
-\subsection{Docker Compose, script \texttt{run} e migração do \textit{front-end}}
+Com o repositório e o fluxo de integração definidos (Seção~\ref{sec:dev-gitflow}), iniciou-se a implementação no código do E-Museu. A primeira entrega integrada em \texttt{develop}, em janeiro de 2026, não alterou ainda regras de negócio do acervo: preparou a base técnica sobre a qual as refatorações e as funcionalidades descritas nas seções seguintes foram construídas. As ferramentas e a composição de serviços do E-Museu estão apresentadas na Seção~\ref{sec:materiais-docker}; nesta seção descreve-se como essa base foi introduzida e evoluída no repositório.
 
-O primeiro \textit{pull request} integrado em \texttt{develop} após o \textit{fork} (\#2, \textit{infra: initial project setup}, vinculado à \textit{issue} \#1) estruturou o ambiente em containers: Docker Compose com aplicação Laravel, \textit{Nginx}, \textit{MySQL}, \textit{Redis} e serviço \textit{Node} para o Vite; script \texttt{run} para comandos frequentes (\texttt{setup}, testes, análise estática), selecionando o ambiente conforme \texttt{APP\_ENV}; migração do \textit{front-end} para Vite com SCSS; e elevação inicial de \acrshort{php}~8.1 para a série 8.3, entre correções de JavaScript e ajustes herdados da versão anterior. Esse pacote estabeleceu o ambiente local reprodutível em que o restante do trabalho foi executado.
+\subsection{Infraestrutura inicial, \textit{Coolify} e versões \textit{beta}}\label{sec:dev-pr2-setup}
 
-\subsection{Preparação para \textit{deploy} com \textit{Coolify}}
+Esta subseção marca o início efetivo do desenvolvimento no \textit{fork}, depois do fluxo de versionamento (Seção~\ref{sec:dev-gitflow}). O pacote principal de infraestrutura foi integrado em janeiro de 2026, mas o trabalho começou antes: o ramo de configuração Docker foi aberto em setembro de 2025 e só fechou em 4 de janeiro de 2026, após cerca de quatro meses de alinhamentos com a orientadora e, em especial, com o coorientador Dr. Diego Marczal (Seção~\ref{sec:dev-requisitos}). No começo, a ideia era um arranque mais simples; nas conversas de orientação, o Dr. Diego indicou o \textit{Coolify} (Seção~\ref{sec:materiais-coolify}) para publicar o sistema na \acrshort{utfpr} com Docker e \textit{webhooks}, o que orientou os Compose e os ensaios de \textit{deploy} descritos abaixo.
 
-Na sequência imediata (\textit{pull request} \#4, \textit{coolify ready}), adaptou-se o Docker Compose e os arquivos de implantação para o \textit{Coolify}, incluindo composições de \textit{staging} e de produção. O objetivo era validar a topologia de serviços e \textit{webhooks} fora do campus antes de qualquer publicação institucional. Para isso, utilizou-se uma VPS na DigitalOcean com \textit{Coolify} instalado, simulando \textit{staging} e produção sem depender, naquele momento, do servidor da \acrshort{utfpr}.
+A base herdada de \citeonline{gonzaga2024} exigia instalação manual dispersa, servia JavaScript em \texttt{public/script/} e rodava \textit{seeders} pesados em qualquer ambiente. A resposta foi containerizar o desenvolvimento, padronizar comandos com o \texttt{./run}, migrar o \textit{front-end} para Vite e SCSS e ajustar pontos do \textit{back-end} (cabeçalhos no HTTP local, autocompletar do painel, \textit{seeders} menores só em desenvolvimento), sem alterar regras de negócio do acervo. O autor estimou cerca de vinte e cinco horas na configuração inicial em Docker e mais de trinta horas na primeira \textit{release} voltada ao \textit{Coolify} na VPS.
 
-\subsection{Atualização de \acrshort{php} e Laravel}\label{sec:dev-stack-upgrade}
+\subsubsection{Ambientes em Docker Compose e script \texttt{run}}
 
-A versão legada do E-Museu empregava \acrshort{php}~8.1 e Laravel~10. O \textit{pull request} inicial já elevou o interpretador para 8.3; pouco depois, no \textit{pull request} \#12 (\textit{update technologies}), o projeto passou a \acrshort{php}~8.5 e Laravel~12, com revisão de dependências do Composer, de Vite e das imagens Docker. Durante o desenvolvimento, diante do lançamento do Laravel~13, realizou-se uma nova atualização para essa série, com ajustes e validação por testes automatizados. Cada salto de versão foi isolado em integrações dedicadas, de modo a facilitar a revisão e a detecção de regressões.
+Ficaram definidos os perfis \texttt{local} (desenvolvimento) e \texttt{production}, cada um com \texttt{docker-compose} e \textit{Dockerfile} próprios; o \texttt{APP\_ENV} no \texttt{.env} indica qual perfil usar e o \texttt{./run} escolhe o Compose em todos os comandos (\texttt{setup}, \texttt{up}, \texttt{down}, \texttt{migrate}, \texttt{seed}). No \texttt{local}, passaram a subir aplicação em PHP-FPM, \textit{Nginx}, \textit{MySQL}~8 e \textit{phpMyAdmin} de apoio; em \texttt{production}, o \textit{Dockerfile} já previa \textit{build} multiestágio (dependências PHP, \textit{assets} compilados, imagens \texttt{app} e \texttt{web}). Os scripts soltos em \texttt{public/script/} deram lugar ao Vite com SCSS (Seção~\ref{sec:materiais-css-scss}) e entradas JavaScript distintas para o site público e para o painel; a prioridade era subir o sistema, e detalhes do \textit{front-end} e da suíte de testes foram refinados depois.
 
-\subsection{Integração contínua e ferramentas de qualidade}
+\subsubsection{Ensaio com \textit{Coolify} e versionamento SemVer}
 
-Ainda no primeiro mês de implementação no \textit{fork}, incorporaram-se ferramentas de análise estática e a pipeline no \textit{GitHub Actions} (\textit{pull requests} \#15 e \#17, entre outros): \textit{PHPUnit}, \textit{PHPStan}, \textit{PHPCS}, \textit{Laravel Pint}, \textit{PHPMD}, \textit{ESLint} e \textit{Prettier}, orquestrados pelo script \texttt{run} (detalhes no Capítulo~\ref{cap:materiais-e-metodos}). A partir daí, cada \textit{pull request} para \texttt{main} ou \texttt{develop} passou a depender da aprovação automática desses trabalhos. A ampliação posterior da suíte de testes funcional é relatada na Seção~\ref{sec:dev-testes}.
+Poucos dias após a base local, adaptaram-se os arquivos ao \textit{Coolify}, incluindo o perfil \texttt{staging} ligado à ramificação \texttt{develop}. O autor instalou o \textit{Coolify} numa VPS na DigitalOcean e repetiu ali, até o fim de janeiro, o ciclo que depois seria levado ao campus: promover \texttt{develop} para \texttt{main}, disparar \textit{deploy} por \textit{webhook}, corrigir o que falhasse e voltar a publicar. As versões seguiram o SemVer (Seção sobre \textit{Gitflow} no Capítulo~\ref{cap:materiais-e-metodos}), com sufixos \texttt{-alpha} ou \texttt{-beta} conforme a maturidade da entrega; na etapa de ensaio no \textit{Coolify} prevaleceram as marcações \texttt{-beta}.
+
+A primeira \textit{release} promovida para \texttt{main}, \texttt{1.0.1-beta} (9 de janeiro), serviu sobretudo para testar o \textit{deploy} automático no \textit{Coolify} com a infraestrutura já montada. Na prática do \textit{Coolify}, surgiram falhas de separação entre homologação e produção; corrigiram-se com \textit{hotfixes} que formalizaram o \texttt{docker-compose.staging.yml}, alinharam nomes de rede e serviços e criaram configurações de \textit{Nginx} por ambiente (\texttt{local}, \texttt{staging} e \texttt{production}). Ainda em janeiro, atualizou-se a pilha para \acrshort{php}~8.5 e Laravel~12 (entre outras dependências de \textit{front-end} e de testes), criou-se o arquivo \texttt{VERSION} no repositório e passou a valer o comando de versão no \texttt{./run}. Esse conjunto fechou na \textit{release} \texttt{2.0.0-beta} (24 de janeiro), que marca, no versionamento do projeto, a infraestrutura estável para as etapas seguintes. A publicação na \acrshort{utfpr} é relatada na Seção~\ref{sec:dev-deploy}.
+
+\subsection{Integração contínua, ferramentas de qualidade e \textit{release} \texttt{2.1.0-beta}}\label{sec:dev-infra-ci}
+
+Com a infraestrutura e a \texttt{2.0.0-beta} consolidadas, a frente seguinte atendeu à crítica da versão anterior (falta de mecanismos automatizados de análise estática e de validação do comportamento), em linha com a justificativa do trabalho (Seção~\ref{sec:justificativa}). Nas orientações, o coorientador Dr. Diego Marczal indicou ainda incluir \acrfull{ci/cd} e ferramentas de qualidade no repositório. A entrega concentrou-se em duas camadas: executar as mesmas verificações no ambiente local (script \texttt{./run}) e repetir o essencial no \textit{GitHub Actions} antes de integrar em \texttt{develop} ou \texttt{main}. O conjunto de ferramentas está descrito no Capítulo~\ref{cap:materiais-e-metodos}; aqui importa a ordem em que entrou no repositório pessoal \texttt{vinifen/e-museu-2.1.0-beta}.
+
+\subsubsection{Ferramentas locais e correção do legado}
+
+No fim de janeiro de 2026, integrou-se em \texttt{develop} o pacote de qualidade (\textit{issue} ``implement tools to ensure quality'', cerca de seis horas no registro da entrega). Foram adicionados ou formalizados analisadores para o \textit{back-end} em \acrshort{php} (\textit{PHPStan} com \textit{Larastan} em nível elevado, \textit{PHPCS}/\textit{PHPCBF} em PSR-12, \textit{PHPMD}, \textit{PHP Insights}, detecção de duplicação com \textit{phpcpd}, \textit{Churn} para candidatos a refatoração e \textit{Laravel Pint}) e para o \textit{front-end} em JavaScript (\textit{ESLint} e \textit{Prettier}, alinhados ao Vite e ao SCSS da infraestrutura inicial). Cada ferramenta ganhou arquivo de configuração no repositório (\texttt{phpstan.neon}, \texttt{phpcs.xml}, \texttt{phpmd.xml}, \texttt{eslint.config.js}, entre outros) e atalhos no \texttt{./run} (\texttt{phpstan}, \texttt{phpcs}, \texttt{phpmd}, \texttt{eslint}, \texttt{prettier-check}, etc.), de modo que o desenvolvedor reproduz localmente o que depois rodaria na nuvem.
+
+Não se tratou apenas de instalar pacotes: o código herdado de \citeonline{gonzaga2024} foi ajustado até as verificações passarem sem erros conhecidos, o que preparou a refatoração por domínios (Seção~\ref{sec:dev-refatoracao}) sobre uma base já legível para as ferramentas. A suíte de testes do \textit{PHPUnit}, nesse momento, ainda era enxuta; a ampliação sistemática dos casos de funcionalidade veio meses depois (Seção~\ref{sec:dev-testes}).
+
+\subsubsection{Pipeline no \textit{GitHub Actions}}
+
+Em 1 de fevereiro de 2026, entrou a primeira versão da integração contínua (\textit{issue} de pipeline de \acrfull{ci/cd}, cerca de três horas na entrega), com o arquivo \texttt{.github/workflows/ci.yml}. A \textit{action} dispara em cada \textit{pull request} para \texttt{main} ou \texttt{develop} e divide o trabalho em três \textit{jobs} paralelos, todos apoiados no Docker e no \texttt{./run} já usados no dia a dia:
+
+\begin{itemize}
+    \item \textit{tests}: sobe o ambiente com \texttt{./run setup -env -y}, executa \texttt{./run test} e encerra os \textit{containers} ao final;
+    \item \textit{code-quality}: no mesmo ambiente local, roda \textit{PHPCS}, \textit{PHPMD}, \textit{PHPStan}, \textit{phpcpd}, \textit{ESLint} e verificação de formatação com \textit{Prettier};
+    \item \textit{test-production-deploy}: valida um \textit{deploy} simulado com \texttt{docker-compose.production.test.yml}, incluindo \textit{build} das imagens de produção, subida dos serviços, espera pelo \textit{MySQL} e comandos típicos de publicação Laravel (\texttt{migrate --force}, \textit{cache} de rotas e configuração).
+\end{itemize}
+
+Assim, o critério de aceitação deixou de depender só da revisão manual: integrações que quebrassem testes, estilo ou o fluxo mínimo de produção em container eram barradas antes do \textit{merge}. O \textit{Laravel Pint} passou a fazer parte da verificação automática em etapa posterior do cronograma; até lá, a padronização \textit{PSR}-12 e Laravel ficava a cargo de \textit{PHPCS} e das correções locais.
+
+\subsubsection{\textit{Release} \texttt{2.1.0-beta} e transição para a organização}
+
+Em 6 de fevereiro de 2026, promoveu-se \texttt{develop} para \texttt{main} na \textit{release} \texttt{2.1.0-beta} (cerca de dez horas no registro da entrega), reunindo em \texttt{main} as ferramentas de qualidade e a pipeline de \acrfull{ci/cd}. No SemVer (Capítulo~\ref{cap:materiais-e-metodos}), o salto de \texttt{2.0.0-beta} para \texttt{2.1.0-beta} sinaliza incremento de funcionalidade de engenharia (automação e análise estática), sem alterar a pilha \acrshort{php}~8.5 e Laravel~12 fixada na infraestrutura anterior.
+
+Essa \textit{release} fecha, no repositório pessoal do autor, o arco que começou com Docker, \texttt{run} e ensaios no \textit{Coolify}: infraestrutura, qualidade local e integração contínua passaram a conviver na linha \texttt{main} antes das grandes refatorações de domínio e das funcionalidades de acervo. Ainda em fevereiro de 2026, em alinhamento com a orientadora, criou-se a organização \texttt{e-museu-utfpr-gp} e o repositório institucional por \textit{fork} desse histórico (Seção~\ref{sec:dev-repos-github}); o desenvolvimento seguinte continuou no mesmo fluxo Gitflow. A refatoração do código no repositório da organização é relatada na Seção~\ref{sec:dev-refatoracao}.
 
 
 \section{Refatoração da aplicação}\label{sec:dev-refatoracao}
 
-Com a infraestrutura local estável e a pilha atualizada (Seção~\ref{sec:dev-stack-upgrade}), a refatoração concentrou-se em reduzir acoplamento nos controladores legados e reorganizar o código segundo boas práticas citadas no referencial (\acrshort{mvc}, \textit{Clean Code} e organização por domínio). Uma das mudanças estruturais mais relevantes foi a adoção de contextos delimitados inspirados no \acrshort{ddd} (Seção~\ref{sec:ref-ddd}).
+Com a \texttt{2.1.0-beta} no repositório pessoal (Seção~\ref{sec:dev-infra-ci}), o desenvolvimento passou ao repositório da organização \texttt{e-museu-utfpr-gp/e-museu}, mantendo o mesmo fluxo Gitflow. O objetivo foi reduzir acoplamento no legado de \citeonline{gonzaga2024} e alinhar o código a boas práticas citadas no referencial (\acrshort{mvc}, \textit{Clean Code} e organização por domínio, Seção~\ref{sec:ref-ddd}). O trabalho organizou-se em subseções com \textit{subsubseções} no mesmo padrão da Seção~\ref{sec:dev-infra}: reorganização inicial e base técnica (fevereiro de 2026); refatoração dos controladores e do modelo de dados (março, até a \textit{release} \texttt{4.0.0-beta}); refatoração do \textit{front-end} e das \textit{views} (março, até a reorganização dos recursos JavaScript no Vite). Em março, refatoração e algumas entregas de acervo (por exemplo, múltiplas imagens por item) avançaram em paralelo no mesmo repositório: quando uma mudança de esquema ou de interface era necessária para o código refatorado fechar, ela é descrita aqui; o detalhe funcional para o usuário permanece na Seção~\ref{sec:dev-funcionalidades}. A passagem para Laravel~13 ocorreu só em abril de 2026 e é relatada na Seção~\ref{sec:dev-stack-upgrade}.
 
 
-\subsection{Organização por domínios (\acrshort{ddd})}\label{sec:dev-ddd}
+\subsection{Reorganização inicial e base técnica}\label{sec:dev-refatoracao-inicial}
 
-Antes da reorganização, grande parte das classes de aplicação permanecia em pastas genéricas (\texttt{app/Http/Controllers}, \texttt{app/Services}, \texttt{app/Models}), o que dificultava localizar regras ligadas ao acervo, à taxonomia ou aos colaboradores. A partir da \textit{issue} de refatoração ``organize the project into domains'' e dos \textit{pull requests} associados (por exemplo, \#10 e \#12 no repositório do projeto), o código passou a espelhar a linguagem do museu: cada domínio concentra modelos Eloquent, serviços, ações, requisições de validação e, quando aplicável, controladores HTTP e \textit{seeders}/\textit{factories} de testes.
+A primeira etapa, entre 7 e 20 de fevereiro de 2026, preparou o repositório da organização para as ondas seguintes: ajustes de \textit{deploy} e de \acrfull{ci/cd}, adoção de domínios no código, armazenamento de imagens com \textit{MinIO}, \textit{release} \texttt{3.0.0-beta} e alinhamento à estrutura do Laravel~12.
 
-Adicionalmente, o vocabulário do sistema foi alinhado ao negócio: o antigo termo técnico \textit{proprietary} (proprietário da peça) foi renomeado para colaborador (\textit{collaborator}), refletindo que as contribuições vêm de participantes externos verificados por e-mail, e não de um único dono do item. Categorias de item e etiquetas também receberam nomes estáveis (\texttt{item\_category}, \texttt{tag\_category}) para evitar ambiguidade com ``seções'' ou ``tags'' genéricas.
 
-A Tabela~\ref{tab:dominios-emuseu} resume os domínios adotados no repositório atual. Entidades de apoio usadas por mais de um contexto (\texttt{Language}, \texttt{Location}) permanecem em \texttt{app/Models} na raiz, com serviço dedicado para localização física das peças; a internacionalização de textos aparece em modelos de tradução por domínio e no enum \texttt{ContentLanguage}.
+\subsubsection{Ajustes de infraestrutura no repositório da organização}\label{sec:dev-refatoracao-infra-org}
+
+Antes de mover pastas de domínio, corrigiu-se o que ainda falhava para o \textit{Coolify} e para a \acrfull{ci/cd} no novo remoto. Retiraram-se redes Docker customizadas que o painel passava a gerenciar sozinho; a conexão ao \textit{MySQL} em homologação e produção passou a usar URL configurável no ambiente, em vez de depender só de \textit{host} fixo no Compose, o que facilitou o banco provisionado no \textit{Coolify}. Um \textit{hotfix} na ramificação \texttt{main} ajustou o \textit{healthcheck} usado na pipeline após testes de configuração no painel (incluindo tentativas que geravam erro 404 quando o \textit{check} era forçado).
+
+Em homologação, adicionou-se autenticação HTTP básica opcional para restringir o acesso público ao \textit{staging} durante os ensaios. A pipeline do \textit{GitHub Actions} foi atualizada para o novo repositório, de modo que os \textit{jobs} de testes, de qualidade e de \textit{deploy} simulado continuassem válidos após o \textit{fork}. Esses passos são complemento da infraestrutura da Seção~\ref{sec:dev-infra}, não alteram regras de negócio do acervo e antecedem a reorganização estrutural do código.
+
+
+\subsubsection{Organização por domínios (\acrshort{ddd})}\label{sec:dev-ddd}
+
+Até então, grande parte das classes permanecia em pastas genéricas (\texttt{app/Http/Controllers}, \texttt{app/Services}, \texttt{app/Models}), o que dificultava localizar regras do acervo, da taxonomia ou dos contribuidores externos. Na segunda quinzena de fevereiro de 2026, integrou-se em \texttt{develop} a reorganização por domínios: modelos, serviços, controladores, requisições de validação e, quando aplicável, \textit{factories} e \textit{seeders} passaram a agrupar-se em \texttt{Catalog}, \texttt{Taxonomy}, \texttt{Proprietary} (contribuidores do catálogo) e \texttt{Identity} (contas administrativas e travas de edição). Configurações em \texttt{config/factory\_model\_map.php} e \texttt{config/lockable\_routes.php} passaram a resolver o vínculo entre \textit{factory} e modelo e a reduzir acoplamento em \textit{middleware} de bloqueio.
+
+Na entrega de fevereiro, o agrupamento de contribuidores ainda usava o vocabulário legado \textit{Proprietary}; a padronização para \textit{Collaborator}, \texttt{item\_category} e \texttt{tag\_category} viria na Subseção~\ref{sec:dev-refatoracao-controllers}. O modelo \texttt{Language} já era compartilhado entre contextos; \texttt{Location}, as tabelas de tradução por domínio, o enum \texttt{ContentLanguage} e o domínio Admin (IA) entraram em etapas posteriores (março e abril), descritas nas subseções seguintes e na Seção~\ref{sec:dev-funcionalidades}.
+
+A Tabela~\ref{tab:dominios-emuseu} resume a estrutura consolidada do repositório ao final das etapas deste capítulo, para o leitor localizar responsabilidades no código refatorado.
 
 \newcommand{\camadas}[1]{%
     \par\vspace{0.35em}%
@@ -145,14 +196,79 @@ A Tabela~\ref{tab:dominios-emuseu} resume os domínios adotados no repositório 
         } \\
         \bottomrule
     \end{tabularx}
-    \caption*{\textbf{Fonte:} Autoria própria, com base na estrutura do repositório \texttt{e-museu} (versão refatorada). \textbf{Nota:} \texttt{Language} e \texttt{Location} permanecem em \texttt{app/Models/} na raiz; \texttt{StorageProxyController} e \texttt{Support/} tratam infraestrutura transversal.}
+    \caption*{\textbf{Fonte:} Autoria própria, com base na estrutura do repositório \texttt{e-museu} (versão refatorada). \textbf{Nota:} em fevereiro de 2026 vigoravam sobretudo \texttt{Catalog}, \texttt{Taxonomy}, \texttt{Proprietary} e \texttt{Identity}; as demais linhas refletem o estado maduro após março e abril. \texttt{Language} e \texttt{Location} permanecem em \texttt{app/Models/} na raiz; \texttt{StorageProxyController} e \texttt{Support/} tratam infraestrutura transversal.}
 \end{table}
 
-Dentro de cada domínio, a refatoração manteve uma divisão de papéis coerente com o \textit{framework}: controladores finos (principalmente orquestração HTTP), \texttt{Actions} para casos de uso compostos (por exemplo, \texttt{StoreItemContributionAction} e \texttt{RegenerateItemQrCodeAction} no catálogo), \texttt{Services} para regras de aplicação e montagem de dados de visão, e modelos Eloquent para persistência. Validações de entrada ficam em \texttt{Http/Requests} espelhando o mesmo agrupamento (\texttt{Catalog}, \texttt{Taxonomy}, \texttt{Collaborator}, \texttt{Admin/...}).
+Dentro de cada domínio, manteve-se uma divisão de papéis coerente com o \textit{framework}: controladores com responsabilidade HTTP reduzida, \texttt{Actions} para casos de uso compostos, \texttt{Services} para regras de aplicação e modelos Eloquent para persistência. Validações de entrada ficam em \texttt{Http/Requests} no mesmo agrupamento. \textit{Factories} e \textit{seeders} seguiram a mesma lógica em subpastas por contexto, com o mapeamento em \texttt{config/factory\_model\_map.php} para o Laravel resolver modelo e \textit{factory} após a mudança de \textit{namespace}.
 
-No domínio Catalog, os modelos centrais são: \texttt{Item} e \texttt{ItemTranslation} (peça e textos por idioma), \texttt{ItemImage} (fotos e QR), \texttt{ItemComponent} (subpartes da peça), \texttt{ItemTag} (associação item--etiqueta), \texttt{ItemCategory} e \texttt{ItemCategoryTranslation}, além de \texttt{Extra} e \texttt{ExtraTranslation} (contribuições complementares da comunidade). No domínio Taxonomy: \texttt{Tag}, \texttt{TagTranslation}, \texttt{TagCategory} e \texttt{TagCategoryTranslation}. Em Collaborator: o modelo \texttt{Collaborator} concentra nome, e-mail, papel e estado de verificação. Em Identity: \texttt{Admin} e \texttt{Lock}.
 
-A camada de dados de testes e carga inicial segue a mesma lógica: \textit{factories} e \textit{seeders} em subpastas \texttt{Catalog}, \texttt{Taxonomy}, \texttt{Collaborator} e \texttt{Identity}, com mapeamento explícito em \texttt{config/factory\_model\_map.php} para o Laravel resolver corretamente modelo e \textit{factory} após a mudança de \textit{namespace}.
+\subsubsection{Armazenamento de imagens e MinIO}\label{sec:dev-storage-minio}
+
+Em paralelo à reorganização por domínios, corrigiu-se o fluxo de imagens herdado do monólito: caminhos inconsistentes, \texttt{storage:link} frágil em \textit{container} e exposição direta de arquivos no servidor web. Ajustou-se a camada de armazenamento do Laravel e o vínculo entre disco público e URLs servidas ao navegador; em seguida configurou-se o \textit{MinIO} (Seção~\ref{sec:materiais-coolify}) para homologação e produção.
+
+No \textit{back-end}, o disco \texttt{public} em \texttt{config/filesystems.php} passou a depender de \texttt{FILESYSTEM\_DISK}: em desenvolvimento local permanece o disco local; em \textit{staging} e produção, com variáveis \texttt{AWS\_*} no \textit{Coolify}, o mesmo disco usa o driver compatível com S3 apontando ao \textit{MinIO}. Para não expor o serviço de objeto ao visitante, criou-se \texttt{StorageProxyController}, que atende \texttt{GET /storage/\{path\}} lendo o arquivo pelo disco configurado (local ou S3) e devolvendo a resposta pela URL da aplicação; o bloco \texttt{location /storage/} com \textit{alias} saiu do \textit{Nginx}, concentrando o acesso na aplicação. Complementaram a entrega exemplos de variáveis no \texttt{.env.example} para o painel de \textit{deploy} e testes de conexão após a publicação.
+
+
+\subsubsection{\textit{Release} \texttt{3.0.0-beta}}\label{sec:dev-release-300-beta}
+
+Em 17 de fevereiro de 2026, promoveu-se \texttt{develop} para \texttt{main} na \textit{release} \texttt{3.0.0-beta}. No SemVer, o salto de \texttt{2.1.0-beta} para \texttt{3.0.0-beta} marca mudança estrutural relevante: domínios no código, armazenamento preparado para objeto e os ajustes de infraestrutura do repositório da organização descritos acima, ainda sem a segunda onda de refatoração de controladores e de \textit{views} de março.
+
+
+\subsubsection{Alinhamento à estrutura do Laravel~12}\label{sec:dev-base-refactor}
+
+Três dias depois da \texttt{3.0.0-beta}, integrou-se em \texttt{develop} a refatoração de base alinhada ao Laravel~12: remoção de \texttt{Kernel.php}, \texttt{RouteServiceProvider} e outros arquivos supérfluos da transição anterior, com \textit{middleware}, rotas, comandos e exceções concentrados em \texttt{bootstrap/app.php}. Controladores administrativos deixaram de depender de uma hierarquia rígida de classe base para travas de edição; o comportamento de \textit{lock} passou ao trait \texttt{LocksSubject} e à configuração em \texttt{config/lockable\_routes.php}. Regras de validação duplicadas migraram para \textit{Form Requests}; métodos \texttt{show} passaram a usar \texttt{findOrFail} para responder 404 de forma consistente; corrigiram-se atribuições em massa inseguras em atualizações pontuais no painel.
+
+Nesta mesma etapa entrou o \textit{Laravel Pint} com \texttt{pint.json}, comandos \texttt{./run pint} e \texttt{pint-test}, e o passo correspondente na pipeline de qualidade (Seção~\ref{sec:dev-infra-ci}), fechando o que a primeira versão da \acrfull{ci/cd} ainda não executava. Com isso, a reorganização inicial encerra: o repositório da organização tinha domínios, armazenamento por proxy, \texttt{3.0.0-beta} em \texttt{main} e código alinhado às convenções do Laravel~12 vigente na época.
+
+
+\subsection{Refatoração dos controladores e do modelo de dados}\label{sec:dev-refatoracao-controllers}
+
+A segunda etapa concentrou-se em março de 2026 (aproximadamente do dia 1 ao 16): padronizar nomes de tabelas e de rotas administrativas, introduzir o esquema de múltiplas imagens, retirar código morto do legado e mover regras dos controladores para serviços e \textit{Form Requests}.
+
+
+\subsubsection{Vocabulário do banco e papéis administrativos}\label{sec:dev-refatoracao-vocabulario}
+
+% TODO: redigir — migrações que renomeiam tabelas e colunas (admins, collaborators, item\_categories, tag\_categories, item\_tag); ajuste de autenticação, sessões com admin\_id e enum de papéis de colaborador; alinhamento ao domínio da Tabela~\ref{tab:dominios-emuseu}.
+
+
+\subsubsection{Esquema de imagens do acervo}\label{sec:dev-refatoracao-item-images}
+
+% TODO: redigir — tabela item\_images, migração da coluna monolítica items.image, tipos cover/gallery; ligação ao MinIO e ao proxy (Subseção~\ref{sec:dev-storage-minio}); remeter fluxos de cadastro e catálogo à Seção~\ref{sec:dev-funcionalidades}.
+
+
+\subsubsection{Limpeza de legado}\label{sec:dev-refatoracao-cleaning}
+
+% TODO: redigir — remoção de controladores e views de registo/recuperação de senha não usados; outros artefatos do scaffold público que não tinham rota no sistema refatorado.
+
+
+\subsubsection{Camada de aplicação e controladores}\label{sec:dev-refatoracao-controllers-camada}
+
+% TODO: redigir — refatoração em etapas dos controladores do catálogo e do painel: ItemService, consultas de índice administrativo, validações e extração de lógica que ainda estava nos controladores após os domínios de fevereiro.
+
+
+\subsubsection{\textit{Release} \texttt{4.0.0-beta}}\label{sec:dev-release-400-beta}
+
+% TODO: redigir — promoção develop→main em 16/03/2026; SemVer após 3.0.0-beta; o que esta release consolida (modelo de dados e controladores) e o que ainda viria nas subseções de views e JavaScript.
+
+
+\subsection{Refatoração do \textit{front-end} e das \textit{views}}\label{sec:dev-refatoracao-views}
+
+A terceira etapa, ainda em março de 2026 (aproximadamente do dia 1 ao 29), fechou a interface: preparação de arquivos de idioma e do domínio Admin (IA), reorganização das \textit{views} Blade e das rotas nomeadas e, por fim, módulos JavaScript no Vite (\texttt{app.js} e \texttt{admin.js}), retirando scripts inline que dependiam do novo esquema de imagens e dos \textit{endpoints} JSON do painel.
+
+
+\subsubsection{Preparação de internacionalização e domínio Admin}\label{sec:dev-refatoracao-i18n-prep}
+
+% TODO: redigir — arquivos lang/pt\_BR e lang/en, domínio Admin para tradução assistida; distinção em relação à internacionalização completa do acervo (abril, Seção~\ref{sec:dev-funcionalidades}).
+
+
+\subsubsection{Componentização das \textit{views} e rotas}\label{sec:dev-refatoracao-blade}
+
+% TODO: redigir — pastas pages/ e components/; layouts app e admin; prefixos de rota admin.catalog, admin.taxonomy, admin.identity; componentes de índice administrativo; hotfix de migrações/views de itens após a mudança estrutural.
+
+
+\subsubsection{Reorganização dos recursos JavaScript}\label{sec:dev-refatoracao-javascript}
+
+% TODO: redigir — entradas Vite app.js e admin.js; pastas shared/, pages/; upload de imagens no painel e na contribuição pública; selects dependentes (categoria de item→itens); remoção da árvore antiga resources/js/components/; encerramento da frente de refatoração estrutural antes das entregas de abril.
 
 
 \section{Testes automatizados e qualidade de código}\label{sec:dev-testes}
@@ -187,6 +303,11 @@ Complementarmente, no domínio Admin (IA), foi entregue a \textbf{tradução ass
 Em substituição ao reCAPTCHA previsto nos objetivos, adotou-se o \textbf{Cloudflare Turnstile} com validação no \textit{back-end} nos fluxos sensíveis: \textit{login} administrativo, solicitação de código de verificação por e-mail no catálogo de colaboradores e cadastros públicos em que a proteção é exigida. Nos testes automatizados o mecanismo pode permanecer desativado para não depender do serviço externo.
 
 O domínio \textbf{Collaborator} consolidou o cadastro de colaboradores externos, papéis, bloqueio, verificação de e-mail e elegibilidade para contribuição pública. O envio transacional via SMTP institucional e a publicação em \textit{staging} e produção ficaram ligados à etapa final de implantação na \acrshort{utfpr} (Seção~\ref{sec:dev-deploy}). Outras melhorias do mesmo período de desenvolvimento incluem autenticação HTTP básica opcional em \textit{staging} e documentação operacional de variáveis de ambiente, sem expor credenciais neste texto.
+
+
+\section{Atualização da pilha para Laravel~13}\label{sec:dev-stack-upgrade}
+
+% TODO: redigir — integração em abril/2026, após funcionalidades centrais (múltiplas imagens, i18n, localização/QR, Turnstile, etc.) e em paralelo à suíte ampla de testes (Seção~\ref{sec:dev-testes}); ajuste de dependências, convenções do \textit{framework} e validação na \acrfull{ci/cd}. O salto de versão do \textit{framework} na infraestrutura inicial (Laravel~12 em janeiro, Seção~\ref{sec:dev-pr2-setup}) permanece separado desta etapa tardia.
 
 
 \section{Implantação, validação e entrega institucional}\label{sec:dev-deploy}
@@ -231,7 +352,7 @@ Ao término das etapas descritas neste capítulo, consolidam-se os principais re
         Seções~\ref{sec:dev-infra} e~\ref{sec:dev-deploy} &
         Atendido \\
         Refatoração do código existente &
-        Seções~\ref{sec:dev-refatoracao} e~\ref{sec:dev-stack-upgrade} &
+        Seção~\ref{sec:dev-refatoracao} &
         Atendido \\
         Testes automatizados &
         Seção~\ref{sec:dev-testes} &
