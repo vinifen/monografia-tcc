@@ -44,11 +44,12 @@
 
 
 %% hyperref: pdfa tem de estar activo *antes* do pdfx carregar (senão o pdfx faz
-%% \hypersetup{pdfa} tarde e estraga os links do sumário). linktoc=none evita o
-%% bug que imprime "linkbordercolor"/"linkcolor" nos títulos de secção do sumário.
+%% \hypersetup{pdfa} tarde e estraga os links). Com pdfa, linktoc=all faz aparecer
+%% "LinkbordercolorLinkcolor" nos títulos do sumário; linktoc=page deixa só o número
+%% da página clicável (sem esse artefacto). Referências \ref e \autoref no texto seguem normais.
 \PassOptionsToPackage{%
   pdfa,%
-  linktoc=none,%
+  linktoc=page,%
 }{hyperref}
 
 %% Classe e opções de documento
@@ -197,6 +198,8 @@
 \include{./capitulos/cap-materiais-e-metodos}
 
 \include{./capitulos/cap-desenvolvimento}
+
+\include{./capitulos/cap-resultados}
 
 %% Capítulos da fase de projeto (não incluir na monografia final)
 %\include{./capitulos/cap-proposta}

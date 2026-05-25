@@ -1,26 +1,45 @@
 \chapter{Trabalhos Relacionados}\label{cap:trabalhos-relacionados}
 
-Este capítulo situa o presente trabalho em relação a produções acadêmicas e sistemas próximos ao escopo do E-Museu, destacando convergências, diferenças e a contribuição original desta monografia.
+Este capítulo situa o presente trabalho em relação a produções acadêmicas e sistemas próximos ao escopo do E-Museu, destacando convergências, diferenças e a contribuição original desta monografia. O referencial teórico (Capítulo~\ref{cap-referencial-teorico}) apresenta os conceitos de refatoração, arquitetura e ferramentas; aqui o foco é comparar \textit{implementações} e \textit{trabalhos} que ajudam a delimitar o que já existia e o que esta entrega acrescenta.
 
 
 \section{Versão anterior do E-Museu}\label{sec:trab-emuseu-v1}
 
-% TODO: síntese de \cite{gonzaga2024} e do legado (Tankensho / primeira versão):
-% escopo da v1, limitações que motivaram a refatoração, continuidade institucional.
+O E-Museu institucional descrito por \citeonline{gonzaga2024} é o ponto de partida direto desta monografia. Na conclusão do curso, Gonzaga entregou um sistema web em produção no domínio da \acrshort{utfpr} para catalogar, gerenciar e expor itens de informática ligados aos projetos de extensão Tecno-Lixo e E-Lixo \cite{ribeiro2024tecno,re2021cartilha}, com contribuição da comunidade e curadoria administrativa. O trabalho já apontava limitações de manutenção e a necessidade de evoluir além da versão então publicada, o que motivou o presente TCC.
+
+Em relação ao código que este trabalho refatorou, a versão anterior concentrava regras em controladores extensos, vocabulário de banco heterogêneo (\texttt{users}, \texttt{proprietaries}, \texttt{sections}) e uma única imagem por item. A instalação dependia de passos manuais (dependências PHP, banco, servidor web), sem Docker nem script único de operação. Não havia separação clara entre ambientes de desenvolvimento, homologação e produção, nem suíte automatizada de testes ou pipeline de integração contínua no repositório. Funcionalidades como assistente virtual (``Ada''), registro público genérico e fluxos pouco usados foram mantidas no legado, mas removidas na refatoração por não se alinharem ao escopo atual (Seção~\ref{sec:dev-refatoracao-cleaning}).
+
+A monografia de \citeonline{gonzaga2024} já previa internacionalização, múltiplas fotos, QR Code, proteção de formulários e etiquetas físicas, entre outros itens. O presente trabalho implementa parte dessa agenda (acervo multilíngue, várias imagens por peça, Turnstile, código de identificação com QR Code, verificação de e-mail de colaboradores), reorganiza a base técnica (domínios, serviços, infraestrutura em containers, qualidade e testes) e deixa explícito o que ficou fora do ciclo, como link de vídeo por item e \textit{newsletter} (Subseção~\ref{sec:dev-func-escopo-nao}). Em síntese, não se trata de um sistema novo em termos de proposta institucional, mas de uma segunda geração do mesmo museu virtual, com engenharia de software como eixo central.
 
 
 \section{Museus virtuais e acervos digitais}\label{sec:trab-museus-virtuais}
 
-% TODO: 2--3 trabalhos ou plataformas de referência (GP_COINT ou literatura)
-% comparáveis em catalogação, exposição web ou preservação digital.
+A noção de museu virtual ainda não tem definição única na literatura. \citeonline{henriques2018} destaca que muitas propostas limitam-se a digitalizar o objeto físico, enquanto o museu virtual, no sentido mais adequado à mediação com o público, usa a internet como espaço de interação museológica. \citeonline{dutra2018} e \citeonline{eichler2007} tratam de diretrizes de interface e de exposição; \citeonline{schweibenz1998} discute o papel da rede na apresentação de acervos. Em conjunto, esses trabalhos reforçam que catalogar não basta: importa como o visitante navega, entende o contexto histórico e, quando cabe, participa da construção do acervo.
+
+No projeto original do E-Museu, Gonzaga já havia comparado tipologias de museu virtual (panfleto, conteúdo, interativo e virtual completo) e analisado referências brasileiras e internacionais. Esta monografia retoma esse eixo com três exemplos que continuam úteis para contrastar escolhas de interface e de manutenção, sem pretender um levantamento exaustivo do estado da arte.
+
+O museu virtual da Coopermiti \cite{coopermiti_museu} expõe eletroeletrônicos triados pela cooperativa em grade de imagens com ficha por item. A navegação é simples e o tema é próximo ao do E-Museu (reaproveitamento de equipamentos). Por outro lado, o detalhamento textual pode ficar denso e o site não oferece fluxo estruturado de contribuição validada nem curadoria administrativa no mesmo modelo do projeto UTFPR.
+
+O museu do Departamento de Informática da UEM \cite{uem_museu} prioriza linha do tempo e conteúdo histórico da área de TI, com riqueza informativa, mas interface antiga e pouca evidência de evolução recente. Serve como referência de acervo educativo, não como modelo operacional de gestão de coleção viva com homologação e produção separadas.
+
+O The National Museum of Computing (Reino Unido) \cite{tnmoc} aproxima-se de uma experiência imersiva (tour virtual em 3D, próximo a vistas panorâmicas), com forte vínculo ao museu físico. É referência de exposição de alto impacto visual, porém em inglês, sem foco em contribuição aberta de peças nem em catálogo multilíngue voltado a extensão universitária brasileira.
+
+O E-Museu posiciona-se como museu de conteúdo e interativo no sentido de \citeonline{eichler2007}: fichas com descrição, histórico e imagens, filtros no catálogo público, contribuição externa com verificação de e-mail e validação administrativa. A diferença em relação aos exemplos acima está na combinação de acervo de informática da \acrshort{utfpr}/\acrshort{unicentro}, interface em português e inglês, identificação física com QR Code e base técnica preparada para manutenção contínua (Capítulos~\ref{cap:desenvolvimento} e~\ref{cap:resultados}), o que os sites de referência, em geral estáticos ou pouco atualizados, não reúnem.
 
 
 \section{Sistemas web e práticas de refatoração}\label{sec:trab-refatoracao}
 
-% TODO: trabalhos do curso ou literatura sobre refatoração, Laravel/PHP em produção,
-% DevOps acadêmico — sem repetir o referencial teórico.
+Trabalhos sobre refatoração e qualidade de software, como \citeonline{refatoracao:2004}, fundamentam a ideia de melhorar a estrutura interna sem mudar o comportamento visível ao usuário. No contexto de aplicações web em produção, essa prática aparece quando o sistema já atende usuários, mas o custo de corrigir falhas ou incluir requisitos novos cresce por acoplamento, duplicação e falta de testes. O E-Museu enquadra-se nesse caso: a versão de \citeonline{gonzaga2024} funcionava, porém resistia a mudanças seguras.
+
+Monografias recentes do curso de Tecnologia em Sistemas para Internet na \acrshort{utfpr} ilustram a maturidade esperada de um sistema web mantido em 2025/2026: versionamento no \textit{GitHub}, containers Docker, testes e automação de \textit{deploy}. Por exemplo, trabalhos com Laravel, \textit{GitHub Actions} e Docker para aplicações de gestão mostram que a combinação repositório versionado, ambiente reproduzível e \acrfull{ci/cd} deixou de ser opcional em TCCs do perfil \textit{full} adotado neste projeto \cite{github,githubactions,docker,dockercompose}. O presente trabalho aplica esse conjunto ao E-Museu, área de museu virtual em que a literatura costuma enfatizar conteúdo e museologia mais do que engenharia de \textit{deploy}.
+
+Em relação à versão anterior, as diferenças técnicas centrais desta monografia são: ambientes local, \textit{staging} e produção com Compose e \textit{Coolify}; organização por domínios e camada de serviços; dezenas de testes de funcionalidade; análise estática na pipeline; armazenamento de mídia em MinIO; e atualização para Laravel~13 (Seção~\ref{sec:dev-stack-upgrade}). Ou seja, o trabalho relacionado mais próximo continua sendo o próprio E-Museu de \citeonline{gonzaga2024}; os demais referenciais de museu virtual informam sobretudo requisitos de exposição e de público, enquanto as práticas de sistemas web informam \textit{como} a segunda geração foi construída e validada.
 
 
 \section{Considerações}\label{sec:trab-consideracoes}
 
-% TODO: parágrafo fechando lacunas que este TCC preenche em relação aos trabalhos citados.
+Os trabalhos e sistemas revisados mostram que museus virtuais de informática no Brasil são poucos, muitas vezes desatualizados, e que o E-Museu de \citeonline{gonzaga2024} já ocupava um lugar relevante na \acrshort{utfpr} ao ligar extensão, acervo e acesso público. Referências como Coopermiti, UEM e TNMoC ajudam a calibrar expectativas de interface e de profundidade de conteúdo, mas não substituem um ciclo completo de evolução de software institucional.
+
+A lacuna que este TCC endereça é, portanto, dupla. No produto, faltava concretizar boa parte da agenda funcional e de qualidade (i18n do acervo, múltiplas imagens, segurança em formulários, identificação física, testes, ambientes separados). Na engenharia, faltava tratar o E-Museu como sistema de longa duração: repositório rastreável, refatoração por domínios, \textit{deploy} na universidade e documentação de implantação (Seções~\ref{sec:dev-deploy} e~\ref{sec:dev-gitflow-doc}).
+
+Com isso, a contribuição original desta monografia não é propor o museu virtual em si, e sim documentar e executar a transição da primeira implementação estável para uma base técnica sustentável, alinhada às práticas atuais de desenvolvimento web e à operação nos domínios institucionais do grupo de pesquisa.

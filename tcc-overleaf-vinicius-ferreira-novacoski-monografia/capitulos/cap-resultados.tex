@@ -1,0 +1,84 @@
+%%%% CAPÍTULO — RESULTADOS
+%%
+\chapter{Resultados}\label{cap:resultados}
+
+Este capítulo consolida o que foi alcançado após as etapas de desenvolvimento descritas no Capítulo~\ref{cap:desenvolvimento}. O foco não é repetir o cronograma de implementação, mas apresentar a síntese frente aos objetivos, a evolução do modelo de dados e do produto em relação à versão legada, indicadores verificáveis do repositório e a situação da entrega operacional.
+
+
+\section{Síntese em relação aos objetivos}\label{sec:resultados-objetivos}
+
+Ao término do ciclo documentado nesta monografia, consolidam-se os principais resultados do trabalho em relação ao objetivo geral (Seção~\ref{subsec:objetivoGeral}) e aos objetivos específicos (Seção~\ref{subsec:objetivoEspecificos}). A Tabela~\ref{tab:objetivos-resultados} resume, de forma sintética, o atendimento a cada meta e indica onde a evidência correspondente é detalhada no texto. Itens marcados como parciais ou não atendidos são discutidos nas limitações e nos trabalhos futuros (Seções~\ref{sec:conclusao-limitacoes} e~\ref{sec:conclusao-trabalhos-futuros}).
+
+\begin{table}[H]
+    \centering
+    \caption{Síntese dos objetivos específicos e dos resultados alcançados.}
+    \label{tab:objetivos-resultados}
+    \begin{tabularx}{\textwidth}{@{}p{0.36\textwidth}Xp{0.14\textwidth}@{}}
+        \toprule
+        \textbf{Objetivo específico} & \textbf{Principal evidência no trabalho} & \textbf{Situação} \\
+        \midrule
+        Versionamento e padrões no GitHub &
+        Seções~\ref{sec:dev-gitflow} e~\ref{sec:dev-requisitos} &
+        Atendido \\
+        Ambientes de desenvolvimento, teste e produção &
+        Seções~\ref{sec:dev-infra},~\ref{sec:dev-deploy} e~\ref{sec:resultados-operacional} &
+        Atendido \\
+        Refatoração do código existente &
+        Seções~\ref{sec:dev-refatoracao} e~\ref{sec:resultados-modelo-dados} &
+        Atendido \\
+        Testes automatizados &
+        Seção~\ref{sec:dev-testes}; Seção~\ref{sec:resultados-indicadores} &
+        Parcial \\
+        Novas funcionalidades do E-Museu &
+        Seção~\ref{sec:dev-funcionalidades} &
+        Parcial \\
+        Padrões de projeto e boas práticas &
+        Seções~\ref{sec:dev-refatoracao} e~\ref{sec:dev-funcionalidades}; Capítulo~\ref{cap-referencial-teorico} &
+        Atendido \\
+        \bottomrule
+    \end{tabularx}
+    \caption*{\textbf{Fonte:} Autoria própria. \textbf{Nota:} ``Parcial'' em testes indica ausência de avaliação formal de usabilidade; em funcionalidades, a não implementação do campo de link de vídeo e itens MoSCoW postergados.}
+\end{table}
+
+
+\section{Evolução do modelo de dados}\label{sec:resultados-modelo-dados}
+
+A Figura~\ref{fig:emuseu-bd-evolucao} resume o esquema relacional da versão entregue, com destaque para alterações em relação ao legado descrito por \citeonline{gonzaga2024} e às migrações documentadas no Capítulo~\ref{cap:desenvolvimento}. Entidades e colunas removidas aparecem riscadas; criações ou renomeações recentes, em verde; campos ou tabelas previstos para internacionalização ou localização, em laranja; estruturas ligadas a traduções assistidas no painel, em roxo.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{figuras/emuseu-banco-de-dados.png}
+    \caption{Modelo relacional do E-Museu refatorado (visão consolidada).}
+    \label{fig:emuseu-bd-evolucao}
+    \caption*{\textbf{Fonte:} Autoria própria. \textbf{Legenda:} removido (riscado); novo ou renomeado (verde); previsto para i18n ou \texttt{locations} (laranja); suporte a traduções no painel (roxo).}
+\end{figure}
+
+Em fevereiro de 2026, a reorganização por domínios e a adoção de armazenamento por proxy (Subseção~\ref{sec:dev-storage-minio}) antecederam a \textit{release} \texttt{3.0.0-beta}. Em março, o pacote de renomeações (Subseção~\ref{sec:dev-refatoracao-vocabulario}) alinhou o vocabulário físico do banco ao das pastas de aplicação: \texttt{users} para \texttt{admins}, \texttt{sections} para \texttt{item\_categories}, \texttt{proprietaries} para \texttt{collaborators}, \texttt{categories} para \texttt{tag\_categories}, além da tabela \texttt{item\_images} e da associação \texttt{item\_tag}. A \textit{release} \texttt{4.0.0-beta} promoveu esse conjunto a \texttt{main}.
+
+Entregas de abril de 2026 (internacionalização completa do acervo, domínio \texttt{Location} e atualização para Laravel~13, Seção~\ref{sec:dev-stack-upgrade}) acrescentaram ou consolidaram tabelas e colunas indicadas em laranja e roxo na figura; o detalhamento cronológico permanece no Capítulo~\ref{cap:desenvolvimento}, enquanto esta seção fixa o estado final do modelo para leitura comparativa.
+
+
+\section{Evolução do software em relação ao legado}\label{sec:resultados-evolucao-software}
+
+Em relação à versão descrita por \citeonline{gonzaga2024}, o E-Museu refatorado passou a operar com ambientes distintos de desenvolvimento local, \textit{staging} e produção; pilha atualizada (\acrshort{php}~8.5, Laravel~13); organização por domínios sob \texttt{app/Domain/}; armazenamento de mídia em objeto (MinIO) com URLs servidas por proxy; dezenas de testes automatizados de fluxo e integração; \textit{pipeline} de qualidade com Pint, PHPStan e testes no \textit{GitHub Actions}; e documentação de fluxo de desenvolvimento no perfil \textit{full} do Gitflow \cite{gitflowdoc}.
+
+A base legada concentrava regras em controladores extensos, vocabulário misto (\texttt{users}, \texttt{proprietaries}, \texttt{sections}) e pouca cobertura de testes. A versão atual distribui regras em serviços, \textit{Actions} e \textit{Form Requests}, expõe \textit{endpoints} JSON por domínio e removeu fluxos não utilizados (registro público genérico, assistente ``Ada''). Funcionalidades priorizadas no MoSCoW (internacionalização, múltiplas imagens, QR Code, Turnstile, tradução assistida no painel) integram-se a esse núcleo; itens postergados e o campo de link de vídeo permanecem fora do escopo deste ciclo, conforme a Tabela~\ref{tab:objetivos-resultados}.
+
+
+\section{Indicadores quantitativos do repositório}\label{sec:resultados-indicadores}
+
+Os números abaixo foram obtidos em maio de 2026 a partir dos repositórios de referência deste trabalho (legado Tankensho e versão \texttt{2.0.0-beta} entregue), sem incluir dependências de terceiros (\texttt{vendor/}, \texttt{node\_modules/}). Servem como ordem de grandeza da ampliação do esforço de engenharia; métricas mais finas (por linguagem, excluindo migrações ou \textit{views}) podem ser recalculadas com ferramentas como \texttt{cloc} ou \texttt{git diff --stat} entre \textit{tags}.
+
+\begin{itemize}
+    \item \textit{Pull requests} documentados no histórico do TCC~2: 56 entregas exportadas do \textit{GitHub} da organização \texttt{e-museu-utfpr-gp} (arquivo de apoio do autor, maio/2026).
+    \item Arquivos de teste PHP em \texttt{tests/}: 2 no legado; 92 na versão refatorada (inclui testes de fluxo, integração e unidade adicionados entre março e abril de 2026).
+    \item Linhas em arquivos \texttt{.php} sob \texttt{app/}: aproximadamente 3,3 mil no legado; aproximadamente 13,8 mil na versão refatorada. O aumento reflete novos domínios, serviços e políticas de validação, não apenas cópia do código antigo.
+    \item \textit{Releases} SemVer em \texttt{main}: \texttt{2.0.0-beta} e \texttt{2.1.0-beta} (infraestrutura e qualidade, Capítulo~\ref{cap:desenvolvimento}); \texttt{3.0.0-beta} (domínios, MinIO e base Laravel~12); \texttt{4.0.0-beta} (vocabulário do banco, \texttt{item\_images} e camada de serviços); promoções posteriores em \texttt{develop} com internacionalização, \texttt{Location} e Laravel~13 ainda em consolidação na data da redação.
+\end{itemize}
+
+% TODO (autor): opcional — inserir tabela cloc completa (app+resources+database) ou gráfico de commits por mês se a banca solicitar.
+
+
+\section{Entrega operacional}\label{sec:resultados-operacional}
+
+O sistema encontra-se publicado em \url{https://e-museu.gp.utfpr.edu.br}, com validação prévia em \url{https://staging.e-museu.gp.utfpr.edu.br}. O ciclo de promoção (\textit{staging} antes de \texttt{main}), a infraestrutura Docker/Coolify e os artefatos de continuidade (sem exposição de credenciais neste documento) estão descritos nas Seções~\ref{sec:dev-deploy} e~\ref{sec:dev-infra}. Em síntese, a entrega reúne as condições para manutenção e evolução pelo grupo de pesquisa sem depender da estrutura monolítica e pouco testada da implementação anterior.
