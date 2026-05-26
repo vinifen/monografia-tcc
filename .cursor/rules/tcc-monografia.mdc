@@ -1,11 +1,11 @@
 ---
-description: TCC E-Museu — PDF autónomo no LaTeX; fora da pasta = insumos para síntese; evidenciar trabalho com moderação; software concluído.
+description: TCC E-Museu — primeira versão da monografia concluída (Maio/2026); foco em revisão/polimento do PDF; software concluído; LaTeX autónomo.
 alwaysApply: true
 ---
 
 # TCC E-Museu — guia para o assistente (Cursor)
 
-Lê primeiro o **`README.md`** na raiz deste repositório: lá estão o mapa de pastas, links GitHub, fase do trabalho, a secção **“Evolução da redação (monografia TCC 2)”** (etapa actual por capítulo) e como consultar o histórico via **Git**; avisos de sensibilidade de dados.
+Lê primeiro o **`README.md`** na raiz deste repositório: lá estão o mapa de pastas, links GitHub, fase do trabalho (**primeira versão da monografia concluída**, Maio/2026), a secção **“Evolução da redação (monografia TCC 2)”** (estado por capítulo) e como consultar o histórico via **Git**; avisos de sensibilidade de dados.
 
 ---
 
@@ -15,7 +15,7 @@ Lê primeiro o **`README.md`** na raiz deste repositório: lá estão o mapa de 
 |--|--|
 | **Software E-Museu** | **Concluído.** Código de referência: `e-museu-v2_0_0-ultima-versao-viniciusfn/`; histórico online: GitHub (tabela no `README.md`). |
 | **Texto da fase “projeto”** (proposta, primeiros capítulos no LaTeX) | **Já produzido** dentro de `tcc-overleaf-vinicius-ferreira-novacoski-monografia/`. |
-| **O que falta para a disciplina** | **Monografia do TCC 2** — desenvolver, alinhar e fechar o **texto académico** até ao PDF final na UTFPR. **Fase actual = texto**, não feature nova na app. |
+| **Monografia TCC 2 (texto)** | **Primeira versão concluída** (Maio/2026): capítulos activos no `main.tex` (Introdução → Resultados → Considerações finais), resumo/abstract, tabela de objectivos. **Fase actual = revisão e polimento** do PDF (orientação, banca, biblioteca), **não** redacção inicial nem feature nova na app. |
 
 ---
 

@@ -97,7 +97,7 @@ O \textit{Git} é a ferramenta de controle de versões utilizada para registrar 
 
 \subsection{Ferramentas de análise estática e de testes}
 
-Para assegurar qualidade e manutenibilidade do código refatorado, o projeto adota um conjunto de ferramentas executado localmente e na pipeline de \acrfull{ci/cd}, orquestrado pelo script \texttt{run} e reproduzido no \textit{GitHub Actions} (subseção anterior). No que se refere a testes automatizados, utiliza-se o \textit{PHPUnit} para validar testes unitários e de funcionalidade (\textit{feature}) da aplicação Laravel \cite{phpunit}. No \textit{back-end}, complementam a revisão manual as ferramentas de análise estática e de qualidade: o \textit{PHPStan} com extensão \textit{Larastan} para verificação tipada \cite{phpstan}; o \textit{PHP CodeSniffer} (\textit{PHPCS}), com o corretor \textit{PHPCBF} para ajustes automáticos de estilo quando aplicável, para convenções de codificação; o \textit{Laravel Pint} para padronização alinhada ao ecossistema Laravel \cite{laravelpint}; o \textit{PHP Mess Detector} (\textit{PHPMD}) para complexidade e possíveis problemas de desenho \cite{phpmd}; o \textit{PHP Insights} para métricas agregadas de qualidade; o \textit{PHP Copy/Paste Detector} (\textit{phpcpd}) para detecção de duplicação; e o \textit{Churn PHP} para identificar arquivos candidatos a refatoração com base em frequência de alteração e complexidade. No \textit{front-end}, empregam-se \textit{ESLint} e \textit{Prettier} para \textit{lint} e formatação de JavaScript, SCSS e JSON. Na integração contínua, cada \textit{pull request} dispara o \textit{PHPUnit} e as verificações de \textit{PHPCS}, \textit{Laravel Pint}, \textit{PHPMD}, \textit{PHPStan}, \textit{phpcpd}, \textit{ESLint} e \textit{Prettier}; \textit{PHP Insights}, \textit{Churn PHP} e \textit{PHPCBF} permanecem disponíveis no ambiente local do desenvolvedor. Essas ferramentas documentam, de forma reprodutível, os critérios de aceitação do código no E-Museu.
+Para assegurar qualidade e manutenibilidade do código refatorado, o projeto adota um conjunto de ferramentas executado localmente e na pipeline de \acrfull{ci/cd}, coordenado pelo script \texttt{run} e reproduzido no \textit{GitHub Actions} (subseção anterior). No que se refere a testes automatizados, utiliza-se o \textit{PHPUnit} para validar testes unitários e de funcionalidade (\textit{feature}) da aplicação Laravel \cite{phpunit}. No \textit{back-end}, complementam a revisão manual as ferramentas de análise estática e de qualidade: o \textit{PHPStan} com extensão \textit{Larastan} para verificação tipada \cite{phpstan}; o \textit{PHP CodeSniffer} (\textit{PHPCS}), com o corretor \textit{PHPCBF} para ajustes automáticos de estilo quando aplicável, para convenções de codificação; o \textit{Laravel Pint} para padronização alinhada ao ecossistema Laravel \cite{laravelpint}; o \textit{PHP Mess Detector} (\textit{PHPMD}) para complexidade e possíveis problemas de desenho \cite{phpmd}; o \textit{PHP Insights} para métricas agregadas de qualidade; o \textit{PHP Copy/Paste Detector} (\textit{phpcpd}) para detecção de duplicação; e o \textit{Churn PHP} para identificar arquivos candidatos a refatoração com base em frequência de alteração e complexidade. No \textit{front-end}, empregam-se \textit{ESLint} e \textit{Prettier} para \textit{lint} e formatação de JavaScript, SCSS e JSON. Na integração contínua, cada \textit{pull request} dispara o \textit{PHPUnit} e as verificações de \textit{PHPCS}, \textit{Laravel Pint}, \textit{PHPMD}, \textit{PHPStan}, \textit{phpcpd}, \textit{ESLint} e \textit{Prettier}; \textit{PHP Insights}, \textit{Churn PHP} e \textit{PHPCBF} permanecem disponíveis no ambiente local do desenvolvedor. Essas ferramentas documentam, de forma reprodutível, os critérios de aceitação do código no E-Museu.
 
 
 \subsection{\textit{Cursor}}
@@ -112,7 +112,7 @@ O painel administrativo do E-Museu consome APIs de \textit{chat completion} comp
 
 \subsection{\textit{Notion}}\label{sec:materiais-notion}
 
-O \textit{Notion} é uma ferramenta de anotações e de organização em páginas, usada para listas e registro de atividades \cite{notion}. No E-Museu, o autor manteve uma página dedicada ao projeto e, ao longo do desenvolvimento, anotava diariamente o que já tinha feito, o que ainda precisava fazer e o tempo gasto em cada dia; com isso foi possível registrar o tempo total e o período de trabalho indicados na Seção~\ref{sec:dev-esforco}.
+O \textit{Notion} é uma ferramenta de anotações e de organização em páginas, usada para listas e registro de atividades \cite{notion}. No E-Museu, o autor manteve uma página dedicada ao projeto e, ao longo do desenvolvimento, anotou diariamente o que já tinha feito, o que ainda precisava fazer e o tempo gasto em cada dia; com isso foi possível registrar o tempo total e o período de trabalho indicados na Seção~\ref{sec:dev-esforco}.
 
 
 \section{Métodos}\label{sec:metodos}
@@ -122,7 +122,7 @@ Nesta seção são apresentados, em ordem cronológica, os procedimentos adotado
 
 \subsection{Levantamento de requisitos}
 
-O levantamento de requisitos é a etapa responsável por definir o que será desenvolvido e o que se espera de qualquer projeto. Trata-se de uma fase que exige muita atenção, pois um levantamento impreciso pode comprometer diretamente a qualidade e a precisão do produto final. No caso do E-Museu, essa etapa mostrou-se essencial, sendo amplamente discutida com os professores para garantir o alinhamento entre as necessidades reais e as funcionalidades e refatorações a serem implementadas no sistema.
+O levantamento de requisitos define o que se pretende entregar em um projeto e exige atenção, pois imprecisões comprometem a qualidade do produto final. No E-Museu, a etapa foi essencial e contou com discussões com professores da orientação para alinhar necessidades reais às funcionalidades e refatorações implementadas neste trabalho.
 
 
 \subsection{Priorização \acrshort{moscow}}
@@ -137,7 +137,7 @@ O levantamento de requisitos é a etapa responsável por definir o que será des
     \item \textit{Wish} (desejar): categoria adicional usada em algumas variações da técnica para representar ideias ou funcionalidades que não fazem parte do planejamento atual, mas refletem desejos ou possibilidades futuras.
 \end{itemize}
 
-Essa técnica auxilia as equipes a gerenciar o escopo e as expectativas de entrega, garantindo que os esforços sejam concentrados nos aspectos mais críticos e de maior valor para o projeto. A necessidade da utilização desse método surgiu após o levantamento de requisitos do projeto, ou seja, quais requisitos seriam prioridade ou não.   
+Essa técnica ajuda a organizar o escopo e as expectativas de entrega, concentrando o esforço nos aspectos mais críticos. No projeto, o MoSCoW foi aplicado após o levantamento inicial para definir quais requisitos tinham prioridade.
 
 
 \subsection{Criar padrão de \textit{Gitflow}}

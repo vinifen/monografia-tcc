@@ -9,45 +9,34 @@ Este capítulo encerra a monografia: retoma os objetivos em face do que foi real
 
 O objetivo geral deste trabalho consistiu em refatorar e implementar novas funcionalidades no E-Museu, aplicando boas práticas de programação, padrões de projeto e testes automatizados, de modo a melhorar a manutenibilidade e a qualidade do código (Seção~\ref{subsec:objetivoGeral}).
 
-Em relação aos objetivos específicos (Seção~\ref{subsec:objetivoEspecificos}), a Tabela~\ref{tab:objetivos-resultados} indica atendimento pleno à estrutura de versionamento no \textit{GitHub}, à configuração de ambientes, à refatoração do código legado e à aplicação de padrões e boas práticas descritos no referencial teórico. Os objetivos de testes automatizados e de novas funcionalidades foram atendidos de forma parcial: a suíte de testes de fluxo e integração foi ampliada de maneira relevante, mas não houve avaliação formal de usabilidade; quanto às funcionalidades, entregaram-se internacionalização, múltiplas imagens, identificação com QR Code, Turnstile e tradução assistida no painel, permanecendo fora do escopo deste ciclo o campo de link de vídeo e itens deliberadamente postergados no MoSCoW.
+Em relação aos objetivos específicos (Seção~\ref{subsec:objetivoEspecificos}), a Tabela~\ref{tab:objetivos-resultados} registra atendimento pleno a todas as metas: estrutura de versionamento no \textit{GitHub}, configuração de ambientes, refatoração do código legado, ampliação da suíte de testes automatizados de fluxo e integração (Seção~\ref{sec:dev-testes}), novas funcionalidades priorizadas no MoSCoW (internacionalização, múltiplas imagens por item, identificação com QR Code, Turnstile, tradução assistida no painel, entre outras, Seção~\ref{sec:dev-funcionalidades}) e aplicação de padrões e boas práticas descritos no referencial teórico.
 
 Em síntese, o trabalho partiu das limitações da versão anterior \cite{gonzaga2024} e concentrou-se em estabelecer uma base técnica mais organizada para o projeto institucional, conforme os Capítulos~\ref{cap:desenvolvimento} e~\ref{cap:resultados}.
 
 
 \section{Limitações}\label{sec:conclusao-limitacoes}
 
-% TODO: Ajustar à realidade final do TCC. Exemplos de eixos:
-% - escopo e tempo (um único desenvolvedor, priorização MoSCoW);
-% - validação com usuários finais ou métricas formais de usabilidade não realizadas;
-% - dependência de infraestrutura local na UTFPR (Coolify, acesso presencial);
-% - itens do MoSCoW classificados como Could/Won't na Figura~\ref{fig:moscow};
-% - cobertura de testes ou refatoração ainda incompleta em módulos específicos.
-
-Este trabalho não esgotou todas as possibilidades de evolução do E-Museu. Parte das funcionalidades e melhorias identificadas no levantamento de requisitos foi deliberadamente postergada ou permaneceu fora do escopo deste TCC, em função da priorização adotada, do trabalho concentrado em um único desenvolvedor e dos recursos de tempo e financeiros próprios documentados na Seção~\ref{sec:dev-esforco}.
+Este trabalho não esgotou todas as possibilidades de evolução do E-Museu. O escopo concentrou-se em refatoração, infraestrutura, testes e funcionalidades de acervo priorizadas no MoSCoW, com um único desenvolvedor e recursos de tempo e financeiros limitados (Seção~\ref{sec:dev-esforco}). A interface pública e o painel administrativo mantiveram, em grande parte, o visual da versão anterior (Seção~\ref{sec:resultados-interface}). O pacote de continuidade entregue à orientação (Seção~\ref{sec:dev-deploy-continuidade}) reduz o risco de perda de dados, mas não substitui rotinas automáticas de backup em produção.
 
 
 \section{Trabalhos futuros e continuidade do E-Museu}\label{sec:conclusao-trabalhos-futuros}
 
-O E-Museu é um projeto de longa duração, vinculado à \acrshort{utfpr} e a iniciativas de extensão relacionadas à preservação da história da informática. O presente trabalho buscou deixar o sistema e o repositório em condições mais sustentáveis para quem der continuidade ao desenvolvimento, seja em novo Trabalho de Conclusão de Curso, seja em atividades de extensão ou manutenção pelo grupo de pesquisa.
+O E-Museu é um projeto de longa duração, vinculado à \acrshort{utfpr} e a iniciativas de extensão relacionadas à preservação da história da informática. O presente trabalho deixou o sistema e o repositório em condições mais sustentáveis para quem der continuidade ao desenvolvimento, seja em novo Trabalho de Conclusão de Curso, seja em extensão ou na manutenção do sistema na \acrshort{utfpr}. O repositório institucional, a wiki de fluxo de trabalho, a documentação de implantação e o pacote de continuidade descritos no Capítulo~\ref{cap:desenvolvimento} servem de ponto de partida para não repetir a reorganização básica já feita neste ciclo.
 
-As linhas abaixo indicam direções que podem fundamentar trabalhos futuros. Devem ser revisadas e detalhadas pelo autor com base na priorização MoSCoW (Figura~\ref{fig:moscow}), em \textit{issues} abertas no repositório e em alinhamento com a orientação.
+A principal frente sugerida para trabalhos posteriores é a restilização da interface, pública e administrativa. O foco deste TCC foi a base técnica; as capturas em produção (Seção~\ref{sec:resultados-interface}) mostram que \textit{layout}, tipografia e navegação permanecem próximos aos de \citeonline{gonzaga2024}. Uma reforma visual planejada com a orientação poderia melhorar usabilidade, acessibilidade e percepção do museu virtual sem comprometer a arquitetura já entregue.
+
+Em seguida, destacam-se evoluções operacionais e de gestão do acervo:
 
 \begin{itemize}
-    \item \textbf{Funcionalidades priorizadas e não concluídas:}
-    % TODO: listar itens Could/Won't do MoSCoW ainda relevantes (ex.: newsletter,
-    % relatórios de acesso, QR Code além de etiquetas, restilização ampla da interface).
-    \item \textbf{Qualidade e confiabilidade:}
-    ampliar a cobertura e os tipos de testes automatizados; consolidar \textit{pipelines} de integração contínua; revisar módulos que permaneçam com maior acoplamento após a refatoração.
-    \item \textbf{Experiência do usuário e acessibilidade:}
-    conduzir avaliação de usabilidade com gestores do acervo e visitantes; aplicar diretrizes de acessibilidade web nas telas públicas e administrativas.
-    \item \textbf{Infraestrutura e operação:}
-    evoluir monitoramento, backups e documentação operacional; reduzir dependência de intervenções presenciais na máquina da UTFPR, quando a política institucional permitir.
-    \item \textbf{Pesquisa e divulgação:}
-    integrar o acervo a outras iniciativas do campus; explorar recursos educacionais (visitas guiadas virtuais, conteúdo multimídia adicional) sem comprometer a manutenção do núcleo já entregue.
+    \item Backup automático do banco de dados e das imagens do acervo (por exemplo agendamento no servidor ou integração com o \textit{MinIO} e o \textit{MySQL}), complementando o pacote manual montado neste TCC e reduzindo dependência de exportações pontuais.
+    \item Relatórios de acesso ao catálogo público e ao painel (visitas, rotas mais usadas, período), para apoiar decisões de extensão e de divulgação do museu.
+    \item Registro de logs das alterações feitas por administradores (quem editou ou excluiu item, categoria ou colaborador, e quando), reforçando rastreabilidade da curadoria.
+    \item Newsletter por e-mail, aproveitando a infraestrutura de mensagens transacionais já usada na verificação de colaboradores e na contribuição (Seção~\ref{sec:dev-func-email-redis}), para avisar interessados sobre novidades no acervo ou no projeto.
+    \item Campo de link de vídeo de demonstração por item (URL externa), para enriquecer a ficha da peça sem armazenar o arquivo de vídeo no servidor.
 \end{itemize}
 
-% TODO: Parágrafo final reforçando que repositório, wiki, pacote de continuidade
-% (quando descrito no Capítulo~\ref{cap:desenvolvimento}) e código documentado
-% servem de ponto de partida para o próximo desenvolvedor — sem citar pastas externas ao PDF.
+Outras melhorias podem ampliar a confiabilidade e a qualidade percebida: mais testes automatizados (incluindo usabilidade ou acessibilidade), avaliação com usuários do acervo, monitoramento do ambiente \textit{Coolify} e redução de intervenções presenciais na máquina da \acrshort{utfpr}, quando a política institucional permitir.
 
-Recomenda-se que futuros trabalhos formalizem requisitos e cronograma em conjunto com a orientação, reutilizando a documentação de fluxo de desenvolvimento já produzida \cite{gitflowdoc}, de modo a acumular esforço em funcionalidades e em validação, e não em reorganização básica do projeto.
+Recomenda-se que futuros trabalhos formalizem requisitos e cronograma com a orientação, reutilizando o fluxo Gitflow documentado \cite{gitflowdoc}, de modo a acumular esforço em funcionalidades e em validação sobre a base técnica já consolidada.
+
+Assim, encerra-se o Trabalho de Conclusão de Curso com o E-Museu em operação nos domínios institucionais, repositório organizado e objetivos específicos atendidos conforme documentado nesta monografia. O sistema segue disponível para visitantes e para a gestão do acervo; o texto registra o percurso técnico realizado para que orientação, docentes e quem assumir a manutenção possam dar continuidade ao museu virtual como espaço de preservação e divulgação da memória tecnológica na \acrshort{utfpr}.

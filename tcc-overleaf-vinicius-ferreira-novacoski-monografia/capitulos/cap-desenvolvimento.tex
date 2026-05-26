@@ -20,7 +20,7 @@ Quanto aos custos, o autor despendeu aproximadamente R\$\,400,00 ao longo do per
 
 \section{Levantamento de requisitos e priorização}\label{sec:dev-requisitos}
 
-O levantamento de requisitos constituiu a primeira etapa do trabalho. Os requisitos foram identificados principalmente a partir das observações da orientadora Dra. Sediane Carmem Lunardi Hernandes, que apontou, no sistema E-Museu, a necessidade de aprimoramentos na estrutura do código, bem como a ausência de testes automatizados, evidenciando a demanda por refatoração e pelo desenvolvimento de novas funcionalidades.
+O levantamento de requisitos constituiu a primeira etapa do trabalho. Os requisitos foram identificados principalmente a partir das observações da orientadora Dra. Sediane Carmem Lunardi Hernandes, que apontou, no sistema E-Museu, a necessidade de aprimoramentos na estrutura do código e a ausência de testes automatizados, o que reforçou a demanda por refatoração e por novas funcionalidades.
 
 Após discussões e alinhamentos, os requisitos receberam ajustes a partir das contribuições do coorientador Dr. Diego Marczal e dos professores Me. Dênis Lucas Silva e Dr. Emerson André Fedechen, especialmente durante a primeira banca do TCC~1, o que permitiu um refinamento mais preciso e alinhado aos objetivos centrais do trabalho.
 
@@ -254,7 +254,7 @@ Em 5 de março de 2026, removeu-se código que o \textit{framework} Laravel traz
 
 Entre 13 e 16 de março de 2026, três integrações em \texttt{develop} (refatoração de controladores em três partes, três \textit{pull requests}) atacaram o legado em que consultas, transações e regras de negócio ficavam nos controladores. A meta foi restringir essas classes à camada HTTP (validar entrada, chamar serviço ou \textit{Action}, devolver \textit{view}, JSON ou redirecionamento) e concentrar o restante em serviços por domínio e em apoios reutilizáveis em \texttt{app/Support/}. O autor registrou cerca de vinte horas no conjunto.
 
-Na primeira parte (13 de março), o painel de itens passou a \texttt{ItemService} e \texttt{ItemImagesService}: índice com busca e ordenação, criação com código de identificação, atualização e ciclo de capa e galeria, sem consultas nem lógica de arquivo no controlador. A contribuição pública deixou um DTO intermediário e passou a ser orquestrada por \texttt{StoreItemContributionAction}, que em transação resolve o colaborador, grava o item, vincula etiquetas, \textit{extras} e componentes e reutiliza o mesmo serviço de imagens do painel. A contribuição isolada de \textit{extra} ganhou \texttt{ExtraController} e rota própria, para não concentrar tudo em \texttt{ItemController}. As \textit{Form Requests} só do administrador migraram para \texttt{Http/Requests/Admin/}; busca e ordenação dos índices do painel saíram do \textit{trait} \texttt{BuildsAdminIndexQuery} e foram para \texttt{AdminIndexQuery}. Complementaram a entrega leitura pública de item validado, listagem por categoria em JSON e coluna \texttt{date} dos itens aceitando \texttt{null} em vez de ano sentinela.
+Na primeira parte (13 de março), o painel de itens passou a \texttt{ItemService} e \texttt{ItemImagesService}: índice com busca e ordenação, criação com código de identificação, atualização e ciclo de capa e galeria, sem consultas nem lógica de arquivo no controlador. A contribuição pública deixou um DTO intermediário e passou a ser executada por \texttt{StoreItemContributionAction}, que em transação resolve o colaborador, grava o item, vincula etiquetas, \textit{extras} e componentes e reutiliza o mesmo serviço de imagens do painel. A contribuição isolada de \textit{extra} ganhou \texttt{ExtraController} e rota própria, para não concentrar tudo em \texttt{ItemController}. As \textit{Form Requests} só do administrador migraram para \texttt{Http/Requests/Admin/}; busca e ordenação dos índices do painel saíram do \textit{trait} \texttt{BuildsAdminIndexQuery} e foram para \texttt{AdminIndexQuery}. Complementaram a entrega leitura pública de item validado, listagem por categoria em JSON e coluna \texttt{date} dos itens aceitando \texttt{null} em vez de ano sentinela.
 
 Na segunda parte (16 de março), removeu-se \texttt{QueryController}, que misturava \textit{endpoints} AJAX de etiquetas, autocompletar de componentes e checagem de contato sem pertencer a um domínio. As rotas foram para \texttt{TagController}, \texttt{CollaboratorController} e \texttt{ItemController}, sempre via serviços; reordenou-se \texttt{web.php} para rotas fixas do catálogo não colidirem com \texttt{/items/\{id\}}. A listagem pública do acervo migrou para \texttt{ItemService}, com filtros em \texttt{ItemIndexQueryBuilder}; no painel, \texttt{AdminIndexQueryBuilder} e \texttt{AdminIndexConfig} padronizaram índices de itens, categorias, etiquetas, \textit{extras}, componentes e colaboradores. O \textit{trait} de travas \texttt{LocksSubject} deu lugar a \texttt{LockService} em \texttt{Identity}. Controladores administrativos de \textit{extras}, categorias, componentes, vínculos item--etiqueta e colaboradores passaram a usar \textit{route model binding} e a delegar paginação, CRUD e travas aos serviços do domínio.
 
@@ -302,7 +302,7 @@ A ausência de testes automatizados na versão anterior constituiu um dos motiva
 
 Ampliou-se de forma sistemática a cobertura funcional. Foram introduzidos casos de teste base compartilhados para cenários que exigem \textit{MySQL} real (\texttt{AbstractMysqlRefreshDatabaseTestCase} e variantes para serviços e \textit{middleware}), além de \textit{fixtures} mínimas para \textit{upload} de imagens sem depender de extensões gráficas no ambiente de \textit{CI}. A consolidação ocorreu no \textit{pull request} de testes abrangentes (\#57/\#58 no repositório do projeto), que removeu testes de exemplo, padronizou a injeção de dependências nos testes unitários de serviços e passou a exercitar, entre outros fluxos: autenticação e travas administrativas; CRUD e buscas do painel sobre itens, categorias, componentes, etiquetas, \textit{extras} e colaboradores; contribuição pública ao catálogo e verificação de e-mail; resolução de traduções; \textit{middleware} de idioma, autenticação, \textit{staging} com autenticação HTTP básica e verificação \textit{antibot}; proxy de armazenamento; e serviços de domínio (catálogo, colaboradores, identidade, taxonomia, localização). Ao final dessa etapa, o repositório contava com cerca de noventa arquivos de teste (\texttt{*Test.php}) distribuídos entre testes unitários e de funcionalidade.
 
-Quanto ao objetivo de testes de usabilidade previsto na Introdução, não foi conduzida avaliação formal com usuários finais ou gestores do acervo (questionários, observação guiada ou métricas de eficiência). A validação de interface e de fluxos públicos/administrativos apoiou-se, neste TCC, nos testes de funcionalidade que simulam requisições HTTP e nas validações manuais em \textit{staging} antes da promoção à produção. Avaliações de usabilidade com participantes permanecem como trabalho futuro (Seção~\ref{sec:conclusao-trabalhos-futuros}).
+A validação de rotas públicas e administrativas apoiou-se nos testes de funcionalidade que simulam requisições HTTP, na execução da suíte na \textit{CI} e nas verificações em \textit{staging} antes da promoção à produção (Seção~\ref{sec:dev-deploy}).
 
 
 \section{Funcionalidades implementadas}\label{sec:dev-funcionalidades}
@@ -449,9 +449,9 @@ Em 25 de abril de 2026 promoveu-se \texttt{develop} para \texttt{main} na \texti
 
 \subsection{Itens do escopo não implementados neste ciclo}\label{sec:dev-func-escopo-nao}
 
-A priorização MoSCoW (Figura~\ref{fig:moscow}) e o tempo disponível deixaram de fora deste ciclo requisitos classificados como \textit{Could-have} ou \textit{Won't-have}, embora alguns constem nos objetivos amplos do TCC~1. Não foram implementados, entre outros: \textit{newsletter}; relatórios de acesso ou de itens cadastrados; restilização ampla da interface além da refatoração de março; e fluxos herdados do legado que já haviam sido descontinuados na refatoração (registro público genérico, assistente ``Ada'').
+A priorização MoSCoW (Figura~\ref{fig:moscow}) e o tempo disponível deixaram de fora deste ciclo requisitos classificados como \textit{Could-have} ou \textit{Won't-have}. Não foram implementados, entre outros: relatórios de acesso; logs de alterações por administradores; backup automático em produção; restilização ampla da interface além dos ajustes de março; e fluxos herdados do legado já descontinuados na refatoração (registro público genérico, assistente ``Ada''). Outras ideias do levantamento inicial que não entraram no MoSCoW como \textit{Must} ou \textit{Should} ficam para trabalhos futuros (Seção~\ref{sec:conclusao-trabalhos-futuros}).
 
-Quanto ao cadastro de mídia, a capacidade de múltiplas fotos por item e o armazenamento em objeto entraram em março (Subseção~\ref{sec:dev-refatoracao-item-images}), atendendo a parte do objetivo de ampliar \textit{upload} de imagens. Permaneceu sem implementação o campo para link de vídeo de demonstração da peça, previsto na proposta e na introdução: não houve migração nem formulário dedicado a URL de vídeo nesta versão. Esse ponto aparece como atendimento parcial ao objetivo de novas funcionalidades na Tabela~\ref{tab:objetivos-resultados} e nos trabalhos futuros (Seção~\ref{sec:conclusao-trabalhos-futuros}).
+Quanto ao cadastro de mídia, múltiplas fotos por item e armazenamento em objeto entraram em março (Subseção~\ref{sec:dev-refatoracao-item-images}), atendendo ao objetivo de ampliar \textit{upload} de imagens previsto no MoSCoW.
 
 
 \section{Atualização tecnológica da aplicação}\label{sec:dev-stack-upgrade}
@@ -479,30 +479,112 @@ Na mesma entrega, reforçou-se o fluxo de contribuição pública de itens, já 
 
 Acrescentou-se \texttt{declare(strict\_types=1);} nos arquivos \acrshort{php} de \texttt{app/}, \texttt{routes/}, \texttt{config/}, \texttt{bootstrap/}, \texttt{tests/}, \texttt{database/} e \texttt{lang/}, padronizando comparações e retornos. Pequenos ajustes no painel (tratamento de falha ao regenerar QR Code, documentação interna de travas de edição) e atualização dos documentos de projeto (\texttt{docs/prd.md}, \texttt{docs/sdd.md}) fecharam a etapa. Com o \textit{merge} em \texttt{develop}, a aplicação ficou na linha Laravel~13 validada pelos testes e pela \acrfull{ci/cd} antes da \textit{release} \texttt{1.0.0}.
 
-Com a refatoração (Seção~\ref{sec:dev-refatoracao}), os testes (Seção~\ref{sec:dev-testes}) e as funcionalidades (Seção~\ref{sec:dev-funcionalidades}), esta entrega fecha a fase de alterações diretas no E-Museu no repositório. A partir daí, o foco passou a publicar e manter o sistema na \acrshort{utfpr} com \textit{Coolify}: \textit{deploy}, variáveis de ambiente e serviços institucionais (Redis, SMTP, domínios), documentação de implementação (\texttt{README}, \texttt{docs/deploy/}, \texttt{.env.example}, arquivo de backup, crendencias e passo a passo de implementação do E-Museu no Coolify) e artefatos de continuidade para a orientação, até homologação e produção reproduzirem o que já valia localmente e na VPS de ensaio (Seção~\ref{sec:dev-deploy}).
+Com a refatoração (Seção~\ref{sec:dev-refatoracao}), os testes (Seção~\ref{sec:dev-testes}) e as funcionalidades (Seção~\ref{sec:dev-funcionalidades}), esta entrega fecha a fase de alterações diretas no E-Museu no repositório. A partir daí, o foco passou a publicar e manter o sistema na \acrshort{utfpr} com \textit{Coolify}: \textit{deploy}, variáveis de ambiente e serviços institucionais (Redis, SMTP, domínios), documentação de implementação no repositório e pacote de continuidade entregue à orientação, até homologação e produção reproduzirem o que já valia localmente e na VPS de ensaio (Seção~\ref{sec:dev-deploy}).
 
 
 \section{Implantação, validação e entrega institucional}\label{sec:dev-deploy}
 
-A publicação do E-Museu nos domínios da \acrshort{utfpr} concentrou-se nas fases finais do trabalho, quando o repositório já reunia banco de dados, topologia de containers, funcionalidades centrais e testes automatizados validados no ambiente local e na VPS de ensaio (Seção~\ref{sec:dev-infra}). Até então, o desenvolvimento principal ocorreu fora do campus; a ida ao servidor institucional serviu para replicar o que já havia sido ensaiado com \textit{Coolify} e Docker Compose.
+A publicação do E-Museu nos domínios da \acrshort{utfpr} concentrou-se entre abril e maio de 2026, quando o repositório institucional já reunia modelo de dados, funcionalidades centrais, testes automatizados e topologia Docker validada no ambiente local e na VPS de ensaio (Seção~\ref{sec:dev-infra}). Até então, a maior parte do código havia sido desenvolvida fora do campus; as idas ao servidor da universidade serviram para replicar a pilha ensaiada com \textit{Coolify}, corrigir variáveis e redes, iterar a automação de \textit{deploy} e montar um arquivo offline para quem der continuidade ao projeto. O registro diário dessas sessões aparece na ferramenta citada na Seção~\ref{sec:materiais-notion}.
 
-\subsection{Publicação no campus e ambientes institucionais}
 
-Inicialmente, adotou-se a suposição de que a configuração do \textit{Coolify} deveria ser feita apenas no campus, por receio de expor o painel de administração e por inexistência de acesso remoto à máquina. Essa premissa levou a deslocamentos frequentes à universidade para ajustar serviços, variáveis de ambiente e implantações. Com o banco de dados e as funcionalidades centrais consolidados no repositório, publicaram-se os ambientes de \textit{staging} e de produção em staging.e-museu.gp.utfpr.edu.br e e-museu.gp.utfpr.edu.br, com \textit{MySQL}, \textit{Redis}, \textit{MinIO} e a aplicação Laravel provisionados pelo \textit{Coolify} (Seção~\ref{sec:materiais-coolify}).
+\subsection{Organização no \textit{Coolify} e acesso ao painel}\label{sec:dev-deploy-coolify}
 
-\subsection{Automação de \textit{deploy} e acesso ao \textit{Coolify}}
+Na máquina da \acrshort{utfpr}, o \textit{Coolify} agrupa o E-Museu no projeto \texttt{e-museu} com dois ambientes lógicos, \textit{staging} e \textit{production}, cada um com recursos próprios e configurações independentes (Figura~\ref{fig:coolify-ambientes}). Essa separação espelha o fluxo Gitflow: a ramificação \texttt{develop} alimenta homologação em \url{https://staging.e-museu.gp.utfpr.edu.br/}; a \texttt{main}, produção em \url{https://e-museu.gp.utfpr.edu.br/}. As imagens e versões dos serviços seguem o descrito na Seção~\ref{sec:materiais-coolify}; aqui o foco é como o painel organiza a operação no campus.
 
-A automação de \textit{deploy} na \acrshort{utfpr} exigiu iterações sucessivas. Na primeira implantação presencial de \textit{staging} e produção, os \textit{webhooks} nativos do \textit{Coolify} ligados ao repositório não passaram a disparar atualizações de forma confiável após \textit{commits} no \textit{GitHub}. Para contornar o problema, foram experimentadas duas abordagens alternativas antes da solução definitiva.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.92\textwidth]{figuras/coolify-ambientes.png}
+    \caption{Projeto \texttt{e-museu} no \textit{Coolify}: ambientes \textit{staging} e \textit{production}.}
+    \label{fig:coolify-ambientes}
+    \caption*{\textbf{Fonte:} Autoria própria (painel institucional, maio/2026).}
+\end{figure}
 
-Na \textbf{primeira abordagem}, implementou-se um script agendado no próprio \textit{Coolify} (\texttt{coolify-auto-deploy.sh}), executado por tarefa periódica no container da aplicação: o script consultava o repositório remoto, comparava o \textit{hash} do último \textit{commit} com um arquivo de estado e, havendo mudança, acionava a API de \textit{deploy} do \textit{Coolify} com token de autorização. A solução funcionou, porém consumia processamento de forma contínua e acrescentava complexidade operacional.
+No ambiente \textit{production}, os recursos publicados dividem-se em aplicação principal (\texttt{main-production}), bancos e \textit{cache} (\texttt{mysql-production}, \texttt{redis-production}) e armazenamento de objetos (\texttt{storage-minio-production}), todos sob o mesmo servidor gerenciado pelo \textit{Coolify} (Figura~\ref{fig:coolify-production-servicos}). O ambiente de homologação repete a mesma composição com nomes e variáveis de \textit{staging}, o que permitiu validar migrações, \textit{upload} de imagens e internacionalização antes da promoção à produção.
 
-Na \textbf{segunda abordagem}, criou-se um \textit{endpoint} na aplicação Laravel para receber gatilhos do \textit{GitHub Actions} a cada alteração no repositório, com pipeline dedicada de implantação. O fluxo passou a operar parcialmente, mas persistiram falhas na autenticação entre o \textit{GitHub Actions} e o ambiente institucional (incluindo incompatibilidade de formato de token que respondia em testes manuais, mas não na \textit{action}), o que mantinha a dependência de idas ao campus para corrigir configurações.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figuras/coolify-production-serviços.png}
+    \caption{Recursos do ambiente \textit{production} no \textit{Coolify} (aplicação, \textit{MySQL}, \textit{Redis} e \textit{MinIO}).}
+    \label{fig:coolify-production-servicos}
+    \caption*{\textbf{Fonte:} Autoria própria (painel institucional, maio/2026). \textbf{Nota:} em \textit{staging}, a estrutura é equivalente, com sufixo e domínio de homologação.}
+\end{figure}
 
-Próximo ao encerramento do projeto, o coorientador Dr. Diego Marczal orientou a \textbf{exposição do painel do \textit{Coolify} em subdomínio dedicado}, em \url{https://coolify.e-museu.gp.utfpr.edu.br/}, em lugar de tratar o painel apenas como serviço acessível somente na rede interna do servidor. A decisão equilibrou praticidade e segurança: o painel passou a ser administrado remotamente quando necessário (configuração de projetos, variáveis de ambiente e disparo de \textit{deploys}), com autenticação em dois fatores habilitada no \textit{Coolify}, sem abandonar o controle institucional sobre a máquina. Com o subdomínio configurado, removeram-se do repositório o \textit{endpoint} de \textit{deploy} na aplicação e a \textit{action} associada, adotando-se de forma estável os \textit{webhooks} do \textit{GitHub} para o \textit{Coolify}, conforme sugerido na orientação. Esse desfecho reduziu a necessidade de deslocamentos repetidos à \acrshort{utfpr} apenas para operações rotineiras de infraestrutura, concentrando as visitas presenciais em momentos de carga de dados, validação ou ajustes que ainda exigem acesso local ao servidor.
+Inicialmente, adotou-se a suposição de que o painel deveria ser usado apenas no campus, por receio de expor a administração da infraestrutura e por não haver, no começo, subdomínio dedicado ao \textit{Coolify}. Isso exigiu deslocamentos frequentes para criar serviços, ajustar variáveis de ambiente e disparar \textit{deploys} manualmente. A Figura~\ref{fig:coolify-login} mostra o acesso restrito ao painel após a solução definitiva de automação (Subseção~\ref{sec:dev-deploy-automacao}): registro público desabilitado e autenticação em dois fatores.
 
-\subsection{Validação em \textit{staging} e entrega}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{figuras/coolify-login.png}
+    \caption{Tela de autenticação do \textit{Coolify} institucional (registro público desabilitado).}
+    \label{fig:coolify-login}
+    \caption*{\textbf{Fonte:} Autoria própria (painel institucional, maio/2026).}
+\end{figure}
 
-Após cada integração relevante na ramificação \texttt{develop}, o sistema era validado em \textit{staging} antes da promoção à produção (\texttt{main}). Quando surgiam falhas, o ciclo retornava ao desenvolvimento local, à correção via \textit{pull requests} e aos testes automatizados descritos na Seção~\ref{sec:dev-testes}, até nova implantação. Ao final, consolidou-se a entrega operacional nos domínios institucionais, com documentação e artefatos de continuidade preparados para apoiar manutenção futura do ambiente, sem expor credenciais neste documento.
+
+\subsection{Implantação presencial no campus}\label{sec:dev-deploy-campus}
+
+As primeiras sessões longas no servidor da \acrshort{utfpr} ocorreram na primeira quinzena de abril de 2026 (cerca de dez horas registradas em dois dias consecutivos), quando a aplicação, o banco e as variáveis de ambiente foram alinhados ao que já rodava na VPS. Nessa fase apareceram problemas típicos de rede Docker no \textit{Coolify} (por exemplo a opção \textit{Connect To Predefined Network}, que impedia o banco de subir até ser desativada) e tentativas de \textit{healthcheck} que, em um caso, passaram a responder com erro 404 e foram revertidas.
+
+Em 5 de maio de 2026, numa nova visita de cerca de cinco horas, \textit{staging} e produção passaram a responder nos domínios institucionais com a pilha completa, mas os \textit{webhooks} nativos do \textit{Coolify} ainda não disparavam \textit{deploy} de forma confiável após \textit{commits} no \textit{GitHub}. A validação manual cobriu login administrativo, catálogo público, envio de imagens, fluxo de contribuição com verificação por e-mail e, quando configurado, envio de mensagens transacionais. Falhas encontradas em homologação voltavam ao desenvolvimento local, a \textit{pull requests} e aos testes da Seção~\ref{sec:dev-testes}, antes de nova promoção em \texttt{main}.
+
+
+\subsection{Automação de \textit{deploy}: tentativas e solução final}\label{sec:dev-deploy-automacao}
+
+A automação de \textit{deploy} na \acrshort{utfpr} passou por três alternativas até a configuração estável. O ponto de partida comum era o painel do \textit{Coolify} inacessível fora do campus, o que dificultava usar de imediato os \textit{webhooks} que a própria plataforma oferece para ligar o repositório Git à homologação e à produção.
+
+
+\subsubsection{Script agendado no container}\label{sec:dev-deploy-cron}
+
+Em 6 de maio de 2026, na primeira alternativa, implementou-se um script agendado no \textit{Coolify} (\texttt{coolify-auto-deploy.sh}), executado por tarefa periódica no container da aplicação: o script consultava o repositório remoto, comparava o \textit{hash} do último \textit{commit} com um arquivo de estado e, havendo mudança, acionava a API de \textit{deploy} do \textit{Coolify} com token de autorização. A solução funcionou, porém consumia processamento de forma contínua (cerca de nove horas de trabalho nesse dia, com parte da sessão no campus).
+
+
+\subsubsection{\textit{Endpoint} na aplicação e \textit{GitHub Actions}}\label{sec:dev-deploy-endpoint}
+
+Ainda no mesmo dia, após conversas no campus com o Prof. Dr. Roni Fabio Banaszewski, em seguida com o Prof. Dr. Hermano Pereira e com Marcelo Vichar, o autor passou a adotar uma segunda alternativa: um \textit{endpoint} na aplicação Laravel, disparado por \textit{GitHub Actions} a cada alteração no repositório, com \textit{pipeline} dedicada de implantação. A ideia era reduzir o custo do script periódico e alinhar o gatilho ao fluxo já usado no \textit{GitHub}. A implementação começou na \acrshort{utfpr} naquela visita e foi concluída no dia seguinte; o \textit{deploy} manual pelo novo \textit{endpoint} já funcionava na noite no servidor (das 18h às 23h), mas a automação completa permaneceu instável por falhas de autenticação entre o \textit{GitHub Actions} e o ambiente institucional (token que respondia em teste com \texttt{curl}, porém falhava na \textit{action}).
+
+
+\subsubsection{Subdomínio do painel e \textit{webhooks} do \textit{GitHub}}\label{sec:dev-deploy-webhooks}
+
+Na solução definitiva, o coorientador Dr. Diego Marczal indicou expor o \textit{Coolify} em subdomínio dedicado (\url{https://coolify.e-museu.gp.utfpr.edu.br/}), em lugar de manter o painel só acessível na rede local do servidor. Com o painel disponível pela web, deixou de ser necessário o \textit{endpoint} na aplicação, criado justamente para contornar essa indisponibilidade. O autor reverteu no repositório a rota de \textit{deploy} e a \textit{action} associada, habilitou autenticação em dois fatores no painel (Figura~\ref{fig:coolify-login}) e configurou os \textit{webhooks} do \textit{GitHub} para a URL que o \textit{Coolify} disponibiliza: a cada \textit{push}, o \textit{Coolify} recebe o evento e dispara o \textit{deploy} no ambiente correto (\textit{staging} para \texttt{develop}, produção para \texttt{main}), sem lógica extra na aplicação Laravel.
+
+
+\subsubsection{Consolidação do fluxo}\label{sec:dev-deploy-automacao-fim}
+
+Em 12 de maio de 2026, após revisão final em casa e nova sessão no campus (cerca de cinco horas), o fluxo por \textit{webhooks} descrito acima passou a ser o padrão estável, dispensando script periódico e \textit{endpoint} intermediário. As visitas presenciais ficaram concentradas em carga de dados, validação de funcionalidades ou ajustes que ainda exigem acesso local ao servidor, e não em cada integração rotineira em \texttt{develop}.
+
+
+\subsection{Documentação no repositório}\label{sec:dev-deploy-docs}
+
+Em paralelo às idas ao campus, a documentação no \textit{GitHub} foi ampliada para que o próximo mantenedor não dependa só do painel nem da memória do autor. O \texttt{README} do projeto, os arquivos em \texttt{docs/deploy/}, o \texttt{.env.example} e a wiki do repositório (fluxo Gitflow no perfil \textit{full}, Seção~\ref{sec:dev-gitflow}) passaram a descrever passo a passo a implantação com \textit{Coolify}, a separação entre \textit{staging} e produção e o papel de cada serviço. Parte desse material foi revisada a cada tentativa de automação de \textit{deploy}, de modo que o texto acompanhasse o que de fato estava em produção.
+
+Credenciais, tokens e exports completos do painel não foram incluídos no repositório público; ficaram no pacote de continuidade descrito na subseção seguinte.
+
+
+\subsection{Pacote de continuidade: backups e pen drive}\label{sec:dev-deploy-continuidade}
+
+Além do código versionado, montou-se um pacote de continuidade para recuperação e reconfiguração caso o servidor, o \textit{Coolify} ou o acesso ao \textit{GitHub} falhem no futuro. O trabalho avançou em conjunto com os ajustes no painel (abril e maio de 2026) e culminou na aquisição de um pen drive dedicado ao E-Museu, entregue à orientadora Dra. Sediane Carmem Lunardi Hernandes, com cópia adicional em arquivo protegido por senha no computador da orientadora na \acrshort{utfpr}. O objetivo foi reunir, num só lugar, evidências e artefatos práticos para a orientação e para quem vier a manter ou evoluir o E-Museu depois deste TCC.
+
+O conteúdo foi organizado em três pastas de primeiro nível (\texttt{data}, \texttt{projects} e \texttt{txt}), conforme a Figura~\ref{fig:pacote-continuidade-dom}. A estrutura segue o que quem for retomar o projeto precisa consultar offline: dados do acervo, cópia do software e texto de apoio à infraestrutura.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.88\textwidth]{figuras/documentação-backup-dom.png}
+    \caption{Organização do pacote de continuidade (árvore de pastas).}
+    \label{fig:pacote-continuidade-dom}
+    \caption*{\textbf{Fonte:} Autoria própria.}
+\end{figure}
+
+A pasta \texttt{data} concentra o estado do acervo na data da montagem do pacote. O arquivo \texttt{emuseu\_dump.sql} permite restaurar ou inspecionar o banco relacional sem o servidor institucional. O diretório \texttt{items/} guarda cópias das imagens dos itens (subpastas por identificador do item). O arquivo \texttt{mysql-and-items-v-2\_0\_0.zip} reúne, em um único compactado, o dump e as imagens para quem preferir importar tudo de uma vez.
+
+A pasta \texttt{projects} traz duas variantes do E-Museu na versão \texttt{2.0.0}. O arquivo \texttt{e-museu-github-v2\_0\_0.zip} corresponde ao que estava no repositório institucional no momento da entrega (código alinhado ao \textit{GitHub}, sem credenciais sensíveis embutidas). O \texttt{e-museu-full-v2\_0\_0.tar.gz} acrescenta dependências (\texttt{vendor/}, \texttt{node\_modules/} e demais pacotes externos) já baixados e o \texttt{.env} com as credenciais usadas naquele instante: serve para instalar em máquina sem rede na recuperação e, se algum pacote externo deixar de estar disponível ou mudar de forma incompatível, oferece uma cópia fixa do conjunto que funcionava com aquele código, incluindo variáveis de ambiente prontas para subir a aplicação.
+
+A pasta \texttt{txt} documenta a infraestrutura e as integrações. Em \texttt{env-local-v-2\_0\_0.txt} há referência das variáveis de ambiente locais. O arquivo \texttt{keys.txt} indica quais contas e chaves o sistema usa (organização no \textit{GitHub}, APIs de tradução, entre outras), para renovação de acessos sem depender da memória do autor anterior. O subdiretório \texttt{coolify/} espelha o que foi configurado no painel. Em \texttt{config/}, há notas sobre perfil do servidor, subdomínio do \textit{Coolify}, \textit{webhooks} do \textit{GitHub} e versões da plataforma. Em \texttt{staging/} e \texttt{production/}, cada serviço da Figura~\ref{fig:coolify-production-servicos} (aplicação principal, \textit{MySQL}, \textit{Redis} e \textit{MinIO}) ganhou um export textual com o bloco de configuração correspondente no \textit{Coolify}. A ideia foi permitir copiar e colar dezenas de parâmetros já preenchidos (variáveis de ambiente, domínios, imagens Docker, redes e demais campos do painel) em vez de redigitar tudo à mão, recriando homologação e produção com os mesmos nomes de recurso usados na \acrshort{utfpr}.
+
+Depois da entrega do TCC, o repositório \texttt{e-museu-utfpr-gp/e-museu} permanece a referência principal para código e novos \textit{deploys}; o pacote complementa essa fonte com dados, configurações e cópias offline descritas acima. O esforço de organizá-lo, somado às horas de implantação e à documentação no \textit{GitHub} (Subseção~\ref{sec:dev-deploy-docs}), faz parte da dimensão operacional do trabalho citada na Seção~\ref{sec:dev-esforco}.
+
+
+\subsection{Validação final e entrega}\label{sec:dev-deploy-entrega}
+
+Após cada integração relevante em \texttt{develop}, o sistema era validado em \textit{staging} (Figura~\ref{fig:coolify-ambientes}) antes da promoção à produção em \texttt{main}. Com os \textit{webhooks} estáveis, o encerramento em maio de 2026 consolidou a entrega nos domínios institucionais, o painel em subdomínio dedicado e o pacote de continuidade para a orientação. A síntese dos objetivos ligados a ambientes e operação aparece na Tabela~\ref{tab:objetivos-resultados} e na Seção~\ref{sec:resultados-operacional} do Capítulo~\ref{cap:resultados}; as limitações de escopo ficam nas considerações finais.
 
 
 As etapas deste capítulo descrevem o processo de desenvolvimento (requisitos, versionamento, refatoração, testes, funcionalidades e implantação). A consolidação dos resultados em relação aos objetivos, à evolução do modelo de dados, aos indicadores do repositório e à operação em produção está no Capítulo~\ref{cap:resultados}, em especial na Tabela~\ref{tab:objetivos-resultados} e na Figura~\ref{fig:emuseu-bd-evolucao}.
